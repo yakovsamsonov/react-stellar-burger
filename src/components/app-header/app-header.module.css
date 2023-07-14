@@ -1,0 +1,33 @@
+.header {
+  box-sizing: border-box;
+  display: grid;
+  max-width: 1240px;
+  margin: 40px auto 0;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: center;
+  justify-items: center;
+}
+
+.group {
+  display: flex;
+  gap: 8px;
+  justify-self: stretch;
+}
+
+.item {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: unset;
+}
+
+.item:last-of-type {
+  justify-self: end;
+}
+
+.label {
+  margin: 0;
+}
