@@ -11,7 +11,7 @@ class BurgerIngredients extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeTab: "bread",
+      activeTab: "bun",
       data: data,
     };
   }
@@ -21,6 +21,20 @@ class BurgerIngredients extends React.Component {
       ...this.prevState,
       activeTab: value,
     });
+
+    const targetBlock = document.getElementById(value);
+    if (targetBlock) {
+      targetBlock.scrollIntoView({
+        behavior: "smooth",
+      });
+    }
+  };
+
+  filterData = (type) => {
+    const filteredData = this.state.data.filter((el) => {
+      return el.type === type;
+    });
+    return filteredData;
   };
 
   render() {
@@ -34,44 +48,36 @@ class BurgerIngredients extends React.Component {
         </h2>
         <div className="mb-10" style={{ display: "flex" }}>
           <Tab
-            value="bread"
-            active={this.state.activeTab === "bread"}
+            value="bun"
+            active={this.state.activeTab === "bun"}
             onClick={this.changeTab}
           >
             <p className="text text_type_main-default">Булки</p>
           </Tab>
           <Tab
-            value="souce"
-            active={this.state.activeTab === "souce"}
+            value="sauce"
+            active={this.state.activeTab === "sauce"}
             onClick={this.changeTab}
           >
             <p className="text text_type_main-default">Соусы</p>
           </Tab>
           <Tab
-            value="extra"
-            active={this.state.activeTab === "extra"}
+            value="main"
+            active={this.state.activeTab === "main"}
             onClick={this.changeTab}
           >
             <p className="text text_type_main-default">Начинки</p>
           </Tab>
         </div>
         <div
-          className={"custom-scroll"}
+          className="custom-scroll"
           style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(2, 1fr)",
-            columnGap: "24px",
             overflowY: "scroll",
           }}
         >
-          {this.state.data.map((card) => (
-            <Card
-              key={card._id}
-              image={card.image}
-              name={card.name}
-              price={card.price}
-            />
-          ))}
+          <Section id="bun" label="Булки" data={this.filterData("bun")} />
+          <Section id="sauce" label="Соусы" data={this.filterData("sauce")} />
+          <Section id="main" label="Начинки" data={this.filterData("main")} />
         </div>
       </section>
     );
@@ -90,7 +96,6 @@ class Card extends React.Component {
   }
 
   processClick = () => {
-    console.log(this.state.orderedNum);
     if (this.state.orderedNum === 0) {
       this.setState({
         ...this.prevState,
@@ -106,10 +111,7 @@ class Card extends React.Component {
 
   render() {
     return (
-      <article
-        className={BurgerIngredientsStyle.card}
-        onClick={this.processClick}
-      >
+      <li className={BurgerIngredientsStyle.card} onClick={this.processClick}>
         {this.state.orderedNum > 0 && (
           <Counter count={this.state.orderedNum} size="default" />
         )}
@@ -132,7 +134,42 @@ class Card extends React.Component {
         >
           {this.state.label}
         </p>
-      </article>
+      </li>
+    );
+  }
+}
+
+class Section extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      label: props.label,
+      data: props.data,
+      id: props.id,
+    };
+  }
+
+  render() {
+    return (
+      <div>
+        <h3 className="text text_type_main-medium" id={this.state.id}>
+          {this.state.label}
+        </h3>
+        <ul
+          className={
+            BurgerIngredientsStyle.card__group + " pl-4 pr-4 pt-6 pb-10"
+          }
+        >
+          {this.state.data.map((card) => (
+            <Card
+              key={card._id}
+              image={card.image}
+              name={card.name}
+              price={card.price}
+            />
+          ))}
+        </ul>
+      </div>
     );
   }
 }
