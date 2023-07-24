@@ -5,14 +5,13 @@ import {
   Counter,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import BurgerIngredientsStyle from "./burger-ingredients.module.css";
-import { data } from "../../utils/data.js";
 
 class BurgerIngredients extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       activeTab: "bun",
-      data: data,
+      data: props.data,
     };
   }
 
@@ -75,9 +74,27 @@ class BurgerIngredients extends React.Component {
             overflowY: "scroll",
           }}
         >
-          <Section id="bun" label="Булки" data={this.filterData("bun")} />
-          <Section id="sauce" label="Соусы" data={this.filterData("sauce")} />
-          <Section id="main" label="Начинки" data={this.filterData("main")} />
+          <Section
+            id="bun"
+            label="Булки"
+            data={this.filterData("bun")}
+            addToOrder={this.props.addToOrder}
+            removeFromOrder={this.props.removeFromOrder}
+          />
+          <Section
+            id="sauce"
+            label="Соусы"
+            data={this.filterData("sauce")}
+            addToOrder={this.props.addToOrder}
+            removeFromOrder={this.props.removeFromOrder}
+          />
+          <Section
+            id="main"
+            label="Начинки"
+            data={this.filterData("main")}
+            addToOrder={this.props.addToOrder}
+            removeFromOrder={this.props.removeFromOrder}
+          />
         </div>
       </section>
     );
@@ -88,6 +105,7 @@ class Card extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      id: props.id,
       image: props.image,
       label: props.name,
       price: props.price,
@@ -101,11 +119,13 @@ class Card extends React.Component {
         ...this.prevState,
         orderedNum: this.state.orderedNum + 1,
       });
+      this.props.addToOrder(this.state.id);
     } else {
       this.setState({
         ...this.prevState,
         orderedNum: 0,
       });
+      this.props.removeFromOrder(this.state.id);
     }
   };
 
@@ -163,9 +183,12 @@ class Section extends React.Component {
           {this.state.data.map((card) => (
             <Card
               key={card._id}
+              id={card._id}
               image={card.image}
               name={card.name}
               price={card.price}
+              addToOrder={this.props.addToOrder}
+              removeFromOrder={this.props.removeFromOrder}
             />
           ))}
         </ul>

@@ -1,23 +1,13 @@
 import AppHeader from "../app-header/app-header";
-import BurgerIngredients from "../burger-ingredients/burger-ingredients";
-import BurgerConstructor from "../burger-constructor/burger-constructor";
 import styles from "./app.module.css";
-import { data } from "../../utils/data";
+import Order from "../order/order.jsx";
+import { data } from "../../utils/data.js";
 
 function App() {
   return (
     <div className={styles.app}>
       <AppHeader />
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          overflowY: "hidden",
-        }}
-      >
-        <BurgerIngredients />
-        <BurgerConstructor />
-      </div>
+      <Order data={data} />
     </div>
   );
 }
