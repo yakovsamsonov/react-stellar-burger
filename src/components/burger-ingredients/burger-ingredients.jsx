@@ -38,13 +38,8 @@ class BurgerIngredients extends React.Component {
 
   render() {
     return (
-      <section
-        style={{ display: "flex", flexDirection: "column" }}
-        className={BurgerIngredientsStyle.section + " mr-10"}
-      >
-        <h2 className="mt-10 mb-4 text text_type_main-large">
-          Соберите бургер
-        </h2>
+      <section className={BurgerIngredientsStyle.section + " pt-10 mr-10"}>
+        <h2 className="mb-4 text text_type_main-large">Соберите бургер</h2>
         <div className="mb-10" style={{ display: "flex" }}>
           <Tab
             value="bun"
