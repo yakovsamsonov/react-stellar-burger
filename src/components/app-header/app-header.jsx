@@ -16,7 +16,6 @@ class AppHeader extends React.Component {
   }
 
   onClick = (name) => {
-    console.log(name);
     this.setState({ selected: name });
   };
 

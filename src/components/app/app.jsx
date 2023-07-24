@@ -6,13 +6,13 @@ import { data } from "../../utils/data";
 
 function App() {
   return (
-    <>
+    <div className={styles.app}>
       <AppHeader />
       <div style={{ display: "flex", justifyContent: "center" }}>
         <BurgerIngredients />
         <BurgerConstructor />
       </div>
-    </>
+    </div>
   );
 }
 

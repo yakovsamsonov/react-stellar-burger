@@ -9,7 +9,7 @@ import BurgerConstructorStyle from "./burger-constructor.module.css";
 
 class BurgerConstructor extends React.Component {
   render() {
-    return <h1>Соберите бургер</h1>;
+    return <h1>Состав</h1>;
   }
 }
 
