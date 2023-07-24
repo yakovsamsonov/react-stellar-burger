@@ -8,7 +8,13 @@ function App() {
   return (
     <div className={styles.app}>
       <AppHeader />
-      <div style={{ display: "flex", justifyContent: "center" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          overflowY: "hidden",
+        }}
+      >
         <BurgerIngredients />
         <BurgerConstructor />
       </div>

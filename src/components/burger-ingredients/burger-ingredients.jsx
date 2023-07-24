@@ -61,6 +61,7 @@ class BurgerIngredients extends React.Component {
             display: "grid",
             gridTemplateColumns: "repeat(2, 1fr)",
             columnGap: "24px",
+            overflowY: "scroll",
           }}
         >
           {this.state.data.map((card) => (
