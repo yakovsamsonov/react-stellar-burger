@@ -73,6 +73,7 @@ class BurgerIngredients extends React.Component {
             data={this.filterData(BUN_TYPE)}
             addToOrder={this.props.addToOrder}
             removeFromOrder={this.props.removeFromOrder}
+            getOrderedNum={this.props.getOrderedNum}
           />
           <Section
             id={SAUCE_TYPE}
@@ -80,6 +81,7 @@ class BurgerIngredients extends React.Component {
             data={this.filterData(SAUCE_TYPE)}
             addToOrder={this.props.addToOrder}
             removeFromOrder={this.props.removeFromOrder}
+            getOrderedNum={this.props.getOrderedNum}
           />
           <Section
             id={MAIN_TYPE}
@@ -87,6 +89,7 @@ class BurgerIngredients extends React.Component {
             data={this.filterData(MAIN_TYPE)}
             addToOrder={this.props.addToOrder}
             removeFromOrder={this.props.removeFromOrder}
+            getOrderedNum={this.props.getOrderedNum}
           />
         </div>
       </section>
@@ -102,32 +105,22 @@ class Card extends React.Component {
       image: props.image,
       label: props.name,
       price: props.price,
-      orderedNum: 0,
     };
   }
 
   processClick = () => {
-    if (this.state.orderedNum === 0) {
-      this.setState({
-        ...this.prevState,
-        orderedNum: this.state.orderedNum + 1,
-      });
+    if (this.props.getOrderedNum(this.state.id) === 0) {
       this.props.addToOrder(this.state.id);
     } else {
-      this.setState({
-        ...this.prevState,
-        orderedNum: 0,
-      });
       this.props.removeFromOrder(this.state.id);
     }
   };
 
   render() {
+    const orderedNum = this.props.getOrderedNum(this.state.id);
     return (
       <li className={BurgerIngredientsStyle.card} onClick={this.processClick}>
-        {this.state.orderedNum > 0 && (
-          <Counter count={this.state.orderedNum} size="default" />
-        )}
+        {orderedNum > 0 && <Counter count={orderedNum} size="default" />}
 
         <img src={this.state.image} alt={this.state.label} />
         <div className={BurgerIngredientsStyle.price__box}>
@@ -182,6 +175,7 @@ class Section extends React.Component {
               price={card.price}
               addToOrder={this.props.addToOrder}
               removeFromOrder={this.props.removeFromOrder}
+              getOrderedNum={this.props.getOrderedNum}
             />
           ))}
         </ul>

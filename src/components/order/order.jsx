@@ -80,6 +80,13 @@ class Order extends React.Component {
     this.updateItems(updatedItems);
   };
 
+  getOrderedNum = (id) => {
+    const el = this.state.items.find((el) => el.data._id === id);
+    if (el) {
+      return el.count;
+    } else return 0;
+  };
+
   render() {
     return (
       <div className={OrderStyle.order}>
@@ -88,6 +95,7 @@ class Order extends React.Component {
           content={this.state.items}
           addToOrder={this.addToOrder}
           removeFromOrder={this.removeFromOrder}
+          getOrderedNum={this.getOrderedNum}
         />
         <BurgerConstructor
           content={this.state.items}
