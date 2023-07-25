@@ -5,12 +5,13 @@ import {
   Counter,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import BurgerIngredientsStyle from "./burger-ingredients.module.css";
+import { BUN_TYPE, MAIN_TYPE, SAUCE_TYPE } from "../constants/constants.jsx";
 
 class BurgerIngredients extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeTab: "bun",
+      activeTab: BUN_TYPE,
       data: props.data,
     };
   }
@@ -30,10 +31,7 @@ class BurgerIngredients extends React.Component {
   };
 
   filterData = (type) => {
-    const filteredData = this.state.data.filter((el) => {
-      return el.type === type;
-    });
-    return filteredData;
+    return this.state.data.filter((el) => el.type === type);
   };
 
   render() {
@@ -42,22 +40,22 @@ class BurgerIngredients extends React.Component {
         <h2 className="mb-4 text text_type_main-large">Соберите бургер</h2>
         <div className="mb-10" style={{ display: "flex" }}>
           <Tab
-            value="bun"
-            active={this.state.activeTab === "bun"}
+            value={BUN_TYPE}
+            active={this.state.activeTab === BUN_TYPE}
             onClick={this.changeTab}
           >
             <p className="text text_type_main-default">Булки</p>
           </Tab>
           <Tab
-            value="sauce"
-            active={this.state.activeTab === "sauce"}
+            value={SAUCE_TYPE}
+            active={this.state.activeTab === SAUCE_TYPE}
             onClick={this.changeTab}
           >
             <p className="text text_type_main-default">Соусы</p>
           </Tab>
           <Tab
-            value="main"
-            active={this.state.activeTab === "main"}
+            value={MAIN_TYPE}
+            active={this.state.activeTab === MAIN_TYPE}
             onClick={this.changeTab}
           >
             <p className="text text_type_main-default">Начинки</p>
@@ -70,23 +68,23 @@ class BurgerIngredients extends React.Component {
           }}
         >
           <Section
-            id="bun"
+            id={BUN_TYPE}
             label="Булки"
-            data={this.filterData("bun")}
+            data={this.filterData(BUN_TYPE)}
             addToOrder={this.props.addToOrder}
             removeFromOrder={this.props.removeFromOrder}
           />
           <Section
-            id="sauce"
+            id={SAUCE_TYPE}
             label="Соусы"
-            data={this.filterData("sauce")}
+            data={this.filterData(SAUCE_TYPE)}
             addToOrder={this.props.addToOrder}
             removeFromOrder={this.props.removeFromOrder}
           />
           <Section
-            id="main"
+            id={MAIN_TYPE}
             label="Начинки"
-            data={this.filterData("main")}
+            data={this.filterData(MAIN_TYPE)}
             addToOrder={this.props.addToOrder}
             removeFromOrder={this.props.removeFromOrder}
           />

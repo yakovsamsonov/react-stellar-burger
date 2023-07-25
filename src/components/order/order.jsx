@@ -2,6 +2,12 @@ import React from "react";
 import OrderStyle from "./order.module.css";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients.jsx";
 import BurgerConstructor from "../burger-constructor/burger-constructor.jsx";
+import {
+  BOTTOM_ING_TYPE,
+  BUN_TYPE,
+  REGULAR_ING_TYPE,
+  TOP_ING_TYPE,
+} from "../constants/constants.jsx";
 
 class Order extends React.Component {
   constructor(props) {
@@ -29,29 +35,44 @@ class Order extends React.Component {
   addToOrder = (id) => {
     let updatedItems = this.state.items;
 
-    const el = this.state.data.find((el) => el._id === id);
+    const ingredient = this.state.data.find((el) => el._id === id);
+    const ingredientType = ingredient.type;
+
     if (this.state.items.some((el) => el.data._id === id)) {
       updatedItems = this.state.items.map((el) => {
         if (el.data._id === id) {
-          return { data: el.data, count: el.count + 1 };
+          return { data: el.data, type: el.type, count: el.count + 1 };
         } else return el;
       });
     } else {
-      updatedItems.push({ data: el, count: 1 });
+      if (ingredientType === BUN_TYPE) {
+        updatedItems.push({ data: ingredient, type: TOP_ING_TYPE, count: 1 });
+        updatedItems.push({
+          data: ingredient,
+          type: BOTTOM_ING_TYPE,
+          count: 1,
+        });
+      } else {
+        updatedItems.push({
+          data: ingredient,
+          type: REGULAR_ING_TYPE,
+          count: 1,
+        });
+      }
     }
 
     this.updateItems(updatedItems);
   };
 
   removeFromOrder = (id) => {
-    let updatedItems = [];
+    let updatedItems = this.state.items;
     const el = this.state.items.find((el) => el.data._id === id);
     if (el.count <= 1) {
       updatedItems = this.state.items.filter((el) => el.data._id !== id);
     } else if (el.count > 1) {
       updatedItems = this.state.items.map((el) => {
         if (el.data._id === id) {
-          return { data: el.data, count: el.count - 1 };
+          return { data: el.data, type: el.type, count: el.count - 1 };
         } else return el;
       });
     }
@@ -64,12 +85,14 @@ class Order extends React.Component {
       <div className={OrderStyle.order}>
         <BurgerIngredients
           data={this.state.data}
+          content={this.state.items}
           addToOrder={this.addToOrder}
           removeFromOrder={this.removeFromOrder}
         />
         <BurgerConstructor
           content={this.state.items}
           totalPrice={this.state.total}
+          removeFromOrder={this.removeFromOrder}
         />
       </div>
     );
