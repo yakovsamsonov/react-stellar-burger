@@ -6,6 +6,7 @@ import {
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import HeaderStyle from "./app-header.module.css";
+import { headerItemPropType } from "../../utils/prop-types.js";
 
 class AppHeader extends React.Component {
   constructor(props) {
@@ -93,5 +94,7 @@ class HeaderItem extends React.Component {
     );
   }
 }
+
+HeaderItem.propTypes = headerItemPropType;
 
 export default AppHeader;

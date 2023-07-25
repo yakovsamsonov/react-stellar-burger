@@ -8,6 +8,7 @@ import {
   REGULAR_ING_TYPE,
   TOP_ING_TYPE,
 } from "../constants/constants.jsx";
+import { orderPropType } from "../../utils/prop-types.js";
 
 class Order extends React.Component {
   constructor(props) {
@@ -106,5 +107,7 @@ class Order extends React.Component {
     );
   }
 }
+
+Order.propTyps = orderPropType;
 
 export default Order;

@@ -6,6 +6,11 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import BurgerIngredientsStyle from "./burger-ingredients.module.css";
 import { BUN_TYPE, MAIN_TYPE, SAUCE_TYPE } from "../constants/constants.jsx";
+import {
+  burgerIngredientPropType,
+  cardPropType,
+  sectionPropType,
+} from "../../utils/prop-types.js";
 
 class BurgerIngredients extends React.Component {
   constructor(props) {
@@ -183,5 +188,9 @@ class Section extends React.Component {
     );
   }
 }
+
+BurgerIngredients.propTypes = burgerIngredientPropType;
+Section.propTypes = sectionPropType;
+Card.propTypes = cardPropType;
 
 export default BurgerIngredients;

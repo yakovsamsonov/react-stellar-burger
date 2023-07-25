@@ -11,6 +11,10 @@ import {
   REGULAR_ING_TYPE,
   TOP_ING_TYPE,
 } from "../constants/constants";
+import {
+  burgerConstructorPropType,
+  ingredientsGroupPropType,
+} from "../../utils/prop-types.js";
 
 class BurgerConstructor extends React.Component {
   constructor(props) {
@@ -122,5 +126,8 @@ class IngredientsGroup extends React.Component {
     );
   }
 }
+
+BurgerConstructor.propTypes = burgerConstructorPropType;
+IngredientsGroup.propTypes = ingredientsGroupPropType;
 
 export default BurgerConstructor;
