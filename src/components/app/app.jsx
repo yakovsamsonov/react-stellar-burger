@@ -1,15 +1,13 @@
+import AppHeader from "../app-header/app-header";
 import styles from "./app.module.css";
-import { data } from "../../utils/data";
+import Order from "../order/order.jsx";
+import { data } from "../../utils/data.js";
 
 function App() {
   return (
     <div className={styles.app}>
-      <pre style={{
-      	margin: "auto",
-      	fontSize: "1.5rem"
-      }}>
-      	Измените src/components/app/app.jsx и сохраните для обновления.
-      </pre>
+      <AppHeader />
+      <Order data={data} />
     </div>
   );
 }

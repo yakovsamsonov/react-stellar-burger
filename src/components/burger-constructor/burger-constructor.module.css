@@ -1,0 +1,29 @@
+.section {
+  box-sizing: border-box;
+  max-width: 600px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.item {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  max-height: 80px;
+}
+
+.item__group {
+  box-sizing: border-box;
+  list-style-type: none;
+  margin: 0;
+  margin-bottom: 16px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
