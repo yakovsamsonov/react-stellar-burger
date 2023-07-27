@@ -1,16 +1,9 @@
 import React from "react";
-import {
-  Tab,
-  CurrencyIcon,
-  Counter,
-} from "@ya.praktikum/react-developer-burger-ui-components";
+import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
+import Section from "../section/section";
 import BurgerIngredientsStyle from "./burger-ingredients.module.css";
 import { BUN_TYPE, MAIN_TYPE, SAUCE_TYPE } from "../constants/constants.jsx";
-import {
-  burgerIngredientPropType,
-  cardPropType,
-  sectionPropType,
-} from "../../utils/prop-types.js";
+import { burgerIngredientPropType } from "../../utils/prop-types.js";
 
 class BurgerIngredients extends React.Component {
   constructor(props) {
@@ -102,95 +95,6 @@ class BurgerIngredients extends React.Component {
   }
 }
 
-class Card extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      id: props.id,
-      image: props.image,
-      label: props.name,
-      price: props.price,
-    };
-  }
-
-  processClick = () => {
-    if (this.props.getOrderedNum(this.state.id) === 0) {
-      this.props.addToOrder(this.state.id);
-    } else {
-      this.props.removeFromOrder(this.state.id);
-    }
-  };
-
-  render() {
-    const orderedNum = this.props.getOrderedNum(this.state.id);
-    return (
-      <li className={BurgerIngredientsStyle.card} onClick={this.processClick}>
-        {orderedNum > 0 && <Counter count={orderedNum} size="default" />}
-
-        <img src={this.state.image} alt={this.state.label} />
-        <div className={BurgerIngredientsStyle.price__box}>
-          <p
-            className={
-              BurgerIngredientsStyle.price + " text text_type_digits-default"
-            }
-          >
-            {this.state.price}
-          </p>
-          <CurrencyIcon type="primary" />
-        </div>
-        <p
-          className={
-            BurgerIngredientsStyle.label + " text text_type_main-default"
-          }
-        >
-          {this.state.label}
-        </p>
-      </li>
-    );
-  }
-}
-
-class Section extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      label: props.label,
-      data: props.data,
-      id: props.id,
-    };
-  }
-
-  render() {
-    return (
-      <div>
-        <h3 className="text text_type_main-medium" id={this.state.id}>
-          {this.state.label}
-        </h3>
-        <ul
-          className={
-            BurgerIngredientsStyle.card__group + " pl-4 pr-4 pt-6 pb-10"
-          }
-        >
-          {this.state.data.map((card) => (
-            <Card
-              key={card._id}
-              id={card._id}
-              image={card.image}
-              name={card.name}
-              price={card.price}
-              addToOrder={this.props.addToOrder}
-              removeFromOrder={this.props.removeFromOrder}
-              getOrderedNum={this.props.getOrderedNum}
-            />
-          ))}
-        </ul>
-      </div>
-    );
-  }
-}
-
 BurgerIngredients.propTypes = burgerIngredientPropType;
-Section.propTypes = sectionPropType;
-Card.propTypes = cardPropType;
 
 export default BurgerIngredients;
