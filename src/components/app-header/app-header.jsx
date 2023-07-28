@@ -29,7 +29,7 @@ class AppHeader extends React.Component {
 
   render() {
     return (
-      <header className={HeaderStyle.header}>
+      <header className={HeaderStyle.header} onClick={this.props.click}>
         <div className={HeaderStyle.group}>
           <HeaderItem
             label="Конструктор"
