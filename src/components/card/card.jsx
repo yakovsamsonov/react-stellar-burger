@@ -74,7 +74,7 @@ function CardDetails(props) {
             <p
               className={
                 CardStyle["nutrition-item-label"] +
-                " text text_type_digits-small text_color_inactive"
+                " text text_type_main-small text_color_inactive"
               }
             >
               Калории, ккал
@@ -92,7 +92,7 @@ function CardDetails(props) {
             <p
               className={
                 CardStyle["nutrition-item-label"] +
-                " text text_type_digits-small text_color_inactive"
+                " text text_type_main-small text_color_inactive"
               }
             >
               Белки, г
@@ -110,7 +110,7 @@ function CardDetails(props) {
             <p
               className={
                 CardStyle["nutrition-item-label"] +
-                " text text_type_digits-small text_color_inactive"
+                " text text_type_main-small text_color_inactive"
               }
             >
               Жиры, г
@@ -128,7 +128,7 @@ function CardDetails(props) {
             <p
               className={
                 CardStyle["nutrition-item-label"] +
-                " text text_type_digits-small text_color_inactive"
+                " text text_type_main-small text_color_inactive"
               }
             >
               Углеводы, г

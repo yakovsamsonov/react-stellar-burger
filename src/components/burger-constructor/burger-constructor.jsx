@@ -50,6 +50,7 @@ function BurgerConstructor(props) {
           type="primary"
           size="large"
           extraClass="ml-10"
+          onClick={props.openOrderConfirmation}
         >
           Оформить заказ
         </Button>

@@ -29,7 +29,7 @@ export const headerItemPropType = {
 };
 
 export const orderPropType = {
-  data: ingredientPropType.isRequired,
+  data: PropTypes.arrayOf(ingredientPropType).isRequired,
 };
 
 export const burgerIngredientPropType = {
@@ -67,8 +67,13 @@ export const cardPropType = {
   removeFromOrder: PropTypes.func,
   getOrderedNum: PropTypes.func,
 };
+
 export const cardDetailsPropType = {
   card: ingredientPropType.isRequired,
   addToOrder: PropTypes.func,
+  onClose: PropTypes.func,
+};
+
+export const orderDetailsPropType = {
   onClose: PropTypes.func,
 };

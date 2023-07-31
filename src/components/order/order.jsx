@@ -2,17 +2,31 @@ import { useState } from "react";
 import OrderStyle from "./order.module.css";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients.jsx";
 import BurgerConstructor from "../burger-constructor/burger-constructor.jsx";
+import Modal from "../modal/modal";
 import {
   BOTTOM_ING_TYPE,
   BUN_TYPE,
   REGULAR_ING_TYPE,
   TOP_ING_TYPE,
 } from "../constants/constants.jsx";
-import { orderPropType } from "../../utils/prop-types.js";
+import order_confirmed from "../../icons/order_confirmed.svg";
+import { orderPropType, orderDetailsPropType } from "../../utils/prop-types.js";
 
 function Order(props) {
   const [items, setItems] = useState([]);
   const [total, setTotal] = useState(0);
+
+  const [visible, setVisible] = useState(false);
+
+  const closeModal = () => {
+    setVisible(false);
+  };
+
+  const openModal = () => {
+    setVisible(true);
+  };
+
+  const modal = <OrderDetails onClose={closeModal}></OrderDetails>;
 
   function updateItems(updatedItems) {
     const newTotal = updatedItems.reduce((acc, el) => {
@@ -89,11 +103,30 @@ function Order(props) {
         content={items}
         totalPrice={total}
         removeFromOrder={removeFromOrder}
+        openOrderConfirmation={openModal}
       />
+      {visible && modal}
     </div>
   );
 }
 
-Order.propTyps = orderPropType;
+function OrderDetails(props) {
+  return (
+    <Modal onClose={props.onClose}>
+      <div className={OrderStyle["order-confirmation-box"] + " pb-20"}>
+        <h2 className="text text_type_digits-large mb-8">034536</h2>
+        <p className="text text_type_main-medium">идентификатор заказа</p>
+        <img src={order_confirmed} className="mt-15 mb-15" />
+        <p className="text text_type_main-small">Ваш заказ начали готовить</p>
+        <p className="text text_type_main-small text_color_inactive mt-2">
+          Дождитесь готовности на орбитальной станции
+        </p>
+      </div>
+    </Modal>
+  );
+}
+
+Order.propTypes = orderPropType;
+OrderDetails.propTypes = orderDetailsPropType;
 
 export default Order;

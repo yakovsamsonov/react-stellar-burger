@@ -11,15 +11,6 @@ function App() {
     hasError: false,
     data: [],
   });
-  const [visible, setVisible] = useState(false);
-
-  const closeModal = () => {
-    setVisible(false);
-  };
-
-  const openModal = () => {
-    setVisible(true);
-  };
 
   useEffect(() => {
     loadData();
@@ -37,11 +28,9 @@ function App() {
       });
   };
 
-  const modal = <Modal header="Внимание!" onClose={closeModal}></Modal>;
-
   return (
     <div className={styles.app}>
-      <AppHeader click={openModal} />
+      <AppHeader />
       {!state.isLoading && !state.hasError && <Order data={state.data} />}
       {state.isLoading && !state.hasError && (
         <p className={styles.warning}>Загрузка...</p>
@@ -49,7 +38,6 @@ function App() {
       {!state.isLoading && state.hasError && (
         <p className={styles.warning}>Что-то пошло не так...</p>
       )}
-      {visible && modal}
     </div>
   );
 }

@@ -24,7 +24,7 @@ function AppHeader(props) {
   }
 
   return (
-    <header className={HeaderStyle.header} onClick={props.click}>
+    <header className={HeaderStyle.header}>
       <div className={HeaderStyle.group}>
         <HeaderItem
           label="Конструктор"

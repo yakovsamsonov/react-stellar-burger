@@ -52,7 +52,7 @@ function Modal(props) {
 
         {children}
       </div>
-      <ModalOverlay />
+      <ModalOverlay onClose={onClose} />
     </>,
     MODAL_ROOT
   );
