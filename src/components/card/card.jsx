@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 import {
   CurrencyIcon,
   Counter,
@@ -6,44 +6,39 @@ import {
 import CardStyle from "./card.module.css";
 import { cardPropType } from "../../utils/prop-types.js";
 
-class Card extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      id: props.id,
-      image: props.image,
-      label: props.name,
-      price: props.price,
-    };
-  }
+function Card(props) {
+  const [state, setState] = useState({
+    id: props.id,
+    image: props.image,
+    label: props.name,
+    price: props.price,
+  });
 
-  processClick = () => {
-    if (this.props.getOrderedNum(this.state.id) === 0) {
-      this.props.addToOrder(this.state.id);
+  function processClick() {
+    if (props.getOrderedNum(state.id) === 0) {
+      props.addToOrder(state.id);
     } else {
-      this.props.removeFromOrder(this.state.id);
+      props.removeFromOrder(state.id);
     }
-  };
-
-  render() {
-    const orderedNum = this.props.getOrderedNum(this.state.id);
-    return (
-      <li className={CardStyle.card} onClick={this.processClick}>
-        {orderedNum > 0 && <Counter count={orderedNum} size="default" />}
-
-        <img src={this.state.image} alt={this.state.label} />
-        <div className={CardStyle.price__box}>
-          <p className={CardStyle.price + " text text_type_digits-default"}>
-            {this.state.price}
-          </p>
-          <CurrencyIcon type="primary" />
-        </div>
-        <p className={CardStyle.label + " text text_type_main-default"}>
-          {this.state.label}
-        </p>
-      </li>
-    );
   }
+
+  const orderedNum = props.getOrderedNum(state.id);
+  return (
+    <li className={CardStyle.card} onClick={processClick}>
+      {orderedNum > 0 && <Counter count={orderedNum} size="default" />}
+
+      <img src={state.image} alt={state.label} />
+      <div className={CardStyle.price__box}>
+        <p className={CardStyle.price + " text text_type_digits-default"}>
+          {state.price}
+        </p>
+        <CurrencyIcon type="primary" />
+      </div>
+      <p className={CardStyle.label + " text text_type_main-default"}>
+        {state.label}
+      </p>
+    </li>
+  );
 }
 
 Card.propTypes = cardPropType;

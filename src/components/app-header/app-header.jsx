@@ -1,4 +1,5 @@
-import React from "react";
+import { useState } from "react";
+import { BURGER, LIST, PROFILE } from "../constants/constants";
 import {
   Logo,
   BurgerIcon,
@@ -8,58 +9,51 @@ import {
 import HeaderStyle from "./app-header.module.css";
 import HeaderItem from "../header-item/header-item";
 
-class AppHeader extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      selected: "burger",
-    };
+function AppHeader(props) {
+  const [selected, setSelected] = useState(BURGER);
+
+  function handleClick(name) {
+    setSelected(name);
   }
 
-  onClick = (name) => {
-    this.setState({ selected: name });
-  };
-
-  getItemType(item) {
-    if (this.state.selected === item) {
+  function getItemType(item) {
+    if (selected === item) {
       return "primary";
     }
     return "secondary";
   }
 
-  render() {
-    return (
-      <header className={HeaderStyle.header} onClick={this.props.click}>
-        <div className={HeaderStyle.group}>
-          <HeaderItem
-            label="Конструктор"
-            name="burger"
-            selected={this.state.selected}
-            onClick={this.onClick}
-          >
-            <BurgerIcon type={this.getItemType("burger")} />
-          </HeaderItem>
-          <HeaderItem
-            label="Лента заказов"
-            selected={this.state.selected}
-            name="list"
-            onClick={this.onClick}
-          >
-            <ListIcon type={this.getItemType("list")} />
-          </HeaderItem>
-        </div>
-        <Logo />
+  return (
+    <header className={HeaderStyle.header} onClick={props.click}>
+      <div className={HeaderStyle.group}>
         <HeaderItem
-          label="Личный кабинет"
-          selected={this.state.selected}
-          name="profile"
-          onClick={this.onClick}
+          label="Конструктор"
+          name={BURGER}
+          selected={selected}
+          onClick={handleClick}
         >
-          <ProfileIcon type={this.getItemType("profile")} />
+          <BurgerIcon type={getItemType(BURGER)} />
         </HeaderItem>
-      </header>
-    );
-  }
+        <HeaderItem
+          label="Лента заказов"
+          selected={selected}
+          name={LIST}
+          onClick={handleClick}
+        >
+          <ListIcon type={getItemType(LIST)} />
+        </HeaderItem>
+      </div>
+      <Logo />
+      <HeaderItem
+        label="Личный кабинет"
+        selected={selected}
+        name={PROFILE}
+        onClick={handleClick}
+      >
+        <ProfileIcon type={getItemType(PROFILE)} />
+      </HeaderItem>
+    </header>
+  );
 }
 
 export default AppHeader;

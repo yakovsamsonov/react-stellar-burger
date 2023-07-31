@@ -1,4 +1,3 @@
-import React from "react";
 import {
   CurrencyIcon,
   Button,
@@ -12,59 +11,51 @@ import {
 } from "../constants/constants";
 import { burgerConstructorPropType } from "../../utils/prop-types.js";
 
-class BurgerConstructor extends React.Component {
-  constructor(props) {
-    super(props);
+function BurgerConstructor(props) {
+  function filterBurgerComponent(type) {
+    return props.content.filter((el) => el.type === type);
   }
 
-  filterBurgerComponent = (type) => {
-    return this.props.content.filter((el) => el.type === type);
-  };
-
-  render() {
-    return (
-      <section
-        className={BurgerConstructorStyle.section + " pt-25 pl-4"}
-        style={{ justifyContent: "flex-end" }}
+  return (
+    <section
+      className={BurgerConstructorStyle.section + " pt-25 pl-4"}
+      style={{ justifyContent: "flex-end" }}
+    >
+      <IngredientsGroup
+        groupType={TOP_ING_TYPE}
+        content={filterBurgerComponent(TOP_ING_TYPE)}
+      />
+      <IngredientsGroup
+        groupType={REGULAR_ING_TYPE}
+        content={filterBurgerComponent(REGULAR_ING_TYPE)}
+        removeFromOrder={props.removeFromOrder}
+      />
+      <IngredientsGroup
+        groupType={BOTTOM_ING_TYPE}
+        content={filterBurgerComponent(BOTTOM_ING_TYPE)}
+      />
+      <div
+        className="mt-10 pr-4"
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "flex-end",
+          alignItems: "center",
+        }}
       >
-        <IngredientsGroup
-          groupType={TOP_ING_TYPE}
-          content={this.filterBurgerComponent(TOP_ING_TYPE)}
-        />
-        <IngredientsGroup
-          groupType={REGULAR_ING_TYPE}
-          content={this.filterBurgerComponent(REGULAR_ING_TYPE)}
-          removeFromOrder={this.props.removeFromOrder}
-        />
-        <IngredientsGroup
-          groupType={BOTTOM_ING_TYPE}
-          content={this.filterBurgerComponent(BOTTOM_ING_TYPE)}
-        />
-        <div
-          className="mt-10 pr-4"
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "flex-end",
-            alignItems: "center",
-          }}
+        <p className="text text_type_digits-medium mr-2">{props.totalPrice}</p>
+        <CurrencyIcon type="primary" />
+        <Button
+          htmlType="button"
+          type="primary"
+          size="large"
+          extraClass="ml-10"
         >
-          <p className="text text_type_digits-medium mr-2">
-            {this.props.totalPrice}
-          </p>
-          <CurrencyIcon type="primary" />
-          <Button
-            htmlType="button"
-            type="primary"
-            size="large"
-            extraClass="ml-10"
-          >
-            Оформить заказ
-          </Button>
-        </div>
-      </section>
-    );
-  }
+          Оформить заказ
+        </Button>
+      </div>
+    </section>
+  );
 }
 
 BurgerConstructor.propTypes = burgerConstructorPropType;
