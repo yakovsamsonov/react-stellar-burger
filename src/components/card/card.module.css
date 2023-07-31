@@ -18,7 +18,46 @@
 }
 
 .label {
-  margin: 0;
   min-height: 48px;
   text-align: center;
+}
+
+.card-details-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.card-details-image {
+  max-height: 240px;
+  max-width: 520px;
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+}
+
+.nutrition-box {
+  margin: 0;
+  padding: 0;
+  padding-bottom: 20px;
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+.nutrition-item {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  list-style-type: none;
+}
+
+.nutrition-item-label {
+  margin: 0;
+}
+
+.nutrition-item-value {
+  margin: 0;
 }

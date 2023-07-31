@@ -14,10 +14,7 @@ function Section(props) {
         {data.map((card) => (
           <Card
             key={card._id}
-            id={card._id}
-            image={card.image}
-            name={card.name}
-            price={card.price}
+            card={card}
             addToOrder={props.addToOrder}
             removeFromOrder={props.removeFromOrder}
             getOrderedNum={props.getOrderedNum}

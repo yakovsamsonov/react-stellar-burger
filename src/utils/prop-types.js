@@ -62,11 +62,13 @@ export const sectionPropType = {
 };
 
 export const cardPropType = {
-  id: PropTypes.string.isRequired,
-  image: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  price: PropTypes.number.isRequired,
+  card: ingredientPropType.isRequired,
   addToOrder: PropTypes.func,
   removeFromOrder: PropTypes.func,
   getOrderedNum: PropTypes.func,
+};
+export const cardDetailsPropType = {
+  card: ingredientPropType.isRequired,
+  addToOrder: PropTypes.func,
+  onClose: PropTypes.func,
 };
