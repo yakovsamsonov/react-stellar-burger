@@ -1,7 +1,12 @@
 .card__group {
+  composes: pl-4 pr-4 pt-6 pb-10 from global;
   margin: 0;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   column-gap: 24px;
   row-gap: 32px;
+}
+
+.card__group-label {
+  composes: text text_type_main-medium from global;
 }

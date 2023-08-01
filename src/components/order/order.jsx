@@ -113,12 +113,19 @@ function Order(props) {
 function OrderDetails(props) {
   return (
     <Modal onClose={props.onClose}>
-      <div className={OrderStyle["order-confirmation-box"] + " pb-20"}>
-        <h2 className="text text_type_digits-large mb-8">034536</h2>
-        <p className="text text_type_main-medium">идентификатор заказа</p>
-        <img src={order_confirmed} className="mt-15 mb-15" />
-        <p className="text text_type_main-small">Ваш заказ начали готовить</p>
-        <p className="text text_type_main-small text_color_inactive mt-2">
+      <div className={OrderStyle["order-confirmation"]}>
+        <h2 className={OrderStyle["order-confirmation__number"]}>034536</h2>
+        <p className={OrderStyle["order-confirmation__number-label"]}>
+          идентификатор заказа
+        </p>
+        <img
+          src={order_confirmed}
+          className={OrderStyle["order-confirmation__status-image"]}
+        />
+        <p className={OrderStyle["order-confirmation__instruction"]}>
+          Ваш заказ начали готовить
+        </p>
+        <p className={OrderStyle["order-confirmation__instruction_inactive"]}>
           Дождитесь готовности на орбитальной станции
         </p>
       </div>

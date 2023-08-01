@@ -33,23 +33,16 @@ function Modal(props) {
 
   return createPortal(
     <>
-      <div className={ModalStyle.modal + " p-10"}>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row-reverse",
-            justifyContent: "space-between",
-          }}
-        >
+      <div className={ModalStyle.modal}>
+        <div className={ModalStyle["modal__header-box"]}>
           <img
             ref={closeButton}
             onClick={handleButtonClick}
             className="button_close"
             src={close_button}
           />
-          <h2 className="text text_type_main-large">{header}</h2>
+          <h2 className={ModalStyle["modal__header-label"]}>{header}</h2>
         </div>
-
         {children}
       </div>
       <ModalOverlay onClose={onClose} />

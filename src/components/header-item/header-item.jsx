@@ -9,16 +9,12 @@ function HeaderItem(props) {
     return "";
   }
 
-  const boxClass = `${HeaderItemStyle.item}` + " pt-4 pb-4 pr-5 pl-5 mt-4 mb-4";
-  const labelClass =
-    `${HeaderItemStyle.label}` +
-    " text text_type_main-default" +
-    `${addInactiveClass()}`;
+  const labelClass = `${HeaderItemStyle.label}${addInactiveClass()}`;
 
   return (
     <a
       href="#"
-      className={boxClass}
+      className={HeaderItemStyle.item}
       onClick={(e) => {
         props.onClick(props.name);
       }}

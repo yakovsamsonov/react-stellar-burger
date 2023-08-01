@@ -23,29 +23,31 @@ function BurgerIngredients(props) {
   }
 
   return (
-    <section className={BurgerIngredientsStyle.section + " pt-10 mr-10"}>
-      <h2 className="mb-4 text text_type_main-large">Соберите бургер</h2>
-      <div className="mb-10" style={{ display: "flex" }}>
+    <section className={BurgerIngredientsStyle.section}>
+      <h2 className={BurgerIngredientsStyle["section__label"]}>
+        Соберите бургер
+      </h2>
+      <div className={BurgerIngredientsStyle["tabs"]}>
         <Tab
           value={BUN_TYPE}
           active={activeTab === BUN_TYPE}
           onClick={changeTab}
         >
-          <p className="text text_type_main-default">Булки</p>
+          <p className={BurgerIngredientsStyle["tab__label"]}>Булки</p>
         </Tab>
         <Tab
           value={SAUCE_TYPE}
           active={activeTab === SAUCE_TYPE}
           onClick={changeTab}
         >
-          <p className="text text_type_main-default">Соусы</p>
+          <p className={BurgerIngredientsStyle["tab__label"]}>Соусы</p>
         </Tab>
         <Tab
           value={MAIN_TYPE}
           active={activeTab === MAIN_TYPE}
           onClick={changeTab}
         >
-          <p className="text text_type_main-default">Начинки</p>
+          <p className={BurgerIngredientsStyle["tab__label"]}>Начинки</p>
         </Tab>
       </div>
       <div

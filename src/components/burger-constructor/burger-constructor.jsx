@@ -17,10 +17,7 @@ function BurgerConstructor(props) {
   }
 
   return (
-    <section
-      className={BurgerConstructorStyle.section + " pt-25 pl-4"}
-      style={{ justifyContent: "flex-end" }}
-    >
+    <section className={BurgerConstructorStyle.section}>
       <IngredientsGroup
         groupType={TOP_ING_TYPE}
         content={filterBurgerComponent(TOP_ING_TYPE)}
@@ -34,16 +31,10 @@ function BurgerConstructor(props) {
         groupType={BOTTOM_ING_TYPE}
         content={filterBurgerComponent(BOTTOM_ING_TYPE)}
       />
-      <div
-        className="mt-10 pr-4"
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "flex-end",
-          alignItems: "center",
-        }}
-      >
-        <p className="text text_type_digits-medium mr-2">{props.totalPrice}</p>
+      <div className={BurgerConstructorStyle["summary"]}>
+        <p className={BurgerConstructorStyle["summary__total-value"]}>
+          {props.totalPrice}
+        </p>
         <CurrencyIcon type="primary" />
         <Button
           htmlType="button"

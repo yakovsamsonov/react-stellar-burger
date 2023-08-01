@@ -7,5 +7,5 @@ export const REGULAR_ING_TYPE = "regular";
 export const BURGER = "burger";
 export const LIST = "list";
 export const PROFILE = "profile";
-export const BACKEND_URL = "https://norma.nomoreparties.space/api/ingredients";
+export const BACKEND_BASE_URL = "https://norma.nomoreparties.space/api";
 export const MODAL_ROOT = document.getElementById("react-modals");

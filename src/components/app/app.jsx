@@ -1,9 +1,9 @@
 import AppHeader from "../app-header/app-header";
 import styles from "./app.module.css";
 import Order from "../order/order.jsx";
-import Modal from "../modal/modal";
 import { useState, useEffect } from "react";
-import { BACKEND_URL } from "../constants/constants";
+import { BACKEND_BASE_URL } from "../constants/constants";
+import { loadIngredients } from "../../utils/burger-api";
 
 function App() {
   const [state, setState] = useState({
@@ -13,13 +13,12 @@ function App() {
   });
 
   useEffect(() => {
-    loadData();
+    getIngredients();
   }, []);
 
-  const loadData = () => {
+  const getIngredients = () => {
     setState({ ...state, hasError: false, isLoading: true });
-    fetch(BACKEND_URL)
-      .then((res) => res.json())
+    loadIngredients(BACKEND_BASE_URL)
       .then((d) => {
         setState({ ...state, data: d.data, isLoading: false });
       })

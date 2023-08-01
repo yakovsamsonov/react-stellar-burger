@@ -7,10 +7,10 @@ function Section(props) {
 
   return (
     <div>
-      <h3 className="text text_type_main-medium" id={id}>
+      <h3 className={SectionStyle["card__group-label"]} id={id}>
         {label}
       </h3>
-      <ul className={SectionStyle.card__group + " pl-4 pr-4 pt-6 pb-10"}>
+      <ul className={SectionStyle.card__group}>
         {data.map((card) => (
           <Card
             key={card._id}

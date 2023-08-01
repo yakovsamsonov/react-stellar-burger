@@ -42,14 +42,10 @@ function Card(props) {
 
         <img src={props.card.image} alt={props.card.name} />
         <div className={CardStyle.price__box}>
-          <p className={CardStyle.price + " text text_type_digits-default"}>
-            {props.card.price}
-          </p>
+          <p className={CardStyle.price}>{props.card.price}</p>
           <CurrencyIcon type="primary" />
         </div>
-        <p className={CardStyle.label + " text text_type_main-default"}>
-          {props.card.name}
-        </p>
+        <p className={CardStyle.label}>{props.card.name}</p>
       </li>
       {visible && modal}
     </>
@@ -59,86 +55,36 @@ function Card(props) {
 function CardDetails(props) {
   return (
     <Modal onClose={props.onClose} header="Детали ингридиента">
-      <div className={CardStyle["card-details-box"]}>
+      <div className={CardStyle["card-details"]}>
         <img
-          className={CardStyle["card-details-image"] + " mb-4"}
+          className={CardStyle["card-details__image"]}
           src={props.card.image}
           alt={props.card.name}
           onClick={props.addToOrder}
         />
-        <p className={CardStyle.label + " text text_type_main-default"}>
-          {props.card.name}
-        </p>
-        <ul className={CardStyle["nutrition-box"]}>
-          <li className={CardStyle["nutrition-item"]}>
-            <p
-              className={
-                CardStyle["nutrition-item-label"] +
-                " text text_type_main-small text_color_inactive"
-              }
-            >
-              Калории, ккал
-            </p>
-            <p
-              className={
-                CardStyle["nutrition-item-value"] +
-                " text text_type_digits-default text_color_inactive"
-              }
-            >
+        <p className={CardStyle.label}>{props.card.name}</p>
+        <ul className={CardStyle["nutrition"]}>
+          <li className={CardStyle["nutrition__item"]}>
+            <p className={CardStyle["nutrition__item-label"]}>Калории, ккал</p>
+            <p className={CardStyle["nutrition__item-value"]}>
               {props.card.calories}
             </p>
           </li>
-          <li className={CardStyle["nutrition-item"]}>
-            <p
-              className={
-                CardStyle["nutrition-item-label"] +
-                " text text_type_main-small text_color_inactive"
-              }
-            >
-              Белки, г
-            </p>
-            <p
-              className={
-                CardStyle["nutrition-item-value"] +
-                " text text_type_digits-default text_color_inactive"
-              }
-            >
+          <li className={CardStyle["nutrition__item"]}>
+            <p className={CardStyle["nutrition__item-label"]}>Белки, г</p>
+            <p className={CardStyle["nutrition__item-value"]}>
               {props.card.proteins}
             </p>
           </li>
-          <li className={CardStyle["nutrition-item"]}>
-            <p
-              className={
-                CardStyle["nutrition-item-label"] +
-                " text text_type_main-small text_color_inactive"
-              }
-            >
-              Жиры, г
-            </p>
-            <p
-              className={
-                CardStyle["nutrition-item-value"] +
-                " text text_type_digits-default text_color_inactive"
-              }
-            >
+          <li className={CardStyle["nutrition__item"]}>
+            <p className={CardStyle["nutrition__item-label"]}>Жиры, г</p>
+            <p className={CardStyle["nutrition__item-value"]}>
               {props.card.fat}
             </p>
           </li>
-          <li className={CardStyle["nutrition-item"]}>
-            <p
-              className={
-                CardStyle["nutrition-item-label"] +
-                " text text_type_main-small text_color_inactive"
-              }
-            >
-              Углеводы, г
-            </p>
-            <p
-              className={
-                CardStyle["nutrition-item-value"] +
-                " text text_type_digits-default text_color_inactive"
-              }
-            >
+          <li className={CardStyle["nutrition__item"]}>
+            <p className={CardStyle["nutrition__item-label"]}>Углеводы, г</p>
+            <p className={CardStyle["nutrition__item-value"]}>
               {props.card.carbohydrates}
             </p>
           </li>

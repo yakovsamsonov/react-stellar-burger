@@ -14,21 +14,23 @@
 }
 
 .price {
-  margin: 0;
+  composes: text text_type_digits-default from global;
 }
 
 .label {
+  composes: text text_type_main-default from global;
   min-height: 48px;
   text-align: center;
 }
 
-.card-details-box {
+.card-details {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.card-details-image {
+.card-details__image {
+  composes: mb-4 from global;
   max-height: 240px;
   max-width: 520px;
   height: 100%;
@@ -36,7 +38,7 @@
   object-fit: contain;
 }
 
-.nutrition-box {
+.nutrition {
   margin: 0;
   padding: 0;
   padding-bottom: 20px;
@@ -45,7 +47,7 @@
   gap: 20px;
 }
 
-.nutrition-item {
+.nutrition__item {
   margin: 0;
   display: flex;
   flex-direction: column;
@@ -54,10 +56,10 @@
   list-style-type: none;
 }
 
-.nutrition-item-label {
-  margin: 0;
+.nutrition__item-label {
+  composes: text text_type_main-small text_color_inactive from global;
 }
 
-.nutrition-item-value {
-  margin: 0;
+.nutrition__item-value {
+  composes: text text_type_digits-default text_color_inactive from global;
 }
