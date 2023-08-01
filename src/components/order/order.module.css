@@ -1,0 +1,34 @@
+.order {
+  display: flex;
+  justify-content: center;
+  overflow-y: hidden;
+}
+
+.order-confirmation {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 64px;
+  composes: pb-20 from global;
+}
+
+.order-confirmation__number {
+  composes: text text_type_digits-large mb-8 from global;
+}
+
+.order-confirmation__number-label {
+  composes: text text_type_main-medium from global;
+}
+
+.order-confirmation__status-image {
+  composes: mt-15 mb-15 from global;
+}
+
+.order-confirmation__instruction {
+  composes: text text_type_main-small from global;
+}
+
+.order-confirmation__instruction_inactive {
+  composes: order-confirmation__instruction;
+  composes: text_color_inactive mt-2 from global;
+}

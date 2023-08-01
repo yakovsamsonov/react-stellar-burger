@@ -1,0 +1,15 @@
+.header {
+  box-sizing: border-box;
+  display: grid;
+  max-width: 1240px;
+  margin: 0 auto;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: center;
+  justify-items: center;
+}
+
+.group {
+  display: flex;
+  gap: 8px;
+  justify-self: stretch;
+}

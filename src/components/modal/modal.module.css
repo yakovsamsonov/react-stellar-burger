@@ -1,0 +1,24 @@
+.modal {
+  composes: p-10 from global;
+  position: fixed;
+  margin: auto;
+  box-sizing: border-box;
+  z-index: 2;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #1c1c21;
+  border-radius: 40px;
+  max-width: 720px;
+  width: 80%;
+}
+
+.modal__header-box {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+}
+
+.modal__header-label {
+  composes: text text_type_main-large from global;
+}

@@ -1,0 +1,22 @@
+.section {
+  composes: pt-10 mr-10 from global;
+  box-sizing: border-box;
+  max-width: 600px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.section__label {
+  composes: mb-4 text text_type_main-large from global;
+}
+
+.tabs {
+  composes: mb-10 from global;
+  display: flex;
+}
+
+.tab__label {
+  composes: text text_type_main-default from global;
+}

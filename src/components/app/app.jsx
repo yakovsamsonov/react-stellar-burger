@@ -1,15 +1,42 @@
+import AppHeader from "../app-header/app-header";
 import styles from "./app.module.css";
-import { data } from "../../utils/data";
+import Order from "../order/order.jsx";
+import { useState, useEffect } from "react";
+import { BACKEND_BASE_URL } from "../constants/constants";
+import { loadIngredients } from "../../utils/burger-api";
 
 function App() {
+  const [state, setState] = useState({
+    isLoading: false,
+    hasError: false,
+    data: [],
+  });
+
+  useEffect(() => {
+    getIngredients();
+  }, []);
+
+  const getIngredients = () => {
+    setState({ ...state, hasError: false, isLoading: true });
+    loadIngredients(BACKEND_BASE_URL)
+      .then((d) => {
+        setState({ ...state, data: d.data, isLoading: false });
+      })
+      .catch((e) => {
+        setState({ ...state, hasError: true, isLoading: false });
+      });
+  };
+
   return (
     <div className={styles.app}>
-      <pre style={{
-      	margin: "auto",
-      	fontSize: "1.5rem"
-      }}>
-      	Измените src/components/app/app.jsx и сохраните для обновления.
-      </pre>
+      <AppHeader />
+      {!state.isLoading && !state.hasError && <Order data={state.data} />}
+      {state.isLoading && !state.hasError && (
+        <p className={styles.warning}>Загрузка...</p>
+      )}
+      {!state.isLoading && state.hasError && (
+        <p className={styles.warning}>Что-то пошло не так...</p>
+      )}
     </div>
   );
 }

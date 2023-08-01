@@ -1,0 +1,22 @@
+.section {
+  composes: pt-25 pl-4 from global;
+  box-sizing: border-box;
+  max-width: 600px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: 100%;
+}
+
+.summary {
+  composes: mt-10 pr-4 from global;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.summary__total-value {
+  composes: text text_type_digits-medium mr-2 from global;
+}

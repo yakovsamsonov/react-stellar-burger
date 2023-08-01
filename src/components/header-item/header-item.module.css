@@ -1,0 +1,19 @@
+.item {
+  composes: pt-4 pb-4 pr-5 pl-5 mt-4 mb-4 from global;
+  box-sizing: border-box;
+  margin: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: unset;
+}
+
+.item:last-of-type {
+  justify-self: end;
+}
+
+.label {
+  composes: text text_type_main-default from global;
+}
