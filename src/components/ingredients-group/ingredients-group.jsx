@@ -17,9 +17,9 @@ function IngredientsGroup(props) {
 
   const baseClass = IngredientsGroupStyle.item__group;
   const extraClass = groupType === REGULAR_ING_TYPE ? 'custom-scroll' : '';
-  const { items, removeFromOrder } = useContext(OrderContext);
-  const itemsCount = items.length;
-  const data = items.filter((el) => el.type === groupType);
+  const { order, orderChanger } = useContext(OrderContext);
+  const itemsCount = order.items.length;
+  const data = order.items.filter((el) => el.type === groupType);
 
   function getLabel(element) {
     let label = element.data.name;
@@ -50,7 +50,10 @@ function IngredientsGroup(props) {
               price={el.data.price}
               thumbnail={el.data.image}
               handleClose={() => {
-                removeFromOrder(el.data._id);
+                orderChanger({
+                  type: 'remove',
+                  ingredient: el.data,
+                });
               }}
             />
           </li>

@@ -9,6 +9,8 @@ import Modal from '../modal/modal';
 import { OrderContext } from '../../utils/context';
 
 function Card(props) {
+  const { card } = props;
+
   const [visible, setVisible] = useState(false);
 
   const { getOrderedNum } = useContext(OrderContext);
@@ -21,22 +23,19 @@ function Card(props) {
     setVisible(true);
   }
 
-  const modal = (
-    <CardDetails card={props.card} onClose={closeModal}></CardDetails>
-  );
+  const modal = <CardDetails card={card} onClose={closeModal}></CardDetails>;
 
-  const orderedNum = getOrderedNum(props.card._id);
+  const orderedNum = getOrderedNum(card._id);
   return (
     <>
       <li className={CardStyle.card} onClick={processClick}>
         {orderedNum > 0 && <Counter count={orderedNum} size="default" />}
-
-        <img src={props.card.image} alt={props.card.name} />
+        <img src={card.image} alt={card.name} />
         <div className={CardStyle.price__box}>
-          <p className={CardStyle.price}>{props.card.price}</p>
+          <p className={CardStyle.price}>{card.price}</p>
           <CurrencyIcon type="primary" />
         </div>
-        <p className={CardStyle.label}>{props.card.name}</p>
+        <p className={CardStyle.label}>{card.name}</p>
       </li>
       {visible && modal}
     </>
@@ -44,41 +43,46 @@ function Card(props) {
 }
 
 function CardDetails(props) {
-  const { addToOrder } = useContext(OrderContext);
+  const { onClose, card } = props;
+
+  const { orderChanger } = useContext(OrderContext);
 
   return (
-    <Modal onClose={props.onClose} header="Детали ингридиента">
+    <Modal onClose={onClose} header="Детали ингридиента">
       <div className={CardStyle['card-details']}>
         <img
           className={CardStyle['card-details__image']}
-          src={props.card.image}
-          alt={props.card.name}
-          onClick={() => addToOrder(props.card._id)}
+          src={card.image}
+          alt={card.name}
+          onClick={() =>
+            orderChanger({
+              type: 'add',
+              ingredient: card,
+            })
+          }
         />
-        <p className={CardStyle.label}>{props.card.name}</p>
+        <p className={CardStyle.label}>{card.name}</p>
         <ul className={CardStyle['nutrition']}>
           <li className={CardStyle['nutrition__item']}>
             <p className={CardStyle['nutrition__item-label']}>Калории, ккал</p>
             <p className={CardStyle['nutrition__item-value']}>
-              {props.card.calories}
+              {card.calories}
             </p>
           </li>
           <li className={CardStyle['nutrition__item']}>
             <p className={CardStyle['nutrition__item-label']}>Белки, г</p>
             <p className={CardStyle['nutrition__item-value']}>
-              {props.card.proteins}
+              {card.proteins}
             </p>
           </li>
           <li className={CardStyle['nutrition__item']}>
             <p className={CardStyle['nutrition__item-label']}>Жиры, г</p>
-            <p className={CardStyle['nutrition__item-value']}>
-              {props.card.fat}
-            </p>
+            <p className={CardStyle['nutrition__item-value']}>{card.fat}</p>
           </li>
           <li className={CardStyle['nutrition__item']}>
             <p className={CardStyle['nutrition__item-label']}>Углеводы, г</p>
             <p className={CardStyle['nutrition__item-value']}>
-              {props.card.carbohydrates}
+              {card.carbohydrates}
             </p>
           </li>
         </ul>

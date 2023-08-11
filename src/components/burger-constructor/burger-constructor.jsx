@@ -14,7 +14,7 @@ import { burgerConstructorPropType } from '../../utils/prop-types.js';
 import { OrderContext } from '../../utils/context';
 
 function BurgerConstructor() {
-  const { total, openModal: openOrderConfirmation } = useContext(OrderContext);
+  const { order, openModal: openOrderConfirmation } = useContext(OrderContext);
 
   return (
     <section className={BurgerConstructorStyle.section}>
@@ -23,7 +23,7 @@ function BurgerConstructor() {
       <IngredientsGroup groupType={BOTTOM_ING_TYPE} />
       <div className={BurgerConstructorStyle['summary']}>
         <p className={BurgerConstructorStyle['summary__total-value']}>
-          {total}
+          {order.total}
         </p>
         <CurrencyIcon type="primary" />
         <Button
