@@ -13,11 +13,13 @@ import { ingredientsGroupPropType } from '../../utils/prop-types.js';
 import { OrderContext } from '../../utils/context';
 
 function IngredientsGroup(props) {
-  const { groupType, content } = props;
-  const elCount = content.length;
+  const { groupType } = props;
+
   const baseClass = IngredientsGroupStyle.item__group;
   const extraClass = groupType === REGULAR_ING_TYPE ? 'custom-scroll' : '';
-  const { removeFromOrder } = useContext(OrderContext);
+  const { items, removeFromOrder } = useContext(OrderContext);
+  const itemsCount = items.length;
+  const data = items.filter((el) => el.type === groupType);
 
   function getLabel(element) {
     let label = element.data.name;
@@ -29,7 +31,7 @@ function IngredientsGroup(props) {
     return label;
   }
   return (
-    elCount !== 0 && (
+    itemsCount !== 0 && (
       <ul
         className={baseClass.concat(' ', extraClass)}
         style={
@@ -38,7 +40,7 @@ function IngredientsGroup(props) {
             : { paddingLeft: '32px', paddingRight: '16px' }
         }
       >
-        {content.map((el) => (
+        {data.map((el) => (
           <li className={IngredientsGroupStyle.item} key={el.data._id}>
             {groupType === REGULAR_ING_TYPE && <DragIcon type="primary" />}
             <ConstructorElement

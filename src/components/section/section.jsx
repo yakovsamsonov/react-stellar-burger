@@ -1,9 +1,15 @@
 import Card from '../card/card';
 import SectionStyle from './section.module.css';
 import { sectionPropType } from '../../utils/prop-types.js';
+import { useContext } from 'react';
+import { IngredientsContext } from '../../utils/context';
 
 function Section(props) {
-  const { label, data, id } = props;
+  const { label, id } = props;
+
+  const ingredients = useContext(IngredientsContext);
+
+  const data = ingredients.filter((el) => el.type === id);
 
   return (
     <div>

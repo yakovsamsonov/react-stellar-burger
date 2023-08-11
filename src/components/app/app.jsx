@@ -1,9 +1,10 @@
-import AppHeader from "../app-header/app-header";
-import styles from "./app.module.css";
-import Order from "../order/order.jsx";
-import { useState, useEffect } from "react";
-import { BACKEND_BASE_URL } from "../constants/constants";
-import { loadIngredients } from "../../utils/burger-api";
+import AppHeader from '../app-header/app-header';
+import styles from './app.module.css';
+import Order from '../order/order.jsx';
+import { useState, useEffect } from 'react';
+import { BACKEND_BASE_URL } from '../constants/constants';
+import { loadIngredients } from '../../utils/burger-api';
+import { IngredientsContext } from '../../utils/context';
 
 function App() {
   const [state, setState] = useState({
@@ -30,7 +31,11 @@ function App() {
   return (
     <div className={styles.app}>
       <AppHeader />
-      {!state.isLoading && !state.hasError && <Order data={state.data} />}
+      {!state.isLoading && !state.hasError && (
+        <IngredientsContext.Provider value={state.data}>
+          <Order />
+        </IngredientsContext.Provider>
+      )}
       {state.isLoading && !state.hasError && (
         <p className={styles.warning}>Загрузка...</p>
       )}

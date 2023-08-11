@@ -18,10 +18,6 @@ function BurgerIngredients(props) {
     }
   }
 
-  function filterData(type) {
-    return props.data.filter((el) => el.type === type);
-  }
-
   return (
     <section className={BurgerIngredientsStyle.section}>
       <h2 className={BurgerIngredientsStyle['section__label']}>
@@ -56,9 +52,9 @@ function BurgerIngredients(props) {
           overflowY: 'scroll',
         }}
       >
-        <Section id={BUN_TYPE} label="Булки" data={filterData(BUN_TYPE)} />
-        <Section id={SAUCE_TYPE} label="Соусы" data={filterData(SAUCE_TYPE)} />
-        <Section id={MAIN_TYPE} label="Начинки" data={filterData(MAIN_TYPE)} />
+        <Section id={BUN_TYPE} label="Булки" />
+        <Section id={SAUCE_TYPE} label="Соусы" />
+        <Section id={MAIN_TYPE} label="Начинки" />
       </div>
     </section>
   );

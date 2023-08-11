@@ -22,13 +22,9 @@ export const headerItemPropType = {
   onClick: PropTypes.func,
 };
 
-export const orderPropType = {
-  data: PropTypes.arrayOf(ingredientPropType).isRequired,
-};
+export const orderPropType = {};
 
-export const burgerIngredientPropType = {
-  data: PropTypes.arrayOf(ingredientPropType).isRequired,
-};
+export const burgerIngredientPropType = {};
 
 export const burgerConstructorPropType = {};
 
@@ -39,7 +35,6 @@ export const ingredientsGroupPropType = {
 export const sectionPropType = {
   id: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
-  data: PropTypes.arrayOf(ingredientPropType).isRequired,
 };
 
 export const cardPropType = {

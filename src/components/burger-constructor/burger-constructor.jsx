@@ -14,30 +14,13 @@ import { burgerConstructorPropType } from '../../utils/prop-types.js';
 import { OrderContext } from '../../utils/context';
 
 function BurgerConstructor() {
-  const {
-    items,
-    total,
-    openModal: openOrderConfirmation,
-  } = useContext(OrderContext);
-
-  function filterBurgerComponent(type) {
-    return items.filter((el) => el.type === type);
-  }
+  const { total, openModal: openOrderConfirmation } = useContext(OrderContext);
 
   return (
     <section className={BurgerConstructorStyle.section}>
-      <IngredientsGroup
-        groupType={TOP_ING_TYPE}
-        content={filterBurgerComponent(TOP_ING_TYPE)}
-      />
-      <IngredientsGroup
-        groupType={REGULAR_ING_TYPE}
-        content={filterBurgerComponent(REGULAR_ING_TYPE)}
-      />
-      <IngredientsGroup
-        groupType={BOTTOM_ING_TYPE}
-        content={filterBurgerComponent(BOTTOM_ING_TYPE)}
-      />
+      <IngredientsGroup groupType={TOP_ING_TYPE} />
+      <IngredientsGroup groupType={REGULAR_ING_TYPE} />
+      <IngredientsGroup groupType={BOTTOM_ING_TYPE} />
       <div className={BurgerConstructorStyle['summary']}>
         <p className={BurgerConstructorStyle['summary__total-value']}>
           {total}

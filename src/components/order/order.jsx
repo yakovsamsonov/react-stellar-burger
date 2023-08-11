@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import OrderStyle from './order.module.css';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients.jsx';
 import BurgerConstructor from '../burger-constructor/burger-constructor.jsx';
@@ -11,13 +11,15 @@ import {
 } from '../constants/constants.jsx';
 import order_confirmed from '../../icons/order_confirmed.svg';
 import { orderPropType, orderDetailsPropType } from '../../utils/prop-types.js';
-import { OrderContext } from '../../utils/context';
+import { IngredientsContext, OrderContext } from '../../utils/context';
 
 function Order(props) {
   const [items, setItems] = useState([]);
   const [total, setTotal] = useState(0);
 
   const [visible, setVisible] = useState(false);
+
+  const ingredients = useContext(IngredientsContext);
 
   const closeModal = () => {
     setVisible(false);
@@ -39,7 +41,7 @@ function Order(props) {
 
   function addToOrder(id) {
     let updatedItems = items;
-    const ingredient = props.data.find((el) => el._id === id);
+    const ingredient = ingredients.find((el) => el._id === id);
 
     if (ingredient.type === BUN_TYPE) {
       updatedItems = addBunToOrder(updatedItems, ingredient);
@@ -121,7 +123,7 @@ function Order(props) {
         }}
       >
         <div className={OrderStyle.order}>
-          <BurgerIngredients data={props.data} />
+          <BurgerIngredients />
           <BurgerConstructor />
         </div>
       </OrderContext.Provider>
