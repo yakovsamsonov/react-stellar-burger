@@ -1,19 +1,27 @@
+import { useContext } from 'react';
 import {
   CurrencyIcon,
   Button,
-} from "@ya.praktikum/react-developer-burger-ui-components";
-import IngredientsGroup from "../ingredients-group/ingredients-group";
-import BurgerConstructorStyle from "./burger-constructor.module.css";
+} from '@ya.praktikum/react-developer-burger-ui-components';
+import IngredientsGroup from '../ingredients-group/ingredients-group';
+import BurgerConstructorStyle from './burger-constructor.module.css';
 import {
   BOTTOM_ING_TYPE,
   REGULAR_ING_TYPE,
   TOP_ING_TYPE,
-} from "../constants/constants";
-import { burgerConstructorPropType } from "../../utils/prop-types.js";
+} from '../constants/constants';
+import { burgerConstructorPropType } from '../../utils/prop-types.js';
+import { OrderContext } from '../../utils/context';
 
-function BurgerConstructor(props) {
+function BurgerConstructor() {
+  const {
+    items,
+    total,
+    openModal: openOrderConfirmation,
+  } = useContext(OrderContext);
+
   function filterBurgerComponent(type) {
-    return props.content.filter((el) => el.type === type);
+    return items.filter((el) => el.type === type);
   }
 
   return (
@@ -25,15 +33,14 @@ function BurgerConstructor(props) {
       <IngredientsGroup
         groupType={REGULAR_ING_TYPE}
         content={filterBurgerComponent(REGULAR_ING_TYPE)}
-        removeFromOrder={props.removeFromOrder}
       />
       <IngredientsGroup
         groupType={BOTTOM_ING_TYPE}
         content={filterBurgerComponent(BOTTOM_ING_TYPE)}
       />
-      <div className={BurgerConstructorStyle["summary"]}>
-        <p className={BurgerConstructorStyle["summary__total-value"]}>
-          {props.totalPrice}
+      <div className={BurgerConstructorStyle['summary']}>
+        <p className={BurgerConstructorStyle['summary__total-value']}>
+          {total}
         </p>
         <CurrencyIcon type="primary" />
         <Button
@@ -41,7 +48,7 @@ function BurgerConstructor(props) {
           type="primary"
           size="large"
           extraClass="ml-10"
-          onClick={props.openOrderConfirmation}
+          onClick={openOrderConfirmation}
         >
           Оформить заказ
         </Button>
