@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import OrderStyle from './order.module.css';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients.jsx';
 import BurgerConstructor from '../burger-constructor/burger-constructor.jsx';
@@ -8,12 +8,14 @@ import {
   BUN_TYPE,
   REGULAR_ING_TYPE,
   TOP_ING_TYPE,
+  BACKEND_BASE_URL,
 } from '../constants/constants.jsx';
 import order_confirmed from '../../icons/order_confirmed.svg';
 import { orderPropType, orderDetailsPropType } from '../../utils/prop-types.js';
 import { IngredientsContext, OrderContext } from '../../utils/context';
+import { placeOrder } from '../../utils/burger-api';
 
-function Order(props) {
+function Order() {
   const [items, setItems] = useState([]);
   const [total, setTotal] = useState(0);
 
@@ -26,7 +28,9 @@ function Order(props) {
   };
 
   const openModal = () => {
-    setVisible(true);
+    if (items.length > 0) {
+      setVisible(true);
+    }
   };
 
   const modal = <OrderDetails onClose={closeModal}></OrderDetails>;
@@ -110,33 +114,65 @@ function Order(props) {
     } else return 0;
   }
 
+  function getIngredientsIds() {
+    return items.map((el) => el.data._id);
+  }
+
   return (
-    <>
-      <OrderContext.Provider
-        value={{
-          items,
-          total,
-          addToOrder,
-          removeFromOrder,
-          getOrderedNum,
-          openModal,
-        }}
-      >
-        <div className={OrderStyle.order}>
-          <BurgerIngredients />
-          <BurgerConstructor />
-        </div>
-      </OrderContext.Provider>
+    <OrderContext.Provider
+      value={{
+        items,
+        total,
+        addToOrder,
+        removeFromOrder,
+        getOrderedNum,
+        openModal,
+      }}
+    >
+      <div className={OrderStyle.order}>
+        <BurgerIngredients />
+        <BurgerConstructor />
+      </div>{' '}
       {visible && modal}
-    </>
+    </OrderContext.Provider>
   );
 }
 
 function OrderDetails(props) {
+  const [state, setState] = useState({
+    isLoading: false,
+    hasError: false,
+    orderNum: 0,
+  });
+
+  const { items } = useContext(OrderContext);
+
+  useEffect(() => {
+    sendOrder();
+  }, []);
+
+  const sendOrder = () => {
+    setState({ ...state, hasError: false, isLoading: true });
+    placeOrder(
+      BACKEND_BASE_URL,
+      items.map((el) => el.data._id)
+    )
+      .then((d) => {
+        setState({ ...state, orderNum: d.order.number, isLoading: false });
+      })
+      .catch((e) => {
+        setState({ ...state, hasError: true, isLoading: false });
+      });
+  };
+
   return (
     <Modal onClose={props.onClose}>
       <div className={OrderStyle['order-confirmation']}>
-        <h2 className={OrderStyle['order-confirmation__number']}>034536</h2>
+        <h2 className={OrderStyle['order-confirmation__number']}>
+          {!state.isLoading && !state.hasError && state.orderNum}
+          {state.isLoading && !state.hasError && '...'}
+          {state.hasError && 'УПС..'}
+        </h2>
         <p className={OrderStyle['order-confirmation__number-label']}>
           идентификатор заказа
         </p>
