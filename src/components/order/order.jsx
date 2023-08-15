@@ -1,8 +1,8 @@
-import { useContext, useEffect, useReducer, useState } from 'react';
+import { useReducer, useState } from 'react';
 import OrderStyle from './order.module.css';
-import BurgerIngredients from '../burger-ingredients/burger-ingredients.jsx';
-import BurgerConstructor from '../burger-constructor/burger-constructor.jsx';
-import Modal from '../modal/modal';
+import BurgerIngredients from '../burger-ingredients/burger-ingredients';
+import BurgerConstructor from '../burger-constructor/burger-constructor';
+import OrderDetails from '../order-details/order-details';
 import {
   BOTTOM_ING_TYPE,
   BUN_TYPE,
@@ -10,25 +10,23 @@ import {
   TOP_ING_TYPE,
   BACKEND_BASE_URL,
 } from '../constants/constants.jsx';
-import order_confirmed from '../../icons/order_confirmed.svg';
-import { orderPropType, orderDetailsPropType } from '../../utils/prop-types.js';
+
+import { orderPropType } from '../../utils/prop-types.js';
 import { OrderContext } from '../../utils/context';
 import { placeOrder } from '../../utils/burger-api';
 
-const orderInitialState = { items: [], total: 0 };
+const orderInitialState = {
+  items: [],
+  total: 0,
+  orderNum: 0,
+  numberLoading: false,
+  numberError: false,
+};
 
 function orderReducer(state, action) {
   let newItems = state.items;
 
   const ingredient = action.ingredient;
-
-  const itemCount = state.items.reduce((count, el) => {
-    if (el.data._id === ingredient._id) {
-      return count + 1;
-    } else {
-      return count;
-    }
-  }, 0);
 
   switch (action.type) {
     case 'add':
@@ -38,12 +36,21 @@ function orderReducer(state, action) {
         newItems = addRegularToOrder(newItems, ingredient);
       }
       return {
+        ...state,
         items: newItems,
         total: newItems.reduce((acc, el) => {
           return acc + el.count * el.data.price;
         }, 0),
       };
     case 'remove':
+      const itemCount = state.items.reduce((count, el) => {
+        if (el.data._id === ingredient._id) {
+          return count + 1;
+        } else {
+          return count;
+        }
+      }, 0);
+
       if (itemCount === 1) {
         newItems = state.items.filter((el) => el.data._id !== ingredient._id);
       } else if (itemCount > 1) {
@@ -54,10 +61,29 @@ function orderReducer(state, action) {
         });
       }
       return {
+        ...state,
         items: newItems,
         total: newItems.reduce((acc, el) => {
           return acc + el.count * el.data.price;
         }, 0),
+      };
+    case 'place_order_send':
+      return {
+        ...state,
+        numberLoading: true,
+      };
+    case 'place_order_success':
+      return {
+        ...state,
+        orderNum: action.num,
+        numberLoading: false,
+      };
+    case 'place_order_failed':
+      return {
+        ...state,
+        orderNum: orderInitialState.orderNum,
+        numberLoading: false,
+        numberError: true,
       };
     default:
       throw new Error(`Wrong type of action: ${action.type}`);
@@ -99,7 +125,7 @@ function addRegularToOrder(order, ingredient) {
   return order;
 }
 
-function Order() {
+export default function Order() {
   const [order, orderChanger] = useReducer(orderReducer, orderInitialState);
 
   const [visible, setVisible] = useState(false);
@@ -108,9 +134,30 @@ function Order() {
     setVisible(false);
   };
 
+  const sendOrder = () => {
+    orderChanger({
+      type: 'place_order_send',
+    });
+    return placeOrder(
+      BACKEND_BASE_URL,
+      order.items.map((el) => el.data._id)
+    )
+      .then((data) => {
+        orderChanger({
+          type: 'place_order_success',
+          num: data.order.number,
+        });
+      })
+      .catch((e) => {
+        orderChanger({
+          type: 'place_order_failed',
+        });
+      });
+  };
+
   const openModal = () => {
     if (order.items.length > 0) {
-      setVisible(true);
+      return sendOrder();
     }
   };
 
@@ -130,6 +177,7 @@ function Order() {
         orderChanger,
         getOrderedNum,
         openModal,
+        setVisible,
       }}
     >
       <div className={OrderStyle.order}>
@@ -141,61 +189,4 @@ function Order() {
   );
 }
 
-function OrderDetails(props) {
-  const [state, setState] = useState({
-    isLoading: false,
-    hasError: false,
-    orderNum: 0,
-  });
-
-  const { order } = useContext(OrderContext);
-
-  useEffect(() => {
-    sendOrder();
-  }, []);
-
-  const sendOrder = () => {
-    setState({ ...state, hasError: false, isLoading: true });
-    placeOrder(
-      BACKEND_BASE_URL,
-      order.items.map((el) => el.data._id)
-    )
-      .then((d) => {
-        setState({ ...state, orderNum: d.order.number, isLoading: false });
-      })
-      .catch((e) => {
-        setState({ ...state, hasError: true, isLoading: false });
-      });
-  };
-
-  return (
-    <Modal onClose={props.onClose}>
-      <div className={OrderStyle['order-confirmation']}>
-        <h2 className={OrderStyle['order-confirmation__number']}>
-          {!state.isLoading && !state.hasError && state.orderNum}
-          {state.isLoading && !state.hasError && '...'}
-          {state.hasError && 'УПС..'}
-        </h2>
-        <p className={OrderStyle['order-confirmation__number-label']}>
-          идентификатор заказа
-        </p>
-        <img
-          src={order_confirmed}
-          alt=""
-          className={OrderStyle['order-confirmation__status-image']}
-        />
-        <p className={OrderStyle['order-confirmation__instruction']}>
-          Ваш заказ начали готовить
-        </p>
-        <p className={OrderStyle['order-confirmation__instruction_inactive']}>
-          Дождитесь готовности на орбитальной станции
-        </p>
-      </div>
-    </Modal>
-  );
-}
-
 Order.propTypes = orderPropType;
-OrderDetails.propTypes = orderDetailsPropType;
-
-export default Order;

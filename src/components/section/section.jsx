@@ -12,7 +12,7 @@ function Section(props) {
   const data = ingredients.filter((el) => el.type === id);
 
   return (
-    <div>
+    <>
       <h3 className={SectionStyle['card__group-label']} id={id}>
         {label}
       </h3>
@@ -21,7 +21,7 @@ function Section(props) {
           <Card key={card._id} card={card} />
         ))}
       </ul>
-    </div>
+    </>
   );
 }
 

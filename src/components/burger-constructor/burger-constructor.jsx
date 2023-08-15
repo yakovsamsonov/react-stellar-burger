@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import {
   CurrencyIcon,
   Button,
@@ -14,7 +14,20 @@ import { burgerConstructorPropType } from '../../utils/prop-types.js';
 import { OrderContext } from '../../utils/context';
 
 function BurgerConstructor() {
-  const { order, openModal: openOrderConfirmation } = useContext(OrderContext);
+  const {
+    order,
+    openModal: openOrderConfirmation,
+    setVisible,
+  } = useContext(OrderContext);
+  const [buttonLabel, setButtonLabel] = useState('Оформить заказ');
+
+  function processButtonClick() {
+    setButtonLabel('...');
+    openOrderConfirmation().then(() => {
+      setVisible(true);
+      setButtonLabel('Оформить заказ');
+    });
+  }
 
   return (
     <section className={BurgerConstructorStyle.section}>
@@ -30,10 +43,10 @@ function BurgerConstructor() {
           htmlType="button"
           type="primary"
           size="large"
-          extraClass="ml-10"
-          onClick={openOrderConfirmation}
+          extraClass={BurgerConstructorStyle['summary__order-button']}
+          onClick={processButtonClick}
         >
-          Оформить заказ
+          {buttonLabel}
         </Button>
       </div>
     </section>
