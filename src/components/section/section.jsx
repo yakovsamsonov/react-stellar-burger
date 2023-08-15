@@ -1,13 +1,12 @@
-import { useContext } from 'react';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import SectionStyle from './section.module.css';
 import Card from '../card/card';
-import { IngredientsContext } from '../../utils/context';
 
 function Section(props) {
   const { label, id } = props;
 
-  const ingredients = useContext(IngredientsContext);
+  const { ingredients } = useSelector((store) => store.ingredients);
 
   const data = ingredients.filter((el) => el.type === id);
 

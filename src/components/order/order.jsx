@@ -8,7 +8,6 @@ import {
   BUN_TYPE,
   REGULAR_ING_TYPE,
   TOP_ING_TYPE,
-  BACKEND_BASE_URL,
 } from '../constants/constants.jsx';
 
 import { OrderContext } from '../../utils/context';
@@ -137,10 +136,7 @@ export default function Order() {
     orderChanger({
       type: 'place_order_send',
     });
-    return placeOrder(
-      BACKEND_BASE_URL,
-      order.items.map((el) => el.data._id)
-    )
+    return placeOrder(order.items.map((el) => el.data._id))
       .then((data) => {
         orderChanger({
           type: 'place_order_success',
