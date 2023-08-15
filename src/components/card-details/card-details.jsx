@@ -1,29 +1,34 @@
 import { useContext } from 'react';
-import PropTypes from 'prop-types';
-import { ingredientPropType } from '../../utils/prop-types.js';
+import { useSelector, useDispatch } from 'react-redux';
 import CardDetailsStyle from './card-details.module.css';
 import Modal from '../modal/modal';
 import NutritionItem from '../nutrition-item/nutrition-item';
 import { OrderContext } from '../../utils/context';
+import { CLOSE_DETAILS } from '../../services/actions/details.js';
 
-export default function CardDetails(props) {
-  const { onClose, card } = props;
+export default function CardDetails() {
+  const { card } = useSelector((store) => store.details);
+  const dispatch = useDispatch();
 
-  const { orderChanger } = useContext(OrderContext);
+  const processCardDetailsClose = () => {
+    dispatch({ type: CLOSE_DETAILS });
+  };
+
+  //const { orderChanger } = useContext(OrderContext);
 
   return (
-    <Modal onClose={onClose} header="Детали ингридиента">
+    <Modal onClose={processCardDetailsClose} header="Детали ингридиента">
       <div className={CardDetailsStyle['card-details']}>
         <img
           className={CardDetailsStyle['card-details__image']}
           src={card.image}
           alt={card.name}
-          onClick={() =>
+          /*onClick={() =>
             orderChanger({
               type: 'add',
               ingredient: card,
             })
-          }
+          }*/
         />
         <p className={CardDetailsStyle.label}>{card.name}</p>
         <ul className={CardDetailsStyle['nutrition']}>
@@ -42,8 +47,3 @@ export default function CardDetails(props) {
     </Modal>
   );
 }
-
-CardDetails.propTypes = {
-  card: ingredientPropType.isRequired,
-  onClose: PropTypes.func.isRequired,
-};
