@@ -10,7 +10,6 @@ import {
   REGULAR_ING_TYPE,
   TOP_ING_TYPE,
 } from '../constants/constants';
-import { burgerConstructorPropType } from '../../utils/prop-types.js';
 import { OrderContext } from '../../utils/context';
 
 function BurgerConstructor() {
@@ -52,7 +51,5 @@ function BurgerConstructor() {
     </section>
   );
 }
-
-BurgerConstructor.propTypes = burgerConstructorPropType;
 
 export default BurgerConstructor;

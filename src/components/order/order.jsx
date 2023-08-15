@@ -11,7 +11,6 @@ import {
   BACKEND_BASE_URL,
 } from '../constants/constants.jsx';
 
-import { orderPropType } from '../../utils/prop-types.js';
 import { OrderContext } from '../../utils/context';
 import { placeOrder } from '../../utils/burger-api';
 
@@ -188,5 +187,3 @@ export default function Order() {
     </OrderContext.Provider>
   );
 }
-
-Order.propTypes = orderPropType;

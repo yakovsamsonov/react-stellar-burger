@@ -1,4 +1,5 @@
 import { useContext } from 'react';
+import PropTypes from 'prop-types';
 import {
   ConstructorElement,
   DragIcon,
@@ -9,7 +10,6 @@ import {
   REGULAR_ING_TYPE,
   TOP_ING_TYPE,
 } from '../constants/constants';
-import { ingredientsGroupPropType } from '../../utils/prop-types.js';
 import { OrderContext } from '../../utils/context';
 
 function IngredientsGroup(props) {
@@ -63,6 +63,8 @@ function IngredientsGroup(props) {
   );
 }
 
-IngredientsGroup.propTypes = ingredientsGroupPropType;
+IngredientsGroup.propTypes = {
+  groupType: PropTypes.string.isRequired,
+};
 
 export default IngredientsGroup;

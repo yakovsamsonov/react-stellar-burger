@@ -4,11 +4,11 @@ import {
   Counter,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import CardStyle from './card.module.css';
-import { cardPropType, cardDetailsPropType } from '../../utils/prop-types.js';
-import Modal from '../modal/modal';
+import CardDetails from '../card-details/card-details';
+import { ingredientPropType } from '../../utils/prop-types.js';
 import { OrderContext } from '../../utils/context';
 
-function Card(props) {
+export default function Card(props) {
   const { card } = props;
 
   const [visible, setVisible] = useState(false);
@@ -42,56 +42,6 @@ function Card(props) {
   );
 }
 
-function CardDetails(props) {
-  const { onClose, card } = props;
-
-  const { orderChanger } = useContext(OrderContext);
-
-  return (
-    <Modal onClose={onClose} header="Детали ингридиента">
-      <div className={CardStyle['card-details']}>
-        <img
-          className={CardStyle['card-details__image']}
-          src={card.image}
-          alt={card.name}
-          onClick={() =>
-            orderChanger({
-              type: 'add',
-              ingredient: card,
-            })
-          }
-        />
-        <p className={CardStyle.label}>{card.name}</p>
-        <ul className={CardStyle['nutrition']}>
-          <li className={CardStyle['nutrition__item']}>
-            <p className={CardStyle['nutrition__item-label']}>Калории, ккал</p>
-            <p className={CardStyle['nutrition__item-value']}>
-              {card.calories}
-            </p>
-          </li>
-          <li className={CardStyle['nutrition__item']}>
-            <p className={CardStyle['nutrition__item-label']}>Белки, г</p>
-            <p className={CardStyle['nutrition__item-value']}>
-              {card.proteins}
-            </p>
-          </li>
-          <li className={CardStyle['nutrition__item']}>
-            <p className={CardStyle['nutrition__item-label']}>Жиры, г</p>
-            <p className={CardStyle['nutrition__item-value']}>{card.fat}</p>
-          </li>
-          <li className={CardStyle['nutrition__item']}>
-            <p className={CardStyle['nutrition__item-label']}>Углеводы, г</p>
-            <p className={CardStyle['nutrition__item-value']}>
-              {card.carbohydrates}
-            </p>
-          </li>
-        </ul>
-      </div>
-    </Modal>
-  );
-}
-
-Card.propTypes = cardPropType;
-CardDetails.propTypes = cardDetailsPropType;
-
-export default Card;
+Card.propTypes = {
+  card: ingredientPropType.isRequired,
+};

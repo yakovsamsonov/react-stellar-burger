@@ -1,8 +1,8 @@
 import { useContext } from 'react';
+import PropTypes from 'prop-types';
 import OrderDetailsStyle from './order-details.module.css';
-import Modal from '../modal/modal';
 import order_confirmed from '../../icons/order_confirmed.svg';
-import { orderDetailsPropType } from '../../utils/prop-types.js';
+import Modal from '../modal/modal';
 import { OrderContext } from '../../utils/context';
 
 export default function OrderDetails(props) {
@@ -37,4 +37,6 @@ export default function OrderDetails(props) {
   );
 }
 
-OrderDetails.propTypes = orderDetailsPropType;
+OrderDetails.propTypes = {
+  onClose: PropTypes.func.isRequired,
+};

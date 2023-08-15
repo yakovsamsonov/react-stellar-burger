@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-const ingredientPropType = PropTypes.shape({
+export const ingredientPropType = PropTypes.shape({
   _id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
@@ -14,38 +14,3 @@ const ingredientPropType = PropTypes.shape({
   image_large: PropTypes.string.isRequired,
   __v: PropTypes.number.isRequired,
 });
-
-export const headerItemPropType = {
-  label: PropTypes.string.isRequired,
-  selected: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  onClick: PropTypes.func,
-};
-
-export const orderPropType = {};
-
-export const burgerIngredientPropType = {};
-
-export const burgerConstructorPropType = {};
-
-export const ingredientsGroupPropType = {
-  groupType: PropTypes.string.isRequired,
-};
-
-export const sectionPropType = {
-  id: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
-};
-
-export const cardPropType = {
-  card: ingredientPropType.isRequired,
-};
-
-export const cardDetailsPropType = {
-  card: ingredientPropType.isRequired,
-  onClose: PropTypes.func,
-};
-
-export const orderDetailsPropType = {
-  onClose: PropTypes.func,
-};

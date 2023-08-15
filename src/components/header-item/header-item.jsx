@@ -1,12 +1,12 @@
-import HeaderItemStyle from "./header-item.module.css";
-import { headerItemPropType } from "../../utils/prop-types.js";
+import HeaderItemStyle from './header-item.module.css';
+import PropTypes from 'prop-types';
 
 function HeaderItem(props) {
   function addInactiveClass() {
     if (props.selected !== props.name) {
-      return " text_color_inactive";
+      return ' text_color_inactive';
     }
-    return "";
+    return '';
   }
 
   const labelClass = `${HeaderItemStyle.label}${addInactiveClass()}`;
@@ -25,6 +25,11 @@ function HeaderItem(props) {
   );
 }
 
-HeaderItem.propTypes = headerItemPropType;
+HeaderItem.propTypes = {
+  label: PropTypes.string.isRequired,
+  selected: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  onClick: PropTypes.func,
+};
 
 export default HeaderItem;

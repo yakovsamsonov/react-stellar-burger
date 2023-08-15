@@ -1,7 +1,7 @@
-import Card from '../card/card';
-import SectionStyle from './section.module.css';
-import { sectionPropType } from '../../utils/prop-types.js';
 import { useContext } from 'react';
+import PropTypes from 'prop-types';
+import SectionStyle from './section.module.css';
+import Card from '../card/card';
 import { IngredientsContext } from '../../utils/context';
 
 function Section(props) {
@@ -25,6 +25,9 @@ function Section(props) {
   );
 }
 
-Section.propTypes = sectionPropType;
+Section.propTypes = {
+  id: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+};
 
 export default Section;

@@ -3,7 +3,6 @@ import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import Section from '../section/section';
 import BurgerIngredientsStyle from './burger-ingredients.module.css';
 import { BUN_TYPE, MAIN_TYPE, SAUCE_TYPE } from '../constants/constants.jsx';
-import { burgerIngredientPropType } from '../../utils/prop-types.js';
 
 function BurgerIngredients(props) {
   const [activeTab, setActiveTab] = useState(BUN_TYPE);
@@ -59,7 +58,5 @@ function BurgerIngredients(props) {
     </section>
   );
 }
-
-BurgerIngredients.propTypes = burgerIngredientPropType;
 
 export default BurgerIngredients;
