@@ -1,5 +1,4 @@
-import { useContext } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   CurrencyIcon,
   Counter,
@@ -7,19 +6,28 @@ import {
 import CardStyle from './card.module.css';
 
 import { ingredientPropType } from '../../utils/prop-types.js';
-import { OrderContext } from '../../utils/context';
 import { OPEN_DETAILS } from '../../services/actions/details';
+import { REGULAR_ING_TYPE, TOP_ING_TYPE } from '../constants/constants';
 
 export default function Card({ card }) {
+  const { items } = useSelector((store) => store.burger);
   const dispatch = useDispatch();
 
-  const { getOrderedNum } = useContext(OrderContext);
+  const orderedNum = items.reduce((acc, el) => {
+    let add = 0;
+    if (
+      el.data._id === card._id &&
+      [TOP_ING_TYPE, REGULAR_ING_TYPE].includes(el.type)
+    ) {
+      add = 1;
+    }
+    return acc + add;
+  }, 0);
 
   function processCardClick() {
     dispatch({ type: OPEN_DETAILS, card: card });
   }
 
-  const orderedNum = getOrderedNum(card._id);
   return (
     <li className={CardStyle.card} onClick={processCardClick}>
       {orderedNum > 0 && <Counter count={orderedNum} size="default" />}

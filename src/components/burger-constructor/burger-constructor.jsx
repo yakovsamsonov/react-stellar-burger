@@ -1,4 +1,6 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { OPEN_ORDER, sendOrder } from '../../services/actions/order';
 import {
   CurrencyIcon,
   Button,
@@ -9,23 +11,27 @@ import {
   BOTTOM_ING_TYPE,
   REGULAR_ING_TYPE,
   TOP_ING_TYPE,
+  AWAIT_BUTTON_LABEL,
+  PLACE_ORDER_BUTTON_LABEL,
 } from '../constants/constants';
-import { OrderContext } from '../../utils/context';
 
 function BurgerConstructor() {
-  const {
-    order,
-    openModal: openOrderConfirmation,
-    setVisible,
-  } = useContext(OrderContext);
-  const [buttonLabel, setButtonLabel] = useState('Оформить заказ');
+  const [buttonLabel, setButtonLabel] = useState(PLACE_ORDER_BUTTON_LABEL);
+
+  const { total, items } = useSelector((store) => store.burger);
+
+  const burgerIds = items.map((el) => el.data._id);
+
+  const dispatch = useDispatch();
 
   function processButtonClick() {
-    setButtonLabel('...');
-    openOrderConfirmation().then(() => {
-      setVisible(true);
-      setButtonLabel('Оформить заказ');
-    });
+    if (items.length > 0) {
+      setButtonLabel(AWAIT_BUTTON_LABEL);
+      dispatch(sendOrder(burgerIds)).then(() => {
+        dispatch({ type: OPEN_ORDER });
+        setButtonLabel(PLACE_ORDER_BUTTON_LABEL);
+      });
+    }
   }
 
   return (
@@ -35,7 +41,7 @@ function BurgerConstructor() {
       <IngredientsGroup groupType={BOTTOM_ING_TYPE} />
       <div className={BurgerConstructorStyle['summary']}>
         <p className={BurgerConstructorStyle['summary__total-value']}>
-          {order.total}
+          {total}
         </p>
         <CurrencyIcon type="primary" />
         <Button

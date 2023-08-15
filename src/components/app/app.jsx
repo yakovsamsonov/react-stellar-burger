@@ -1,7 +1,9 @@
 import AppHeader from '../app-header/app-header';
 import styles from './app.module.css';
-import Order from '../order/order.jsx';
+import BurgerConstructor from '../burger-constructor/burger-constructor';
+import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import CardDetails from '../card-details/card-details';
+import OrderDetails from '../order-details/order-details';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { getIngredients } from '../../services/actions/ingredients';
@@ -11,7 +13,8 @@ function App() {
     (store) => store.ingredients
   );
 
-  const { isOpen } = useSelector((store) => store.details);
+  const { detailsOpen } = useSelector((store) => store.details);
+  const { orderOpen } = useSelector((store) => store.order);
 
   const dispatch = useDispatch();
 
@@ -28,10 +31,14 @@ function App() {
         ) : ingredientsFailed ? (
           <p className={styles.warning}>Что-то пошло не так...</p>
         ) : (
-          <Order />
+          <div className={styles.order}>
+            <BurgerIngredients />
+            <BurgerConstructor />
+          </div>
         )}
       </div>
-      {isOpen && <CardDetails></CardDetails>}
+      {detailsOpen && <CardDetails></CardDetails>}
+      {orderOpen && <OrderDetails></OrderDetails>}
     </>
   );
 }

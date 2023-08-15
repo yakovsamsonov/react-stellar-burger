@@ -1,7 +1,7 @@
 import { OPEN_DETAILS, CLOSE_DETAILS } from '../actions/details';
 
 const initialState = {
-  isOpen: false,
+  detailsOpen: false,
   card: {},
 };
 
@@ -9,7 +9,7 @@ export const detailsReducer = (state = initialState, action) => {
   switch (action.type) {
     case OPEN_DETAILS: {
       return {
-        isOpen: true,
+        detailsOpen: true,
         card: action.card,
       };
     }

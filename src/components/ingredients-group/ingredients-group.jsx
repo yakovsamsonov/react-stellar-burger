@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import {
   ConstructorElement,
@@ -10,16 +10,20 @@ import {
   REGULAR_ING_TYPE,
   TOP_ING_TYPE,
 } from '../constants/constants';
-import { OrderContext } from '../../utils/context';
+import { REMOVE_REGULAR } from '../../services/actions/burger';
 
-function IngredientsGroup(props) {
-  const { groupType } = props;
+function IngredientsGroup({ groupType }) {
+  const { items } = useSelector((store) => store.burger);
+  const dispatch = useDispatch();
 
   const baseClass = IngredientsGroupStyle.item__group;
   const extraClass = groupType === REGULAR_ING_TYPE ? 'custom-scroll' : '';
-  const { order, orderChanger } = useContext(OrderContext);
-  const itemsCount = order.items.length;
-  const data = order.items.filter((el) => el.type === groupType);
+  const itemsCount = items.length;
+  const groupData = items.filter((el) => el.type === groupType);
+
+  const clickDeleteButton = (uuid) => {
+    dispatch({ type: REMOVE_REGULAR, uuid: uuid });
+  };
 
   function getLabel(element) {
     let label = element.data.name;
@@ -40,8 +44,8 @@ function IngredientsGroup(props) {
             : { paddingLeft: '32px', paddingRight: '16px' }
         }
       >
-        {data.map((el) => (
-          <li className={IngredientsGroupStyle.item} key={el.data._id}>
+        {groupData.map((el) => (
+          <li className={IngredientsGroupStyle.item} key={el.uuid}>
             {groupType === REGULAR_ING_TYPE && <DragIcon type="primary" />}
             <ConstructorElement
               type={groupType}
@@ -50,10 +54,7 @@ function IngredientsGroup(props) {
               price={el.data.price}
               thumbnail={el.data.image}
               handleClose={() => {
-                orderChanger({
-                  type: 'remove',
-                  ingredient: el.data,
-                });
+                clickDeleteButton(el.uuid);
               }}
             />
           </li>
