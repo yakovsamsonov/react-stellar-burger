@@ -8,7 +8,7 @@ import CardStyle from './card.module.css';
 
 import { ingredientPropType } from '../../utils/prop-types.js';
 import { OPEN_DETAILS } from '../../services/actions/details';
-import { REGULAR_ING_TYPE, TOP_ING_TYPE } from '../constants/constants';
+import { REGULAR_ING_TYPE, TOP_ING_TYPE } from '../../utils/constants';
 
 export default function Card({ card }) {
   const { items } = useSelector((store) => store.burger);

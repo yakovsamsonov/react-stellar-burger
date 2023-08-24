@@ -1,4 +1,4 @@
-import { BURGER } from '../../components/constants/constants';
+import { BURGER } from '../../utils/constants';
 import { TAB_SWITCH } from '../actions/tab';
 
 const initialState = { name: BURGER };

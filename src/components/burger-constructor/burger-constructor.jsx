@@ -15,7 +15,7 @@ import {
   AWAIT_BUTTON_LABEL,
   PLACE_ORDER_BUTTON_LABEL,
   BUN_TYPE,
-} from '../constants/constants';
+} from '../../utils/constants';
 import {
   REMOVE_BUN,
   ADD_BUN,
@@ -40,7 +40,6 @@ function BurgerConstructor() {
       isHover: monitor.isOver(),
     }),
     drop(item) {
-      console.log(item.card);
       addIngredientToBurger(item.card);
     },
   });

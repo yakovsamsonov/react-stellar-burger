@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import Section from '../section/section';
 import BurgerIngredientsStyle from './burger-ingredients.module.css';
-import { BUN_TYPE, MAIN_TYPE, SAUCE_TYPE } from '../constants/constants.jsx';
+import { BUN_TYPE, MAIN_TYPE, SAUCE_TYPE } from '../../utils/constants';
 
 function BurgerIngredients() {
   const [activeTab, setActiveTab] = useState(BUN_TYPE);

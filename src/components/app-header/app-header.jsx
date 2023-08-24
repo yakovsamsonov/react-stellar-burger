@@ -1,4 +1,4 @@
-import { BURGER, LIST, PROFILE } from '../constants/constants';
+import { BURGER, LIST, PROFILE } from '../../utils/constants';
 import {
   Logo,
   BurgerIcon,

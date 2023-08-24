@@ -3,12 +3,13 @@ import {
   REMOVE_BUN,
   ADD_REGULAR,
   REMOVE_REGULAR,
+  CHANGE_ORDER,
 } from '../actions/burger';
 import {
   BOTTOM_ING_TYPE,
   REGULAR_ING_TYPE,
   TOP_ING_TYPE,
-} from '../../components/constants/constants';
+} from '../../utils/constants';
 import { v4 as uuidv4 } from 'uuid';
 
 const initialState = {
@@ -28,6 +29,7 @@ export const burgerReducer = (state = initialState, action) => {
       const new_items = [...state.items];
       new_items.push({
         uuid: uuidv4(),
+        order: new_items.length + 1,
         type: REGULAR_ING_TYPE,
         data: action.item,
       });
@@ -63,6 +65,17 @@ export const burgerReducer = (state = initialState, action) => {
       const new_items = [...state.items].filter(
         (el) => ![BOTTOM_ING_TYPE, TOP_ING_TYPE].includes(el.type)
       );
+      return {
+        items: new_items,
+        total: recalcTotal(new_items),
+      };
+    }
+    case CHANGE_ORDER: {
+      const ingredient = [...state.items].find((el) => el.uuid === action.uuid);
+      const new_items = [...state.items].filter(
+        (el) => el.uuid !== action.uuid
+      );
+      new_items.splice(action.newIndex, 0, ingredient);
       return {
         items: new_items,
         total: recalcTotal(new_items),
