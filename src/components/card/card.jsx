@@ -1,4 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
+import { useDrag } from 'react-dnd';
 import {
   CurrencyIcon,
   Counter,
@@ -12,6 +13,14 @@ import { REGULAR_ING_TYPE, TOP_ING_TYPE } from '../constants/constants';
 export default function Card({ card }) {
   const { items } = useSelector((store) => store.burger);
   const dispatch = useDispatch();
+
+  const [{ opacity }, ref] = useDrag({
+    type: 'ingredient',
+    item: { card },
+    collect: (monitor) => ({
+      opacity: monitor.isDragging() ? 0.5 : 1,
+    }),
+  });
 
   const orderedNum = items.reduce((acc, el) => {
     let add = 0;
@@ -29,7 +38,12 @@ export default function Card({ card }) {
   }
 
   return (
-    <li className={CardStyle.card} onClick={processCardClick}>
+    <li
+      ref={ref}
+      className={CardStyle.card}
+      onClick={processCardClick}
+      style={{ opacity: opacity }}
+    >
       {orderedNum > 0 && <Counter count={orderedNum} size="default" />}
       <img src={card.image} alt={card.name} />
       <div className={CardStyle.price__box}>

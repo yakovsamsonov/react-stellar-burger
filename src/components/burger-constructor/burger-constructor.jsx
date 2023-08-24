@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useDrop } from 'react-dnd';
 import { OPEN_ORDER, sendOrder } from '../../services/actions/order';
 import {
   CurrencyIcon,
@@ -13,10 +14,36 @@ import {
   TOP_ING_TYPE,
   AWAIT_BUTTON_LABEL,
   PLACE_ORDER_BUTTON_LABEL,
+  BUN_TYPE,
 } from '../constants/constants';
+import {
+  REMOVE_BUN,
+  ADD_BUN,
+  ADD_REGULAR,
+} from '../../services/actions/burger';
 
 function BurgerConstructor() {
   const [buttonLabel, setButtonLabel] = useState(PLACE_ORDER_BUTTON_LABEL);
+
+  const addIngredientToBurger = (el) => {
+    if (el.type === BUN_TYPE) {
+      dispatch({ type: REMOVE_BUN });
+      dispatch({ type: ADD_BUN, item: el });
+    } else {
+      dispatch({ type: ADD_REGULAR, item: el });
+    }
+  };
+
+  const [{ isHover }, dropTarget] = useDrop({
+    accept: 'ingredient',
+    collect: (monitor) => ({
+      isHover: monitor.isOver(),
+    }),
+    drop(item) {
+      console.log(item.card);
+      addIngredientToBurger(item.card);
+    },
+  });
 
   const { total, items } = useSelector((store) => store.burger);
 
@@ -34,8 +61,14 @@ function BurgerConstructor() {
     }
   }
 
+  const borderStyle = isHover ? '1px solid red' : 'none';
+
   return (
-    <section className={BurgerConstructorStyle.section}>
+    <section
+      ref={dropTarget}
+      className={BurgerConstructorStyle.section}
+      style={{ border: borderStyle }}
+    >
       <IngredientsGroup groupType={TOP_ING_TYPE} />
       <IngredientsGroup groupType={REGULAR_ING_TYPE} />
       <IngredientsGroup groupType={BOTTOM_ING_TYPE} />

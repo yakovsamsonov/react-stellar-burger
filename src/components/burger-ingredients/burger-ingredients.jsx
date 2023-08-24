@@ -7,12 +7,12 @@ import { BUN_TYPE, MAIN_TYPE, SAUCE_TYPE } from '../constants/constants.jsx';
 function BurgerIngredients() {
   const [activeTab, setActiveTab] = useState(BUN_TYPE);
 
-  function changeTab(value) {
+  const changeTab = (value) => {
     const targetBlock = document.getElementById(value);
     if (targetBlock) {
       targetBlock.scrollIntoView({ behavior: 'smooth' });
     }
-  }
+  };
 
   const handleScroll = (e) => {
     const basePositon =
