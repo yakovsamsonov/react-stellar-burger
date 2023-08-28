@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useDrop } from 'react-dnd';
 import { OPEN_ORDER, sendOrder } from '../../services/actions/order';
@@ -47,7 +47,13 @@ function BurgerConstructor() {
     },
   });
 
-  const { total, items } = useSelector((store) => store.burger);
+  const { items } = useSelector((store) => store.burger);
+
+  const total = useMemo(() => {
+    return items.reduce((acc, el) => {
+      return acc + el.data.price;
+    }, 0);
+  }, [items]);
 
   const burgerIds = items.map((el) => el.data._id);
 
