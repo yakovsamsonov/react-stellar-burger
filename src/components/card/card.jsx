@@ -4,7 +4,7 @@ import {
   CurrencyIcon,
   Counter,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import CardStyle from './card.module.css';
+import cardStyle from './card.module.css';
 
 import { ingredientPropType } from '../../utils/prop-types.js';
 import { OPEN_DETAILS } from '../../services/actions/details';
@@ -40,17 +40,17 @@ export default function Card({ card }) {
   return (
     <li
       ref={ref}
-      className={CardStyle.card}
+      className={cardStyle.card}
       onClick={processCardClick}
       style={{ opacity: opacity }}
     >
       {orderedNum > 0 && <Counter count={orderedNum} size="default" />}
       <img src={card.image} alt={card.name} />
-      <div className={CardStyle.price__box}>
-        <p className={CardStyle.price}>{card.price}</p>
+      <div className={cardStyle.price__box}>
+        <p className={cardStyle.price}>{card.price}</p>
         <CurrencyIcon type="primary" />
       </div>
-      <p className={CardStyle.label}>{card.name}</p>
+      <p className={cardStyle.label}>{card.name}</p>
     </li>
   );
 }

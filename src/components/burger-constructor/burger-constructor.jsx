@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useDrop } from 'react-dnd';
 import { OPEN_ORDER, sendOrder } from '../../services/actions/order';
+import { CLEAR_BURGER } from '../../services/actions/burger';
 import {
   CurrencyIcon,
   Button,
@@ -21,16 +22,18 @@ import {
   ADD_BUN,
   ADD_REGULAR,
 } from '../../services/actions/burger';
+import { v4 as uuidv4 } from 'uuid';
 
 function BurgerConstructor() {
   const [buttonLabel, setButtonLabel] = useState(PLACE_ORDER_BUTTON_LABEL);
 
   const addIngredientToBurger = (el) => {
+    const uuid = uuidv4();
     if (el.type === BUN_TYPE) {
       dispatch({ type: REMOVE_BUN });
-      dispatch({ type: ADD_BUN, item: el });
+      dispatch({ type: ADD_BUN, item: el, uuid: uuid });
     } else {
-      dispatch({ type: ADD_REGULAR, item: el });
+      dispatch({ type: ADD_REGULAR, item: el, uuid: uuid });
     }
   };
 
@@ -55,6 +58,7 @@ function BurgerConstructor() {
       setButtonLabel(AWAIT_BUTTON_LABEL);
       dispatch(sendOrder(burgerIds)).then(() => {
         dispatch({ type: OPEN_ORDER });
+        dispatch({ type: CLEAR_BURGER });
         setButtonLabel(PLACE_ORDER_BUTTON_LABEL);
       });
     }

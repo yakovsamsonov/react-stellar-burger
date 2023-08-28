@@ -4,13 +4,13 @@ import {
   ADD_REGULAR,
   REMOVE_REGULAR,
   CHANGE_ORDER,
+  CLEAR_BURGER,
 } from '../actions/burger';
 import {
   BOTTOM_ING_TYPE,
   REGULAR_ING_TYPE,
   TOP_ING_TYPE,
 } from '../../utils/constants';
-import { v4 as uuidv4 } from 'uuid';
 
 const initialState = {
   items: [],
@@ -28,7 +28,7 @@ export const burgerReducer = (state = initialState, action) => {
     case ADD_REGULAR: {
       const new_items = [...state.items];
       new_items.push({
-        uuid: uuidv4(),
+        uuid: action.uuid,
         order: new_items.length + 1,
         type: REGULAR_ING_TYPE,
         data: action.item,
@@ -50,11 +50,11 @@ export const burgerReducer = (state = initialState, action) => {
     case ADD_BUN: {
       const new_items = [...state.items].concat([
         {
-          uuid: uuidv4(),
+          uuid: action.uuid,
           type: TOP_ING_TYPE,
           data: action.item,
         },
-        { uuid: uuidv4(), type: BOTTOM_ING_TYPE, data: action.item },
+        { uuid: action.uuid, type: BOTTOM_ING_TYPE, data: action.item },
       ]);
       return {
         items: new_items,
@@ -80,6 +80,9 @@ export const burgerReducer = (state = initialState, action) => {
         items: new_items,
         total: recalcTotal(new_items),
       };
+    }
+    case CLEAR_BURGER: {
+      return initialState;
     }
     default: {
       return state;
