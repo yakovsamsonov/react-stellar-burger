@@ -29,7 +29,6 @@ export const burgerReducer = (state = initialState, action) => {
       const new_items = [...state.items];
       new_items.push({
         uuid: action.uuid,
-        order: new_items.length + 1,
         type: REGULAR_ING_TYPE,
         data: action.item,
       });
@@ -72,10 +71,16 @@ export const burgerReducer = (state = initialState, action) => {
     }
     case CHANGE_ORDER: {
       const ingredient = [...state.items].find((el) => el.uuid === action.uuid);
-      const new_items = [...state.items].filter(
-        (el) => el.uuid !== action.uuid
+      const buns = [...state.items].filter(
+        (el) => el.type !== REGULAR_ING_TYPE
       );
-      new_items.splice(action.newIndex, 0, ingredient);
+      const regular = [...state.items].filter(
+        (el) => el.type === REGULAR_ING_TYPE
+      );
+      const new_regular_items = regular.filter((el) => el.uuid !== action.uuid);
+      new_regular_items.splice(action.newIndex, 0, ingredient);
+      const new_items = new_regular_items.concat(buns);
+
       return {
         items: new_items,
         total: recalcTotal(new_items),
