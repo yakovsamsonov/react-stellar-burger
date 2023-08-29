@@ -1,100 +1,60 @@
-import { useState } from "react";
+import { useDispatch, useSelector } from 'react-redux';
+import { useDrag } from 'react-dnd';
 import {
   CurrencyIcon,
   Counter,
-} from "@ya.praktikum/react-developer-burger-ui-components";
-import CardStyle from "./card.module.css";
-import { cardPropType, cardDetailsPropType } from "../../utils/prop-types.js";
-import Modal from "../modal/modal";
+} from '@ya.praktikum/react-developer-burger-ui-components';
+import cardStyle from './card.module.css';
 
-function Card(props) {
-  const [visible, setVisible] = useState(false);
+import { ingredientPropType } from '../../utils/prop-types.js';
+import { OPEN_DETAILS } from '../../services/actions/details';
+import { REGULAR_ING_TYPE, TOP_ING_TYPE } from '../../utils/constants';
 
-  const closeModal = () => {
-    setVisible(false);
-  };
+export default function Card({ card }) {
+  const { items } = useSelector((store) => store.burger);
+  const dispatch = useDispatch();
 
-  function processClick() {
-    setVisible(true);
-  }
+  const [{ opacity }, ref] = useDrag({
+    type: 'ingredient',
+    item: { card },
+    collect: (monitor) => ({
+      opacity: monitor.isDragging() ? 0.5 : 1,
+    }),
+  });
 
-  function addToOrder() {
-    if (props.getOrderedNum(props.card._id) === 0) {
-      props.addToOrder(props.card._id);
-    } else {
-      props.removeFromOrder(props.card._id);
+  const orderedNum = items.reduce((acc, el) => {
+    let add = 0;
+    if (
+      el.data._id === card._id &&
+      [TOP_ING_TYPE, REGULAR_ING_TYPE].includes(el.type)
+    ) {
+      add = 1;
     }
+    return acc + add;
+  }, 0);
+
+  function processCardClick() {
+    dispatch({ type: OPEN_DETAILS, card: card });
   }
 
-  const modal = (
-    <CardDetails
-      card={props.card}
-      addToOrder={addToOrder}
-      onClose={closeModal}
-    ></CardDetails>
-  );
-
-  const orderedNum = props.getOrderedNum(props.card._id);
   return (
-    <>
-      <li className={CardStyle.card} onClick={processClick}>
-        {orderedNum > 0 && <Counter count={orderedNum} size="default" />}
-
-        <img src={props.card.image} alt={props.card.name} />
-        <div className={CardStyle.price__box}>
-          <p className={CardStyle.price}>{props.card.price}</p>
-          <CurrencyIcon type="primary" />
-        </div>
-        <p className={CardStyle.label}>{props.card.name}</p>
-      </li>
-      {visible && modal}
-    </>
-  );
-}
-
-function CardDetails(props) {
-  return (
-    <Modal onClose={props.onClose} header="Детали ингридиента">
-      <div className={CardStyle["card-details"]}>
-        <img
-          className={CardStyle["card-details__image"]}
-          src={props.card.image}
-          alt={props.card.name}
-          onClick={props.addToOrder}
-        />
-        <p className={CardStyle.label}>{props.card.name}</p>
-        <ul className={CardStyle["nutrition"]}>
-          <li className={CardStyle["nutrition__item"]}>
-            <p className={CardStyle["nutrition__item-label"]}>Калории, ккал</p>
-            <p className={CardStyle["nutrition__item-value"]}>
-              {props.card.calories}
-            </p>
-          </li>
-          <li className={CardStyle["nutrition__item"]}>
-            <p className={CardStyle["nutrition__item-label"]}>Белки, г</p>
-            <p className={CardStyle["nutrition__item-value"]}>
-              {props.card.proteins}
-            </p>
-          </li>
-          <li className={CardStyle["nutrition__item"]}>
-            <p className={CardStyle["nutrition__item-label"]}>Жиры, г</p>
-            <p className={CardStyle["nutrition__item-value"]}>
-              {props.card.fat}
-            </p>
-          </li>
-          <li className={CardStyle["nutrition__item"]}>
-            <p className={CardStyle["nutrition__item-label"]}>Углеводы, г</p>
-            <p className={CardStyle["nutrition__item-value"]}>
-              {props.card.carbohydrates}
-            </p>
-          </li>
-        </ul>
+    <li
+      ref={ref}
+      className={cardStyle.card}
+      onClick={processCardClick}
+      style={{ opacity: opacity }}
+    >
+      {orderedNum > 0 && <Counter count={orderedNum} size="default" />}
+      <img src={card.image} alt={card.name} />
+      <div className={cardStyle.price__box}>
+        <p className={cardStyle.price}>{card.price}</p>
+        <CurrencyIcon type="primary" />
       </div>
-    </Modal>
+      <p className={cardStyle.label}>{card.name}</p>
+    </li>
   );
 }
 
-Card.propTypes = cardPropType;
-CardDetails.propTypes = cardDetailsPropType;
-
-export default Card;
+Card.propTypes = {
+  card: ingredientPropType.isRequired,
+};

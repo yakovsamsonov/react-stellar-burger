@@ -1,55 +1,36 @@
-import { useState } from "react";
-import { BURGER, LIST, PROFILE } from "../constants/constants";
+import { BURGER, LIST, PROFILE } from '../../utils/constants';
 import {
   Logo,
   BurgerIcon,
   ListIcon,
   ProfileIcon,
-} from "@ya.praktikum/react-developer-burger-ui-components";
-import HeaderStyle from "./app-header.module.css";
-import HeaderItem from "../header-item/header-item";
+} from '@ya.praktikum/react-developer-burger-ui-components';
+import HeaderStyle from './app-header.module.css';
+import HeaderItem from '../header-item/header-item';
+import { useSelector } from 'react-redux';
 
-function AppHeader(props) {
-  const [selected, setSelected] = useState(BURGER);
-
-  function handleClick(name) {
-    setSelected(name);
-  }
+function AppHeader() {
+  const { name } = useSelector((store) => store.selectedTab);
 
   function getItemType(item) {
-    if (selected === item) {
-      return "primary";
+    if (name === item) {
+      return 'primary';
     }
-    return "secondary";
+    return 'secondary';
   }
 
   return (
     <header className={HeaderStyle.header}>
       <div className={HeaderStyle.group}>
-        <HeaderItem
-          label="Конструктор"
-          name={BURGER}
-          selected={selected}
-          onClick={handleClick}
-        >
+        <HeaderItem label="Конструктор" name={BURGER}>
           <BurgerIcon type={getItemType(BURGER)} />
         </HeaderItem>
-        <HeaderItem
-          label="Лента заказов"
-          selected={selected}
-          name={LIST}
-          onClick={handleClick}
-        >
+        <HeaderItem label="Лента заказов" name={LIST}>
           <ListIcon type={getItemType(LIST)} />
         </HeaderItem>
       </div>
       <Logo />
-      <HeaderItem
-        label="Личный кабинет"
-        selected={selected}
-        name={PROFILE}
-        onClick={handleClick}
-      >
+      <HeaderItem label="Личный кабинет" name={PROFILE}>
         <ProfileIcon type={getItemType(PROFILE)} />
       </HeaderItem>
     </header>

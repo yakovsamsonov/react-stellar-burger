@@ -1,0 +1,29 @@
+.card-details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.card-details__image {
+  composes: mb-4 from global;
+  max-height: 240px;
+  max-width: 520px;
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+}
+
+.label {
+  composes: text text_type_main-default from global;
+  min-height: 48px;
+  text-align: center;
+}
+
+.nutrition {
+  margin: 0;
+  padding: 0;
+  padding-bottom: 20px;
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}

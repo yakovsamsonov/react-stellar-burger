@@ -1,9 +1,3 @@
-.order {
-  display: flex;
-  justify-content: center;
-  overflow-y: hidden;
-}
-
 .order-confirmation {
   display: flex;
   flex-direction: column;
@@ -13,6 +7,7 @@
 }
 
 .order-confirmation__number {
+  min-height: 120px;
   composes: text text_type_digits-large mb-8 from global;
 }
 

@@ -20,3 +20,9 @@
 .summary__total-value {
   composes: text text_type_digits-medium mr-2 from global;
 }
+
+.summary__order-button {
+  composes: ml-10 from global;
+  flex-basis: 215px;
+  width: 100%;
+}
