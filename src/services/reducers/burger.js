@@ -6,21 +6,9 @@ import {
   CHANGE_ORDER,
   CLEAR_BURGER,
 } from '../actions/burger';
-import {
-  BOTTOM_ING_TYPE,
-  REGULAR_ING_TYPE,
-  TOP_ING_TYPE,
-} from '../../utils/constants';
-
 const initialState = {
+  bun: null,
   items: [],
-  total: 0,
-};
-
-const recalcTotal = (items) => {
-  return items.reduce((acc, el) => {
-    return acc + el.data.price;
-  }, 0);
 };
 
 export const burgerReducer = (state = initialState, action) => {
@@ -29,12 +17,11 @@ export const burgerReducer = (state = initialState, action) => {
       const new_items = [...state.items];
       new_items.push({
         uuid: action.uuid,
-        type: REGULAR_ING_TYPE,
         data: action.item,
       });
       return {
+        ...state,
         items: new_items,
-        total: recalcTotal(new_items),
       };
     }
     case REMOVE_REGULAR: {
@@ -42,48 +29,32 @@ export const burgerReducer = (state = initialState, action) => {
         (el) => el.uuid !== action.uuid
       );
       return {
+        ...state,
         items: new_items,
-        total: recalcTotal(new_items),
       };
     }
     case ADD_BUN: {
-      const new_items = [...state.items].concat([
-        {
-          uuid: action.uuid,
-          type: TOP_ING_TYPE,
-          data: action.item,
-        },
-        { uuid: action.uuid, type: BOTTOM_ING_TYPE, data: action.item },
-      ]);
       return {
-        items: new_items,
-        total: recalcTotal(new_items),
+        ...state,
+        bun: action.item,
       };
     }
     case REMOVE_BUN: {
-      const new_items = [...state.items].filter(
-        (el) => ![BOTTOM_ING_TYPE, TOP_ING_TYPE].includes(el.type)
-      );
       return {
-        items: new_items,
-        total: recalcTotal(new_items),
+        ...state,
+        bun: initialState.bun,
       };
     }
     case CHANGE_ORDER: {
       const ingredient = [...state.items].find((el) => el.uuid === action.uuid);
-      const buns = [...state.items].filter(
-        (el) => el.type !== REGULAR_ING_TYPE
+      const new_items = [...state.items].filter(
+        (el) => el.uuid !== action.uuid
       );
-      const regular = [...state.items].filter(
-        (el) => el.type === REGULAR_ING_TYPE
-      );
-      const new_regular_items = regular.filter((el) => el.uuid !== action.uuid);
-      new_regular_items.splice(action.newIndex, 0, ingredient);
-      const new_items = new_regular_items.concat(buns);
+      new_items.splice(action.newIndex, 0, ingredient);
 
       return {
+        ...state,
         items: new_items,
-        total: recalcTotal(new_items),
       };
     }
     case CLEAR_BURGER: {

@@ -7,11 +7,13 @@ import {
   CurrencyIcon,
   Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import IngredientsGroup from '../ingredients-group/ingredients-group';
+import {
+  IngredientsGroup,
+  BunIngredient,
+} from '../ingredients-group/ingredients-group';
 import BurgerConstructorStyle from './burger-constructor.module.css';
 import {
   BOTTOM_ING_TYPE,
-  REGULAR_ING_TYPE,
   TOP_ING_TYPE,
   AWAIT_BUTTON_LABEL,
   PLACE_ORDER_BUTTON_LABEL,
@@ -26,6 +28,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 function BurgerConstructor() {
   const [buttonLabel, setButtonLabel] = useState(PLACE_ORDER_BUTTON_LABEL);
+  const { items, bun } = useSelector((store) => store.burger);
 
   const addIngredientToBurger = (el) => {
     const uuid = uuidv4();
@@ -47,22 +50,29 @@ function BurgerConstructor() {
     },
   });
 
-  const { items } = useSelector((store) => store.burger);
-
   const total = useMemo(() => {
-    return items.reduce((acc, el) => {
+    const regular_price = items.reduce((acc, el) => {
       return acc + el.data.price;
     }, 0);
-  }, [items]);
+    const bun_price = bun ? 2 * bun.price : 0;
+    return regular_price + bun_price;
+  }, [items, bun]);
 
-  const burgerIds = items.map((el) => el.data._id);
+  const collectBurgerIds = () => {
+    const burgerIds = items.map((el) => el.data._id);
+    if (bun) {
+      burgerIds.push(bun._id);
+      burgerIds.splice(0, 0, bun._id);
+    }
+    return burgerIds;
+  };
 
   const dispatch = useDispatch();
 
   function processButtonClick() {
-    if (items.length > 0) {
+    if (items || bun) {
       setButtonLabel(AWAIT_BUTTON_LABEL);
-      dispatch(sendOrder(burgerIds)).then(() => {
+      dispatch(sendOrder(collectBurgerIds())).then(() => {
         dispatch({ type: OPEN_ORDER });
         dispatch({ type: CLEAR_BURGER });
         setButtonLabel(PLACE_ORDER_BUTTON_LABEL);
@@ -78,9 +88,9 @@ function BurgerConstructor() {
       className={BurgerConstructorStyle.section}
       style={{ border: borderStyle }}
     >
-      <IngredientsGroup groupType={TOP_ING_TYPE} />
-      <IngredientsGroup groupType={REGULAR_ING_TYPE} />
-      <IngredientsGroup groupType={BOTTOM_ING_TYPE} />
+      {bun && <BunIngredient ingredient={bun} type={TOP_ING_TYPE} />}
+      {items.length > 0 && <IngredientsGroup />}
+      {bun && <BunIngredient ingredient={bun} type={BOTTOM_ING_TYPE} />}
       <div className={BurgerConstructorStyle['summary']}>
         <p className={BurgerConstructorStyle['summary__total-value']}>
           {total}
