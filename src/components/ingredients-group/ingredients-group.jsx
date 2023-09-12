@@ -1,7 +1,6 @@
 import { useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useDrag, useDrop } from 'react-dnd';
-import PropTypes from 'prop-types';
 import {
   ConstructorElement,
   DragIcon,
@@ -14,54 +13,33 @@ import {
 } from '../../utils/constants';
 import { REMOVE_REGULAR, CHANGE_ORDER } from '../../services/actions/burger';
 
-function IngredientsGroup({ groupType }) {
+function IngredientsGroup() {
   const { items } = useSelector((store) => store.burger);
-  const baseClass = IngredientsGroupStyle.item__group;
-  const extraClass = groupType === REGULAR_ING_TYPE ? 'custom-scroll' : '';
-  const itemsCount = items.length;
-  const groupData = items.filter((el) => el.type === groupType);
 
   return (
-    itemsCount !== 0 && (
-      <ul
-        className={baseClass.concat(' ', extraClass)}
-        style={
-          groupType === REGULAR_ING_TYPE
-            ? { overflowY: 'scroll', paddingRight: '4px' }
-            : { paddingLeft: '32px', paddingRight: '16px' }
-        }
-      >
-        {groupData.map((el, index) => (
-          <Ingredient ingredient={el} key={el.uuid} index={index} />
-        ))}
-      </ul>
-    )
+    <ul
+      className={`${IngredientsGroupStyle.item__group} custom-scroll`}
+      style={{ overflowY: 'scroll', paddingRight: '4px' }}
+    >
+      {items.map((el, index) => (
+        <RegularIngredient ingredient={el} key={el.uuid} index={index} />
+      ))}
+    </ul>
   );
 }
 
-function Ingredient({ ingredient, index }) {
+function RegularIngredient({ ingredient, index }) {
   const dispatch = useDispatch();
 
   const ref = useRef(null);
 
   const [{ opacity }, drag] = useDrag({
     type: 'regular',
-    canDrag: ingredient.type === REGULAR_ING_TYPE,
     item: { id: ingredient.uuid, index: index },
     collect: (monitor) => ({
       opacity: monitor.isDragging() ? 0.5 : 1,
     }),
   });
-
-  function getLabel(element) {
-    let label = element.data.name;
-    if (element.type === TOP_ING_TYPE) {
-      label = label + ' (верх)';
-    } else if (element.type === BOTTOM_ING_TYPE) {
-      label = label + ' (низ)';
-    }
-    return label;
-  }
 
   const [, drop] = useDrop({
     accept: 'regular',
@@ -105,11 +83,11 @@ function Ingredient({ ingredient, index }) {
       ref={ref}
       style={{ opacity: opacity }}
     >
-      {ingredient.type === REGULAR_ING_TYPE && <DragIcon type="primary" />}
+      <DragIcon type="primary" />
       <ConstructorElement
-        type={ingredient.type}
-        isLocked={ingredient.type !== REGULAR_ING_TYPE}
-        text={getLabel(ingredient)}
+        type={REGULAR_ING_TYPE}
+        isLocked={false}
+        text={ingredient.data.name}
         price={ingredient.data.price}
         thumbnail={ingredient.data.image}
         handleClose={clickDeleteButton}
@@ -118,8 +96,33 @@ function Ingredient({ ingredient, index }) {
   );
 }
 
-IngredientsGroup.propTypes = {
-  groupType: PropTypes.string.isRequired,
-};
+function BunIngredient({ ingredient, type }) {
+  function getLabel(element) {
+    let label = element.name;
+    if (type === TOP_ING_TYPE) {
+      label = label + ' (верх)';
+    } else if (type === BOTTOM_ING_TYPE) {
+      label = label + ' (низ)';
+    }
+    return label;
+  }
 
-export default IngredientsGroup;
+  return (
+    <ul
+      className={IngredientsGroupStyle.item__group}
+      style={{ paddingLeft: '32px', paddingRight: '16px' }}
+    >
+      <li className={IngredientsGroupStyle.item}>
+        <ConstructorElement
+          type={type}
+          isLocked={true}
+          text={getLabel(ingredient)}
+          price={ingredient.price}
+          thumbnail={ingredient.image}
+        />
+      </li>
+    </ul>
+  );
+}
+
+export { IngredientsGroup, BunIngredient };

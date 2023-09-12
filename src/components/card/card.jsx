@@ -8,10 +8,9 @@ import cardStyle from './card.module.css';
 
 import { ingredientPropType } from '../../utils/prop-types.js';
 import { OPEN_DETAILS } from '../../services/actions/details';
-import { REGULAR_ING_TYPE, TOP_ING_TYPE } from '../../utils/constants';
 
 export default function Card({ card }) {
-  const { items } = useSelector((store) => store.burger);
+  const { items, bun } = useSelector((store) => store.burger);
   const dispatch = useDispatch();
 
   const [{ opacity }, ref] = useDrag({
@@ -22,20 +21,25 @@ export default function Card({ card }) {
     }),
   });
 
-  const orderedNum = items.reduce((acc, el) => {
-    let add = 0;
-    if (
-      el.data._id === card._id &&
-      [TOP_ING_TYPE, REGULAR_ING_TYPE].includes(el.type)
-    ) {
-      add = 1;
+  const getOrderedNum = () => {
+    if (card.type === 'bun') {
+      return bun ? (bun._id === card._id ? 1 : 0) : 0;
+    } else {
     }
-    return acc + add;
-  }, 0);
+    return items.reduce((acc, el) => {
+      let add = 0;
+      if (el.data._id === card._id) {
+        add = 1;
+      }
+      return acc + add;
+    }, 0);
+  };
 
   function processCardClick() {
     dispatch({ type: OPEN_DETAILS, card: card });
   }
+
+  const orderedNum = getOrderedNum();
 
   return (
     <li
