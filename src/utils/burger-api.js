@@ -23,3 +23,9 @@ export function placeOrder(requestData) {
   };
   return loadData(endpoint, options);
 }
+
+export function getUserRequest() {}
+
+export function loginRequest() {}
+
+export function logoutRequest() {}
