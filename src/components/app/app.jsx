@@ -1,6 +1,12 @@
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { ProvideAuth } from '../../utils/auth';
-import { Constructor, Login } from '../../pages';
+import {
+  Constructor,
+  Login,
+  Register,
+  ForgotPassword,
+  ResetPassword,
+} from '../../pages';
 import { ProtectedRouteElement } from '../protected-route';
 import AppHeader from '../app-header/app-header';
 import styles from './app.module.css';
@@ -17,6 +23,15 @@ function App() {
             </Route>
             <Route path="/login">
               <ProtectedRouteElement element={<Login />} />
+            </Route>
+            <Route path="/register">
+              <ProtectedRouteElement element={<Register />} />
+            </Route>
+            <Route path="/forgot-password">
+              <ProtectedRouteElement element={<ForgotPassword />} />
+            </Route>
+            <Route path="/reset-password">
+              <ProtectedRouteElement element={<ResetPassword />} />
             </Route>
           </Switch>
         </div>

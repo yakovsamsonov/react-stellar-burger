@@ -1,12 +1,23 @@
 import Form from '../components/form/form';
-import { EMAIL_FIELD_TYPE, PASSWORD_FIELD_TYPE } from '../utils/constants';
+import {
+  EMAIL_FIELD_TYPE,
+  PASSWORD_FIELD_TYPE,
+  TEXT_FIELD_TYPE,
+} from '../utils/constants';
 
-export function Login() {
+export function Register() {
   const onFieldChange = (e) => {
     console.log(e.target.value);
   };
 
   const fields = [
+    {
+      type: TEXT_FIELD_TYPE,
+      name: 'name',
+      value: '',
+      placeholder: 'Имя',
+      onChange: onFieldChange,
+    },
     {
       type: EMAIL_FIELD_TYPE,
       name: 'email',
@@ -22,28 +33,23 @@ export function Login() {
   ];
   const links = [
     {
-      text: 'Вы — новый пользователь?',
-      linkText: 'Зарегистрироваться',
-      linkTo: '/register',
-    },
-    {
-      text: 'Забыли пароль?',
-      linkText: 'Восстановить пароль',
-      linkTo: '/forgot-password',
+      text: 'Уже зарегистрированы?',
+      linkText: 'Войти',
+      linkTo: '/login',
     },
   ];
 
   const onSumbit = (e) => {
     e.preventDefault();
-    console.log('Попытка логина');
+    console.log('Попытка регистрации');
   };
 
   return (
     <Form
-      title="Вход"
+      title="Регистрация"
       fields={fields}
       links={links}
-      buttonLabel="Войти"
+      buttonLabel="Зарегистрироваться"
       formSubmit={onSumbit}
     ></Form>
   );

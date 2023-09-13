@@ -1,4 +1,3 @@
-import AppHeader from '../components/app-header/app-header';
 import styles from '../components/app/app.module.css';
 import BurgerConstructor from '../components/burger-constructor/burger-constructor';
 import BurgerIngredients from '../components/burger-ingredients/burger-ingredients';
