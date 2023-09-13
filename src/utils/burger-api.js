@@ -24,6 +24,17 @@ export function placeOrder(requestData) {
   return loadData(endpoint, options);
 }
 
+export function registerUser(newUser) {
+  const endpoint = `${BACKEND_BASE_URL}/auth/register`;
+
+  const options = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json; charset=UTF-8' },
+    body: JSON.stringify(newUser),
+  };
+  return loadData(endpoint, options);
+}
+
 export function getUserRequest() {}
 
 export function loginRequest() {}

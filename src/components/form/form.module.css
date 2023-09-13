@@ -47,3 +47,11 @@
   text-decoration: underline;
   color: #9898f7;
 }
+
+.form__error-message {
+  width: 100%;
+  text-align: center;
+  box-sizing: border-box;
+  border: solid red 1px;
+  color: red;
+}

@@ -13,7 +13,9 @@ export default function Form({
   fields,
   links,
   buttonLabel,
+  isButtonDisabled = false,
   formSubmit,
+  errorMessage,
 }) {
   return (
     <div className={formStyle['form']}>
@@ -46,9 +48,19 @@ export default function Form({
             ></Input>
           )
         )}
-        <Button htmlType="submit" type="primary" size="small">
+        <Button
+          disabled={isButtonDisabled}
+          htmlType="submit"
+          type="primary"
+          size="small"
+        >
           {buttonLabel}
         </Button>
+        {errorMessage ? (
+          <div className={formStyle['form__error-message']}>{errorMessage}</div>
+        ) : (
+          <></>
+        )}
       </form>
       <nav className={formStyle['form__link-box']}>
         {links.map((el, index) => (

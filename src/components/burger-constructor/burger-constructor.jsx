@@ -25,10 +25,14 @@ import {
   ADD_REGULAR,
 } from '../../services/actions/burger';
 import { v4 as uuidv4 } from 'uuid';
+import { useNavigate } from 'react-router-dom';
 
 function BurgerConstructor() {
   const [buttonLabel, setButtonLabel] = useState(PLACE_ORDER_BUTTON_LABEL);
   const { items, bun } = useSelector((store) => store.burger);
+  const { user } = useSelector((store) => store.user);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const addIngredientToBurger = (el) => {
     const uuid = uuidv4();
@@ -67,9 +71,11 @@ function BurgerConstructor() {
     return burgerIds;
   };
 
-  const dispatch = useDispatch();
-
   function processButtonClick() {
+    if (!user.name) {
+      navigate('/login');
+      return;
+    }
     if (items || bun) {
       setButtonLabel(AWAIT_BUTTON_LABEL);
       dispatch(sendOrder(collectBurgerIds())).then(() => {
