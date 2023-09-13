@@ -1,4 +1,4 @@
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ProvideAuth } from '../../utils/auth';
 import {
   Constructor,
@@ -17,23 +17,28 @@ function App() {
       <BrowserRouter>
         <div className={styles.app}>
           <AppHeader />
-          <Switch>
-            <Route exact path="/">
-              <ProtectedRouteElement element={<Constructor />} />
-            </Route>
-            <Route path="/login">
-              <ProtectedRouteElement element={<Login />} />
-            </Route>
-            <Route path="/register">
-              <ProtectedRouteElement element={<Register />} />
-            </Route>
-            <Route path="/forgot-password">
-              <ProtectedRouteElement element={<ForgotPassword />} />
-            </Route>
-            <Route path="/reset-password">
-              <ProtectedRouteElement element={<ResetPassword />} />
-            </Route>
-          </Switch>
+          <Routes>
+            <Route
+              path="/"
+              element={<ProtectedRouteElement element={<Constructor />} />}
+            ></Route>
+            <Route
+              path="/login"
+              element={<ProtectedRouteElement element={<Login />} />}
+            ></Route>
+            <Route
+              path="/register"
+              element={<ProtectedRouteElement element={<Register />} />}
+            ></Route>
+            <Route
+              path="/forgot-password"
+              element={<ProtectedRouteElement element={<ForgotPassword />} />}
+            ></Route>
+            <Route
+              path="/reset-password"
+              element={<ProtectedRouteElement element={<ResetPassword />} />}
+            ></Route>
+          </Routes>
         </div>
       </BrowserRouter>
     </ProvideAuth>
