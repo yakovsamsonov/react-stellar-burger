@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import formStyle from './form.module.css';
 import { Link } from 'react-router-dom';
 import {
@@ -13,14 +14,29 @@ export default function Form({
   fields,
   links,
   buttonLabel,
-  isButtonDisabled = false,
   formSubmit,
+  formData,
+  setFormData,
   errorMessage,
 }) {
+  const [isButtonDisabled, setButtonDisabled] = useState(true);
+  const [hasInputError, setInputError] = useState(false);
+
+  const onFieldChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setInputError(!e.target.validity.valid);
+  };
+
+  useEffect(() => {
+    setButtonDisabled(
+      hasInputError || !Object.values(formData).every((el) => el)
+    );
+  }, [formData, hasInputError]);
+
   return (
     <div className={formStyle['form']}>
       <form className={formStyle['form__input-box']} onSubmit={formSubmit}>
-        <h2 className={formStyle['form__title']}>{title}</h2>
+        {title ? <h2 className={formStyle['form__title']}>{title}</h2> : <></>}
         {fields.map((el, index) =>
           el.type === PASSWORD_FIELD_TYPE ? (
             <PasswordInput
@@ -28,7 +44,8 @@ export default function Form({
               value={el.value}
               name={el.name}
               placeholder={el.placeholder}
-              onChange={el.onChange}
+              onChange={onFieldChange}
+              icon={el.icon}
             ></PasswordInput>
           ) : el.type === EMAIL_FIELD_TYPE ? (
             <EmailInput
@@ -36,7 +53,8 @@ export default function Form({
               value={el.value}
               name={el.name}
               placeholder={el.placeholder}
-              onChange={el.onChange}
+              onChange={onFieldChange}
+              icon={el.icon}
             ></EmailInput>
           ) : (
             <Input
@@ -44,7 +62,8 @@ export default function Form({
               value={el.value}
               name={el.name}
               placeholder={el.placeholder}
-              onChange={el.onChange}
+              onChange={onFieldChange}
+              icon={el.icon}
             ></Input>
           )
         )}
@@ -63,14 +82,18 @@ export default function Form({
         )}
       </form>
       <nav className={formStyle['form__link-box']}>
-        {links.map((el, index) => (
-          <li key={index} className={formStyle['form__link-set']}>
-            <p className={formStyle['form__link-description']}>{el.text}</p>
-            <Link to={el.linkTo} className={formStyle['form__link-text']}>
-              {el.linkText}
-            </Link>
-          </li>
-        ))}
+        {links ? (
+          links.map((el, index) => (
+            <li key={index} className={formStyle['form__link-set']}>
+              <p className={formStyle['form__link-description']}>{el.text}</p>
+              <Link to={el.linkTo} className={formStyle['form__link-text']}>
+                {el.linkText}
+              </Link>
+            </li>
+          ))
+        ) : (
+          <></>
+        )}
       </nav>
     </div>
   );

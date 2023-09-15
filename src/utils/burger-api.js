@@ -1,4 +1,5 @@
 import { BACKEND_BASE_URL } from './constants';
+import { getCookie } from './cookie';
 
 function checkReponse(res) {
   return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
@@ -37,6 +38,28 @@ export function registerUser(newUser) {
 
 export function getUserRequest() {}
 
-export function loginRequest() {}
+export function loginRequest(loginData) {
+  const endpoint = `${BACKEND_BASE_URL}/auth/login`;
 
-export function logoutRequest() {}
+  const options = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json; charset=UTF-8' },
+    body: JSON.stringify(loginData),
+  };
+
+  return loadData(endpoint, options);
+}
+
+export function logoutRequest() {
+  const endpoint = `${BACKEND_BASE_URL}/auth/logout`;
+
+  const token = { token: getCookie('refreshToken') };
+
+  const options = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json; charset=UTF-8' },
+    body: JSON.stringify(token),
+  };
+
+  return loadData(endpoint, options);
+}

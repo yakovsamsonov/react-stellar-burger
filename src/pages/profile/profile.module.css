@@ -1,0 +1,38 @@
+.profile {
+  margin: 0 auto;
+  padding-top: 120px;
+  width: 100%;
+  max-width: 1240px;
+  display: flex;
+  justify-content: flex-start;
+  gap: 60px;
+}
+
+.navigation {
+  max-width: 320px;
+  width: 100%;
+}
+
+.navigation__link-box {
+  display: block;
+  min-height: 64px;
+}
+
+.navigation__link {
+  cursor: pointer;
+  color: unset;
+  text-decoration: none;
+  composes: text text_type_main-medium from global;
+}
+
+.navigation__link_inactive {
+  cursor: pointer;
+  text-decoration: none;
+  composes: text text_type_main-medium text_color_inactive from global;
+}
+
+.navigation__description {
+  display: block;
+  margin-top: 80px;
+  composes: text text_type_main-default text_color_inactive from global;
+}

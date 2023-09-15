@@ -14,7 +14,7 @@
 }
 
 .label {
-  composes: text text_type_main-default from global;
+  composes: text text_type_main-medium from global;
   min-height: 48px;
   text-align: center;
 }

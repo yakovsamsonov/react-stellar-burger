@@ -11,9 +11,13 @@ import { useLocation } from 'react-router-dom';
 
 function AppHeader() {
   const location = useLocation();
+  const pathname = location.pathname;
 
   function getItemType(path) {
-    if (location.pathname === path) {
+    if (
+      (path !== '/' && pathname.includes(path)) ||
+      (path === '/' && pathname === path)
+    ) {
       return 'primary';
     }
     return 'secondary';

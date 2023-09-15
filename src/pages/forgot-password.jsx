@@ -2,17 +2,12 @@ import Form from '../components/form/form';
 import { EMAIL_FIELD_TYPE } from '../utils/constants';
 
 export function ForgotPassword() {
-  const onFieldChange = (e) => {
-    console.log(e.target.value);
-  };
-
   const fields = [
     {
       type: EMAIL_FIELD_TYPE,
       name: 'email',
       value: '',
       placeholder: 'Укажите e-mail',
-      onChange: onFieldChange,
     },
   ];
   const links = [

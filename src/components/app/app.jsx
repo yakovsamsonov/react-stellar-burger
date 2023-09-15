@@ -6,8 +6,11 @@ import {
   Register,
   ForgotPassword,
   ResetPassword,
+  Profile,
+  ProfileOrders,
+  UserInfo,
 } from '../../pages';
-import { ProtectedRouteElement } from '../protected-route';
+import { PrivateElement, OnlyPublicElement } from '../protected-route';
 import AppHeader from '../app-header/app-header';
 import styles from './app.module.css';
 
@@ -18,26 +21,36 @@ function App() {
         <div className={styles.app}>
           <AppHeader />
           <Routes>
-            <Route
-              path="/"
-              element={<ProtectedRouteElement element={<Constructor />} />}
-            ></Route>
+            <Route path="/" element={<Constructor />}></Route>
             <Route
               path="/login"
-              element={<ProtectedRouteElement element={<Login />} />}
+              element={<OnlyPublicElement element={<Login />} />}
             ></Route>
             <Route
               path="/register"
-              element={<ProtectedRouteElement element={<Register />} />}
+              element={<OnlyPublicElement element={<Register />} />}
             ></Route>
             <Route
               path="/forgot-password"
-              element={<ProtectedRouteElement element={<ForgotPassword />} />}
+              element={<PrivateElement element={<ForgotPassword />} />}
             ></Route>
             <Route
               path="/reset-password"
-              element={<ProtectedRouteElement element={<ResetPassword />} />}
+              element={<PrivateElement element={<ResetPassword />} />}
             ></Route>
+            <Route
+              path="/profile"
+              element={<PrivateElement element={<Profile />} />}
+            >
+              <Route
+                path="/profile"
+                element={<PrivateElement element={<UserInfo />} />}
+              ></Route>
+              <Route
+                path="orders"
+                element={<PrivateElement element={<ProfileOrders />} />}
+              />
+            </Route>
           </Routes>
         </div>
       </BrowserRouter>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Form from '../components/form/form';
 import { registerNewUser } from '../services/actions/user';
 import {
@@ -6,7 +6,6 @@ import {
   PASSWORD_FIELD_TYPE,
   TEXT_FIELD_TYPE,
 } from '../utils/constants';
-import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 const emptyForm = {
@@ -17,31 +16,10 @@ const emptyForm = {
 
 export function Register() {
   const [newUser, setNewUser] = useState(emptyForm);
-  const [isButtonDisabled, setButtonDisabled] = useState(true);
-  const [hasInputError, setInputError] = useState(false);
 
-  const { user, registrationErrorText } = useSelector((store) => store.user);
-
-  const navigate = useNavigate();
+  const { registrationErrorText } = useSelector((store) => store.user);
 
   const dispatch = useDispatch();
-
-  const onFieldChange = (e) => {
-    setNewUser({ ...newUser, [e.target.name]: e.target.value });
-    setInputError(!e.target.validity.valid);
-  };
-
-  useEffect(() => {
-    setButtonDisabled(
-      hasInputError || !Object.values(newUser).every((el) => el)
-    );
-  }, [newUser, hasInputError]);
-
-  useEffect(() => {
-    if (user.name) {
-      navigate('/', { replace: true });
-    }
-  }, [user, navigate]);
 
   const fields = [
     {
@@ -49,19 +27,16 @@ export function Register() {
       name: 'name',
       value: newUser.name,
       placeholder: 'Имя',
-      onChange: onFieldChange,
     },
     {
       type: EMAIL_FIELD_TYPE,
       name: 'email',
       value: newUser.email,
-      onChange: onFieldChange,
     },
     {
       type: PASSWORD_FIELD_TYPE,
       name: 'password',
       value: newUser.password,
-      onChange: onFieldChange,
     },
   ];
   const links = [
@@ -83,8 +58,9 @@ export function Register() {
       fields={fields}
       links={links}
       buttonLabel="Зарегистрироваться"
-      isButtonDisabled={isButtonDisabled}
       formSubmit={onSumbit}
+      formData={newUser}
+      setFormData={setNewUser}
       errorMessage={registrationErrorText}
     ></Form>
   );

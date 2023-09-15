@@ -31,6 +31,12 @@ export const defaultInitialState = {
     registrationSend: false,
     registrationFailed: false,
     registrationErrorText: '',
+    loginSend: false,
+    loginFailed: false,
+    loginErrorText: '',
+    logoutSend: false,
+    logoutFailed: false,
+    logoutErrorText: '',
   },
 };
 

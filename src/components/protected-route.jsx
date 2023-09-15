@@ -1,23 +1,14 @@
-import { useAuth } from '../utils/auth';
 import { Navigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
-export const ProtectedRouteElement = ({ element }) => {
-  /*let { getUser, ...auth } = useAuth();
-  const [isUserLoaded, setUserLoaded] = useState(false);
+export const PrivateElement = ({ element }) => {
+  const { user } = useSelector((store) => store.user);
 
-  const init = async () => {
-    await getUser();
-    setUserLoaded(true);
-  };
+  return user.name ? element : <Navigate to="/login" replace />;
+};
 
-  useEffect(() => {
-    init();
-  }, []);
+export const OnlyPublicElement = ({ element }) => {
+  const { user } = useSelector((store) => store.user);
 
-  if (!isUserLoaded) {
-    return null;
-  }*/
-
-  return element; //auth.user ? element : <Navigate to="/login" replace/>;
+  return user.name ? <Navigate to="/" replace /> : element;
 };
