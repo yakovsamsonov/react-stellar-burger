@@ -1,5 +1,4 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { ProvideAuth } from '../../utils/auth';
 import {
   Constructor,
   Login,
@@ -16,45 +15,43 @@ import styles from './app.module.css';
 
 function App() {
   return (
-    <ProvideAuth>
-      <BrowserRouter>
-        <div className={styles.app}>
-          <AppHeader />
-          <Routes>
-            <Route path="/" element={<Constructor />}></Route>
-            <Route
-              path="/login"
-              element={<OnlyPublicElement element={<Login />} />}
-            ></Route>
-            <Route
-              path="/register"
-              element={<OnlyPublicElement element={<Register />} />}
-            ></Route>
-            <Route
-              path="/forgot-password"
-              element={<PrivateElement element={<ForgotPassword />} />}
-            ></Route>
-            <Route
-              path="/reset-password"
-              element={<PrivateElement element={<ResetPassword />} />}
-            ></Route>
+    <BrowserRouter>
+      <div className={styles.app}>
+        <AppHeader />
+        <Routes>
+          <Route path="/" element={<Constructor />}></Route>
+          <Route
+            path="/login"
+            element={<OnlyPublicElement element={<Login />} />}
+          ></Route>
+          <Route
+            path="/register"
+            element={<OnlyPublicElement element={<Register />} />}
+          ></Route>
+          <Route
+            path="/forgot-password"
+            element={<OnlyPublicElement element={<ForgotPassword />} />}
+          ></Route>
+          <Route
+            path="/reset-password"
+            element={<OnlyPublicElement element={<ResetPassword />} />}
+          ></Route>
+          <Route
+            path="/profile"
+            element={<PrivateElement element={<Profile />} />}
+          >
             <Route
               path="/profile"
-              element={<PrivateElement element={<Profile />} />}
-            >
-              <Route
-                path="/profile"
-                element={<PrivateElement element={<UserInfo />} />}
-              ></Route>
-              <Route
-                path="orders"
-                element={<PrivateElement element={<ProfileOrders />} />}
-              />
-            </Route>
-          </Routes>
-        </div>
-      </BrowserRouter>
-    </ProvideAuth>
+              element={<PrivateElement element={<UserInfo />} />}
+            ></Route>
+            <Route
+              path="orders"
+              element={<PrivateElement element={<ProfileOrders />} />}
+            />
+          </Route>
+        </Routes>
+      </div>
+    </BrowserRouter>
   );
 }
 

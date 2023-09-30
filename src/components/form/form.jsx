@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import formStyle from './form.module.css';
 import { Link } from 'react-router-dom';
 import {
@@ -13,11 +13,13 @@ export default function Form({
   title,
   fields,
   links,
-  buttonLabel,
+  buttons,
   formSubmit,
+  formReset,
   formData,
   setFormData,
   errorMessage,
+  customDiableButton,
 }) {
   const [isButtonDisabled, setButtonDisabled] = useState(true);
   const [hasInputError, setInputError] = useState(false);
@@ -27,18 +29,31 @@ export default function Form({
     setInputError(!e.target.validity.valid);
   };
 
-  useEffect(() => {
-    setButtonDisabled(
-      hasInputError || !Object.values(formData).every((el) => el)
-    );
+  const baseDisableButton = useCallback(() => {
+    return hasInputError || !Object.values(formData).every((el) => el);
   }, [formData, hasInputError]);
+
+  useEffect(() => {
+    let disableButton = true;
+    if (customDiableButton) {
+      disableButton = customDiableButton();
+    } else {
+      disableButton = baseDisableButton();
+    }
+
+    setButtonDisabled(disableButton);
+  }, [baseDisableButton, customDiableButton]);
 
   return (
     <div className={formStyle['form']}>
-      <form className={formStyle['form__input-box']} onSubmit={formSubmit}>
+      <form
+        className={formStyle['form__input-box']}
+        onSubmit={formSubmit}
+        onReset={formReset}
+      >
         {title ? <h2 className={formStyle['form__title']}>{title}</h2> : <></>}
-        {fields.map((el, index) =>
-          el.type === PASSWORD_FIELD_TYPE ? (
+        {fields.map((el, index) => {
+          return el.type === PASSWORD_FIELD_TYPE ? (
             <PasswordInput
               key={index}
               value={el.value}
@@ -65,16 +80,22 @@ export default function Form({
               onChange={onFieldChange}
               icon={el.icon}
             ></Input>
-          )
-        )}
-        <Button
-          disabled={isButtonDisabled}
-          htmlType="submit"
-          type="primary"
-          size="small"
-        >
-          {buttonLabel}
-        </Button>
+          );
+        })}
+        <div className={formStyle['form__button-box']}>
+          {buttons.map((el, index) => (
+            <Button
+              key={index}
+              disabled={isButtonDisabled}
+              htmlType={el.type}
+              type="primary"
+              size="small"
+            >
+              {el.label}
+            </Button>
+          ))}
+        </div>
+
         {errorMessage ? (
           <div className={formStyle['form__error-message']}>{errorMessage}</div>
         ) : (

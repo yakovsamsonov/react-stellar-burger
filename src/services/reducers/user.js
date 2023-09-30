@@ -8,10 +8,16 @@ import {
   LOGOUT_REQUEST,
   LOGOUT_SUCCESS,
   LOGOUT_FAILED,
+  USER_REQUEST,
+  USER_SUCCESS,
+  USER_FAILED,
+  USER_UPDATE_REQUEST,
+  USER_UPDATE_SUCCESS,
+  USER_UPDATE_FAILED,
 } from '../actions/user';
 
 const initialState = {
-  user: { name: '', email: '' },
+  user: { email: '', name: '' },
   registrationSend: false,
   registrationFailed: false,
   registrationErrorText: '',
@@ -21,6 +27,9 @@ const initialState = {
   logoutSend: false,
   logoutFailed: false,
   logoutErrorText: '',
+  getUserSend: false,
+  getUserFailed: false,
+  getUserErrorText: '',
 };
 
 export const userReducer = (state = initialState, action) => {
@@ -40,7 +49,6 @@ export const userReducer = (state = initialState, action) => {
         registrationSend: false,
         registrationFailed: false,
         registrationErrorText: '',
-        user: action.user,
       };
     }
     case REGISTER_USER_FAILED: {
@@ -58,7 +66,6 @@ export const userReducer = (state = initialState, action) => {
         loginSend: true,
         loginFailed: false,
         loginErrorText: '',
-        user: initialState.user,
       };
     }
     case LOGIN_SUCCESS: {
@@ -76,7 +83,6 @@ export const userReducer = (state = initialState, action) => {
         loginSend: false,
         loginFailed: true,
         loginErrorText: action.errorMessage,
-        user: initialState.user,
       };
     }
     case LOGOUT_REQUEST: {
@@ -102,6 +108,38 @@ export const userReducer = (state = initialState, action) => {
         logoutSend: false,
         logoutFailed: true,
         logoutErrorText: action.errorMessage,
+      };
+    }
+    case USER_REQUEST: {
+      return {
+        ...state,
+        getUserSend: true,
+        getUserFailed: false,
+        getUserErrorText: '',
+      };
+    }
+    case USER_SUCCESS: {
+      return {
+        ...state,
+        getUserSend: true,
+        getUserFailed: false,
+        getUserErrorText: '',
+        user: action.user,
+      };
+    }
+    case USER_FAILED: {
+      return {
+        ...state,
+        getUserSend: true,
+        getUserFailed: false,
+        getUserErrorText: action.errorMessage,
+        user: initialState.user,
+      };
+    }
+    case USER_UPDATE_SUCCESS: {
+      return {
+        ...state,
+        user: action.user,
       };
     }
     default: {

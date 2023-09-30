@@ -47,6 +47,8 @@ export function Register() {
     },
   ];
 
+  const buttons = [{ label: 'Зарегистрироваться', type: 'submit' }];
+
   const onSumbit = (e) => {
     e.preventDefault();
     dispatch(registerNewUser(newUser)).then(setNewUser(emptyForm));
@@ -57,7 +59,7 @@ export function Register() {
       title="Регистрация"
       fields={fields}
       links={links}
-      buttonLabel="Зарегистрироваться"
+      buttons={buttons}
       formSubmit={onSumbit}
       formData={newUser}
       setFormData={setNewUser}

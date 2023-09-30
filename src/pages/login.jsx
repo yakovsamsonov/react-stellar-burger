@@ -40,6 +40,8 @@ export function Login() {
     },
   ];
 
+  const buttons = [{ label: 'Войти', type: 'submit' }];
+
   const onSumbit = (e) => {
     e.preventDefault();
     dispatch(login(loginData)).then(setLoginData(emptyForm));
@@ -50,7 +52,7 @@ export function Login() {
       title="Вход"
       fields={fields}
       links={links}
-      buttonLabel="Войти"
+      buttons={buttons}
       formSubmit={onSumbit}
       formData={loginData}
       setFormData={setLoginData}

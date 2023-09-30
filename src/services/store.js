@@ -27,7 +27,7 @@ export const defaultInitialState = {
     orderFailed: false,
   },
   user: {
-    user: { name: '', email: '' },
+    user: { email: '', name: '' },
     registrationSend: false,
     registrationFailed: false,
     registrationErrorText: '',
@@ -37,6 +37,9 @@ export const defaultInitialState = {
     logoutSend: false,
     logoutFailed: false,
     logoutErrorText: '',
+    getUserSend: false,
+    getUserFailed: false,
+    getUserErrorText: '',
   },
 };
 

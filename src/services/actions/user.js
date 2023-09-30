@@ -2,8 +2,10 @@ import {
   registerUser,
   loginRequest,
   logoutRequest,
+  getUserRequestWithRefresh,
+  updateUser,
 } from '../../utils/burger-api';
-import { deleteCookie, setCookie } from '../../utils/cookie';
+import { deleteCookie } from '../../utils/cookie';
 
 export const REGISTER_USER_REQUEST = 'REGISTER_USER_REQUEST';
 export const REGISTER_USER_SUCCESS = 'REGISTER_USER_SUCCESS';
@@ -14,6 +16,12 @@ export const LOGIN_FAILED = 'LOGIN_FAILED';
 export const LOGOUT_REQUEST = 'LOGOUT_REQUEST';
 export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
 export const LOGOUT_FAILED = 'LOGOUT_FAILED';
+export const USER_REQUEST = 'USER_REQUEST';
+export const USER_SUCCESS = 'USER_SUCCESS';
+export const USER_FAILED = 'USER_FAILED';
+export const USER_UPDATE_REQUEST = 'USER_UPDATE_REQUEST';
+export const USER_UPDATE_SUCCESS = 'USER_UPDATE_SUCCESS';
+export const USER_UPDATE_FAILED = 'USER_UPDATE_FAILED';
 
 export function registerNewUser(user) {
   return function (dispatch) {
@@ -21,16 +29,11 @@ export function registerNewUser(user) {
       type: REGISTER_USER_REQUEST,
     });
     return registerUser(user)
-      .then((d) => {
-        if (d.success) {
-          setCookie('accessToken', d.accessToken.split('Bearer ')[1]);
-          setCookie('refreshToken', d.refreshToken);
-          dispatch({
-            type: REGISTER_USER_SUCCESS,
-            user: d.user,
-          });
-        }
-      })
+      .then((d) =>
+        dispatch({
+          type: REGISTER_USER_SUCCESS,
+        })
+      )
       .catch((e) => {
         dispatch({
           type: REGISTER_USER_FAILED,
@@ -47,14 +50,10 @@ export function login(user) {
     });
     return loginRequest(user)
       .then((d) => {
-        if (d.success) {
-          setCookie('accessToken', d.accessToken.split('Bearer ')[1]);
-          setCookie('refreshToken', d.refreshToken);
-          dispatch({
-            type: LOGIN_SUCCESS,
-            user: d.user,
-          });
-        }
+        dispatch({
+          type: LOGIN_SUCCESS,
+          user: d.user,
+        });
       })
       .catch((e) => {
         dispatch({
@@ -83,6 +82,48 @@ export function logout() {
       .catch((e) => {
         dispatch({
           type: LOGOUT_FAILED,
+          errorMessage: e.message,
+        });
+      });
+  };
+}
+
+export function setUser() {
+  return function (dispatch) {
+    dispatch({
+      type: USER_REQUEST,
+    });
+    return getUserRequestWithRefresh()
+      .then((d) => {
+        dispatch({
+          type: USER_SUCCESS,
+          user: d.user,
+        });
+      })
+      .catch((e) => {
+        dispatch({
+          type: USER_FAILED,
+          errorMessage: e.message,
+        });
+      });
+  };
+}
+
+export function updateUserData(newUserData) {
+  return function (dispatch) {
+    dispatch({
+      type: USER_UPDATE_REQUEST,
+    });
+    return updateUser(newUserData)
+      .then((d) => {
+        dispatch({
+          type: USER_UPDATE_SUCCESS,
+          user: d.user,
+        });
+      })
+      .catch((e) => {
+        dispatch({
+          type: USER_UPDATE_FAILED,
           errorMessage: e.message,
         });
       });

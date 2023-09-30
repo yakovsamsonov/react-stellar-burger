@@ -35,3 +35,10 @@ export function setCookie(name, value, props) {
 export function deleteCookie(name) {
   setCookie(name, null, { expires: -1 });
 }
+
+export function setUserCookiesFromResponce(responce) {
+  if (responce.success) {
+    setCookie('accessToken', responce.accessToken.split('Bearer ')[1]);
+    setCookie('refreshToken', responce.refreshToken);
+  }
+}

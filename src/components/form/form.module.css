@@ -26,6 +26,13 @@
   gap: 16px;
 }
 
+.form__button-box {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 16px;
+}
+
 .form__link-set {
   display: flex;
   flex-direction: row;
