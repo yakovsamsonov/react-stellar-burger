@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { useDrag } from 'react-dnd';
 import {
@@ -12,7 +12,6 @@ import { Link } from 'react-router-dom';
 
 export default function Card({ card }) {
   const { items, bun } = useSelector((store) => store.burger);
-  const dispatch = useDispatch();
   const location = useLocation();
 
   const [{ opacity }, ref] = useDrag({

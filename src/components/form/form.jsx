@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import PropTypes from 'prop-types';
 import formStyle from './form.module.css';
 import { Link } from 'react-router-dom';
 import {
@@ -119,3 +120,34 @@ export default function Form({
     </div>
   );
 }
+
+const field = PropTypes.shape({
+  type: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
+  placeholder: PropTypes.string,
+});
+
+const link = PropTypes.shape({
+  text: PropTypes.string.isRequired,
+  linkText: PropTypes.string.isRequired,
+  linkTo: PropTypes.string.isRequired,
+});
+
+const button = PropTypes.shape({
+  label: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
+});
+
+Form.propTypes = {
+  title: PropTypes.string,
+  fields: PropTypes.arrayOf(field).isRequired,
+  links: PropTypes.arrayOf(link),
+  buttons: PropTypes.arrayOf(button),
+  formSubmit: PropTypes.func,
+  formReset: PropTypes.func,
+  formData: PropTypes.object.isRequired,
+  setFormData: PropTypes.func.isRequired,
+  errorMessage: PropTypes.string,
+  customDiableButton: PropTypes.func,
+};
