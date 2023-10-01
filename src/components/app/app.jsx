@@ -1,4 +1,10 @@
-import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  useNavigate,
+  useLocation,
+} from 'react-router-dom';
 import {
   Constructor,
   Login,
@@ -9,12 +15,11 @@ import {
   ProfileOrders,
   UserInfo,
 } from '../../pages';
-import { PrivateElement, OnlyPublicElement } from '../protected-route';
+import { ProtectedRoute } from '../protected-route';
 import AppHeader from '../app-header/app-header';
 import styles from './app.module.css';
 import CardDetails from '../card-details/card-details';
 import Modal from '../modal/modal';
-import { useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getIngredients } from '../../services/actions/ingredients';
 import { useEffect } from 'react';
@@ -61,31 +66,35 @@ function ModalSwitch() {
         <Route path="/" element={<Constructor />}></Route>
         <Route
           path="/login"
-          element={<OnlyPublicElement element={<Login />} />}
+          element={<ProtectedRoute element={<Login />} anonymous={true} />}
         ></Route>
         <Route
           path="/register"
-          element={<OnlyPublicElement element={<Register />} />}
+          element={<ProtectedRoute element={<Register />} anonymous={true} />}
         ></Route>
         <Route
           path="/forgot-password"
-          element={<OnlyPublicElement element={<ForgotPassword />} />}
+          element={
+            <ProtectedRoute element={<ForgotPassword />} anonymous={true} />
+          }
         ></Route>
         <Route
           path="/reset-password"
-          element={<OnlyPublicElement element={<ResetPassword />} />}
+          element={
+            <ProtectedRoute element={<ResetPassword />} anonymous={true} />
+          }
         ></Route>
         <Route
           path="/profile"
-          element={<PrivateElement element={<Profile />} />}
+          element={<ProtectedRoute element={<Profile />} />}
         >
           <Route
             path="/profile"
-            element={<PrivateElement element={<UserInfo />} />}
+            element={<ProtectedRoute element={<UserInfo />} />}
           ></Route>
           <Route
             path="orders"
-            element={<PrivateElement element={<ProfileOrders />} />}
+            element={<ProtectedRoute element={<ProfileOrders />} />}
           />
         </Route>
         <Route

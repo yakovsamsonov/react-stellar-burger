@@ -7,8 +7,15 @@ function checkReponse(res) {
   return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
 }
 
+function checkSuccess(res) {
+  if (res && res.success) {
+    return res;
+  }
+  return Promise.reject(`Ошибка запроса: ${res}`);
+}
+
 function loadData(url, options) {
-  return fetch(url, options).then(checkReponse);
+  return fetch(url, options).then(checkReponse).then(checkSuccess);
 }
 
 export function loadIngredients() {

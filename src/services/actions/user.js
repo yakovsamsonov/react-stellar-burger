@@ -81,13 +81,11 @@ export function logout() {
     });
     return logoutRequest()
       .then((d) => {
-        if (d.success) {
-          dispatch({
-            type: LOGOUT_SUCCESS,
-          });
-          deleteCookie('accessToken');
-          deleteCookie('refreshToken');
-        }
+        dispatch({
+          type: LOGOUT_SUCCESS,
+        });
+        deleteCookie('accessToken');
+        deleteCookie('refreshToken');
       })
       .catch((e) => {
         dispatch({

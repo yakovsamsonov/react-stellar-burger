@@ -1,12 +1,17 @@
 import { useDispatch, useSelector } from 'react-redux';
 import Form from '../components/form/form';
-import { TEXT_FIELD_TYPE, EMAIL_FIELD_TYPE } from '../utils/constants';
+import {
+  TEXT_FIELD_TYPE,
+  EMAIL_FIELD_TYPE,
+  PASSWORD_FIELD_TYPE,
+} from '../utils/constants';
 import { useState } from 'react';
 import { updateUserData } from '../services/actions/user';
 
 export function UserInfo() {
   const { user } = useSelector((store) => store.user);
-  const [newUser, setNewUser] = useState(user);
+  const baseUser = { ...user, password: '' };
+  const [newUser, setNewUser] = useState(baseUser);
 
   const dispatch = useDispatch();
 
@@ -24,6 +29,12 @@ export function UserInfo() {
       value: newUser.email,
       icon: 'EditIcon',
     },
+    {
+      type: PASSWORD_FIELD_TYPE,
+      name: 'password',
+      value: newUser.password,
+      icon: 'EditIcon',
+    },
   ];
 
   const buttons = [
@@ -33,16 +44,16 @@ export function UserInfo() {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    dispatch(updateUserData(newUser));
+    dispatch(updateUserData(newUser)).then(e.target.reset());
   };
 
   const onReset = (e) => {
     e.preventDefault();
-    setNewUser(user);
+    setNewUser(baseUser);
   };
 
   const disableButton = () => {
-    return JSON.stringify(newUser) === JSON.stringify(user);
+    return JSON.stringify(newUser) === JSON.stringify(baseUser);
   };
 
   return (
@@ -54,7 +65,6 @@ export function UserInfo() {
       formData={newUser}
       setFormData={setNewUser}
       customDiableButton={disableButton}
-      //errorMessage={registrationErrorText}
     ></Form>
   );
 }

@@ -8,6 +8,7 @@ import {
 import HeaderStyle from './app-header.module.css';
 import HeaderItem from '../header-item/header-item';
 import { useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 function AppHeader() {
   const location = useLocation();
@@ -33,7 +34,9 @@ function AppHeader() {
           <ListIcon type={getItemType('/feed')} />
         </HeaderItem>
       </div>
-      <Logo />
+      <Link to="/">
+        <Logo />
+      </Link>
       <HeaderItem to="/profile" label="Личный кабинет" name={PROFILE}>
         <ProfileIcon type={getItemType('/profile')} />
       </HeaderItem>
