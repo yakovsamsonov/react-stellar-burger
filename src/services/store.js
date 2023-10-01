@@ -36,7 +36,6 @@ export const defaultInitialState = {
     getUserFailed: false,
     getUserErrorText: '',
     resetRequested: false,
-    resetTokenSend: false,
     resetFailed: false,
     resetErrorText: '',
   },

@@ -1,4 +1,3 @@
-import { func } from 'prop-types';
 import {
   registerUser,
   loginRequest,
@@ -6,8 +5,15 @@ import {
   getUserRequestWithRefresh,
   updateUser,
   requestChangeToken,
+  changePassword,
 } from '../../utils/burger-api';
 import { deleteCookie } from '../../utils/cookie';
+import {
+  modify,
+  ADD_TO_STORAGE,
+  REMOVE_FROM_STORAGE,
+} from '../../utils/local-storage';
+import { PASSWORD_RESET_TOKEN_SEND } from '../../utils/constants';
 
 export const REGISTER_USER_REQUEST = 'REGISTER_USER_REQUEST';
 export const REGISTER_USER_SUCCESS = 'REGISTER_USER_SUCCESS';
@@ -25,7 +31,6 @@ export const USER_UPDATE_REQUEST = 'USER_UPDATE_REQUEST';
 export const USER_UPDATE_SUCCESS = 'USER_UPDATE_SUCCESS';
 export const USER_UPDATE_FAILED = 'USER_UPDATE_FAILED';
 export const PASSWORD_RESET_REQUEST = 'PASSWORD_RESET_REQUEST';
-export const PASSWORD_RESET_TOKEN_SEND = 'PASSWORD_RESET_TOKEN_SEND';
 export const PASSWORD_RESET_TOKEN_FAILED = 'PASSWORD_RESET_TOKEN_FAILED';
 
 export function registerNewUser(user) {
@@ -140,7 +145,23 @@ export function requestPasswordChange(email) {
     dispatch({ type: PASSWORD_RESET_REQUEST });
     return requestChangeToken(email)
       .then((d) => {
-        dispatch({ type: PASSWORD_RESET_TOKEN_SEND });
+        modify(ADD_TO_STORAGE, PASSWORD_RESET_TOKEN_SEND, true);
+      })
+      .catch((e) => {
+        dispatch({
+          type: PASSWORD_RESET_TOKEN_FAILED,
+          errorMessage: e.message,
+        });
+      });
+  };
+}
+
+export function confirmPasswordChange(request) {
+  return function (dispatch) {
+    dispatch({ type: PASSWORD_RESET_REQUEST });
+    return changePassword(request)
+      .then((d) => {
+        modify(REMOVE_FROM_STORAGE, PASSWORD_RESET_TOKEN_SEND);
       })
       .catch((e) => {
         dispatch({

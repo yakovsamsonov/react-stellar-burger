@@ -1,8 +1,11 @@
 import Form from '../components/form/form';
 import { useState } from 'react';
 import { PASSWORD_FIELD_TYPE, TEXT_FIELD_TYPE } from '../utils/constants';
-import { useSelector } from 'react-redux';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
+import { modify, GET_FROM_STORAGE } from '../utils/local-storage';
+import { PASSWORD_RESET_TOKEN_SEND } from '../utils/constants';
+import { useDispatch, useSelector } from 'react-redux';
+import { confirmPasswordChange } from '../services/actions/user';
 
 const emptyForm = {
   password: '',
@@ -11,9 +14,11 @@ const emptyForm = {
 
 export function ResetPassword() {
   const [formData, setformData] = useState(emptyForm);
-  const { resetTokenSend } = useSelector((store) => store.user);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { resetErrorText } = useSelector((store) => store.user);
 
-  console.log(resetTokenSend);
+  const resetTokenSend = modify(GET_FROM_STORAGE, PASSWORD_RESET_TOKEN_SEND);
 
   const fields = [
     {
@@ -42,6 +47,9 @@ export function ResetPassword() {
   const onSumbit = (e) => {
     e.preventDefault();
     console.log('Попытка смены пароля');
+    dispatch(confirmPasswordChange(formData)).then((res) =>
+      navigate('/', { replace: true })
+    );
   };
 
   return resetTokenSend ? (
@@ -53,6 +61,7 @@ export function ResetPassword() {
       formData={formData}
       setFormData={setformData}
       formSubmit={onSumbit}
+      errorMessage={resetErrorText}
     ></Form>
   ) : (
     <Navigate to="/forgot-password" replace></Navigate>
