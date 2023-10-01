@@ -51,7 +51,9 @@ export function Register() {
 
   const onSumbit = (e) => {
     e.preventDefault();
-    dispatch(registerNewUser(newUser)).then(setNewUser(emptyForm));
+    dispatch(registerNewUser(newUser)).then(() => {
+      setNewUser(emptyForm);
+    });
   };
 
   return (

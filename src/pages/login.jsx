@@ -44,7 +44,9 @@ export function Login() {
 
   const onSumbit = (e) => {
     e.preventDefault();
-    dispatch(login(loginData)).then(setLoginData(emptyForm));
+    dispatch(login(loginData)).then(() => {
+      setLoginData(emptyForm);
+    });
   };
 
   return (

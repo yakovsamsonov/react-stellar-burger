@@ -44,7 +44,9 @@ export function UserInfo() {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    dispatch(updateUserData(newUser)).then(e.target.reset());
+    dispatch(updateUserData(newUser)).then(() => {
+      setNewUser({ ...newUser, password: '' });
+    });
   };
 
   const onReset = (e) => {

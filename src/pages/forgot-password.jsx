@@ -35,7 +35,9 @@ export function ForgotPassword() {
 
   const onSumbit = (e) => {
     e.preventDefault();
-    dispatch(requestPasswordChange(formData)).then(navigate('/reset-password'));
+    dispatch(requestPasswordChange(formData)).then(() => {
+      navigate('/reset-password');
+    });
   };
 
   return (
