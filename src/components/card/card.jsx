@@ -1,4 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 import { useDrag } from 'react-dnd';
 import {
   CurrencyIcon,
@@ -7,11 +8,12 @@ import {
 import cardStyle from './card.module.css';
 
 import { ingredientPropType } from '../../utils/prop-types.js';
-import { OPEN_DETAILS } from '../../services/actions/details';
+import { Link } from 'react-router-dom';
 
 export default function Card({ card }) {
   const { items, bun } = useSelector((store) => store.burger);
   const dispatch = useDispatch();
+  const location = useLocation();
 
   const [{ opacity }, ref] = useDrag({
     type: 'ingredient',
@@ -35,27 +37,24 @@ export default function Card({ card }) {
     }, 0);
   };
 
-  function processCardClick() {
-    dispatch({ type: OPEN_DETAILS, card: card });
-  }
-
   const orderedNum = getOrderedNum();
 
   return (
-    <li
-      ref={ref}
-      className={cardStyle.card}
-      onClick={processCardClick}
-      style={{ opacity: opacity }}
+    <Link
+      to={`/ingredients/${card._id}`}
+      state={{ backgroundLocation: location.pathname }}
+      className={cardStyle.card__link}
     >
-      {orderedNum > 0 && <Counter count={orderedNum} size="default" />}
-      <img src={card.image} alt={card.name} />
-      <div className={cardStyle.price__box}>
-        <p className={cardStyle.price}>{card.price}</p>
-        <CurrencyIcon type="primary" />
-      </div>
-      <p className={cardStyle.label}>{card.name}</p>
-    </li>
+      <li ref={ref} className={cardStyle.card} style={{ opacity: opacity }}>
+        {orderedNum > 0 && <Counter count={orderedNum} size="default" />}
+        <img src={card.image} alt={card.name} />
+        <div className={cardStyle.price__box}>
+          <p className={cardStyle.price}>{card.price}</p>
+          <CurrencyIcon type="primary" />
+        </div>
+        <p className={cardStyle.label}>{card.name}</p>
+      </li>
+    </Link>
   );
 }
 

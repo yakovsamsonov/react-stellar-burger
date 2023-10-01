@@ -1,9 +1,11 @@
+import { func } from 'prop-types';
 import {
   registerUser,
   loginRequest,
   logoutRequest,
   getUserRequestWithRefresh,
   updateUser,
+  requestChangeToken,
 } from '../../utils/burger-api';
 import { deleteCookie } from '../../utils/cookie';
 
@@ -22,6 +24,9 @@ export const USER_FAILED = 'USER_FAILED';
 export const USER_UPDATE_REQUEST = 'USER_UPDATE_REQUEST';
 export const USER_UPDATE_SUCCESS = 'USER_UPDATE_SUCCESS';
 export const USER_UPDATE_FAILED = 'USER_UPDATE_FAILED';
+export const PASSWORD_RESET_REQUEST = 'PASSWORD_RESET_REQUEST';
+export const PASSWORD_RESET_TOKEN_SEND = 'PASSWORD_RESET_TOKEN_SEND';
+export const PASSWORD_RESET_TOKEN_FAILED = 'PASSWORD_RESET_TOKEN_FAILED';
 
 export function registerNewUser(user) {
   return function (dispatch) {
@@ -124,6 +129,22 @@ export function updateUserData(newUserData) {
       .catch((e) => {
         dispatch({
           type: USER_UPDATE_FAILED,
+          errorMessage: e.message,
+        });
+      });
+  };
+}
+
+export function requestPasswordChange(email) {
+  return function (dispatch) {
+    dispatch({ type: PASSWORD_RESET_REQUEST });
+    return requestChangeToken(email)
+      .then((d) => {
+        dispatch({ type: PASSWORD_RESET_TOKEN_SEND });
+      })
+      .catch((e) => {
+        dispatch({
+          type: PASSWORD_RESET_TOKEN_FAILED,
           errorMessage: e.message,
         });
       });

@@ -1,6 +1,9 @@
 import Form from '../components/form/form';
 import { useState } from 'react';
 import { EMAIL_FIELD_TYPE } from '../utils/constants';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { requestPasswordChange } from '../services/actions/user';
 
 const emptyForm = {
   email: '',
@@ -8,6 +11,9 @@ const emptyForm = {
 
 export function ForgotPassword() {
   const [formData, setformData] = useState(emptyForm);
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const fields = [
     {
@@ -29,7 +35,7 @@ export function ForgotPassword() {
 
   const onSumbit = (e) => {
     e.preventDefault();
-    console.log('Попытка восстановления пароля');
+    dispatch(requestPasswordChange(formData)).then(navigate('/reset-password'));
   };
 
   return (

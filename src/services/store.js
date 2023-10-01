@@ -1,7 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { ingredientsReducer } from './reducers/ingredients';
 import { burgerReducer } from './reducers/burger';
-import { detailsReducer } from './reducers/details';
 import { orderReducer } from './reducers/order';
 import { userReducer } from './reducers/user';
 
@@ -14,10 +13,6 @@ export const defaultInitialState = {
   burger: {
     bun: null,
     items: [],
-  },
-  details: {
-    detailsOpen: false,
-    card: {},
   },
   order: {
     orderOpen: false,
@@ -40,6 +35,10 @@ export const defaultInitialState = {
     getUserSend: false,
     getUserFailed: false,
     getUserErrorText: '',
+    resetRequested: false,
+    resetTokenSend: false,
+    resetFailed: false,
+    resetErrorText: '',
   },
 };
 
@@ -48,7 +47,6 @@ export function createStore(initialState = defaultInitialState) {
     reducer: {
       ingredients: ingredientsReducer,
       burger: burgerReducer,
-      details: detailsReducer,
       order: orderReducer,
       user: userReducer,
     },

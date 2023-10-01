@@ -14,6 +14,9 @@ import {
   USER_UPDATE_REQUEST,
   USER_UPDATE_SUCCESS,
   USER_UPDATE_FAILED,
+  PASSWORD_RESET_REQUEST,
+  PASSWORD_RESET_TOKEN_SEND,
+  PASSWORD_RESET_TOKEN_FAILED,
 } from '../actions/user';
 
 const initialState = {
@@ -30,6 +33,10 @@ const initialState = {
   getUserSend: false,
   getUserFailed: false,
   getUserErrorText: '',
+  resetRequested: false,
+  resetTokenSend: false,
+  resetFailed: false,
+  resetErrorText: '',
 };
 
 export const userReducer = (state = initialState, action) => {
@@ -140,6 +147,30 @@ export const userReducer = (state = initialState, action) => {
       return {
         ...state,
         user: action.user,
+      };
+    }
+    case PASSWORD_RESET_REQUEST: {
+      return {
+        ...state,
+        resetRequested: true,
+        resetFailed: false,
+        resetTokenSend: false,
+        resetErrorText: initialState.resetErrorText,
+      };
+    }
+    case PASSWORD_RESET_TOKEN_SEND: {
+      return {
+        ...state,
+        resetTokenSend: true,
+      };
+    }
+    case PASSWORD_RESET_TOKEN_FAILED: {
+      return {
+        ...state,
+        resetRequested: false,
+        resetFailed: true,
+        resetTokenSend: false,
+        resetErrorText: action.errorMessage,
       };
     }
     default: {

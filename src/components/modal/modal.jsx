@@ -37,8 +37,8 @@ function Modal(props) {
         <div className={ModalStyle['modal__header-box']}>
           <img
             ref={closeButton}
+            className={ModalStyle['modal__close-button']}
             onClick={handleButtonClick}
-            className="button_close"
             src={close_button}
           />
           <h2 className={ModalStyle['modal__header-label']}>{header}</h2>

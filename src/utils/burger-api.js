@@ -123,3 +123,27 @@ export function logoutRequest() {
 
   return loadData(endpoint, options);
 }
+
+export function requestChangeToken(email) {
+  const endpoint = `${BACKEND_BASE_URL}/password-reset`;
+
+  const options = {
+    method: 'POST',
+    headers: { ...baseHeaders },
+    body: JSON.stringify(email),
+  };
+
+  return loadData(endpoint, options);
+}
+
+export function changePassword(changeRequest) {
+  const endpoint = `${BACKEND_BASE_URL}/password-reset/reset`;
+
+  const options = {
+    method: 'POST',
+    headers: { ...baseHeaders },
+    body: JSON.stringify(changeRequest),
+  };
+
+  return loadData(endpoint, options);
+}
