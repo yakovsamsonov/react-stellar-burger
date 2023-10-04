@@ -6,6 +6,11 @@
   align-items: center;
 }
 
+.card__link {
+  text-decoration: none;
+  color: unset;
+}
+
 .price__box {
   display: flex;
   flex-direction: row;

@@ -1,10 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { ingredientsReducer } from './reducers/ingredients';
 import { burgerReducer } from './reducers/burger';
-import { detailsReducer } from './reducers/details';
 import { orderReducer } from './reducers/order';
-import { tabReducer } from './reducers/tab';
-import { BURGER } from '../utils/constants';
+import { userReducer } from './reducers/user';
 
 export const defaultInitialState = {
   ingredients: {
@@ -16,10 +14,6 @@ export const defaultInitialState = {
     bun: null,
     items: [],
   },
-  details: {
-    detailsOpen: false,
-    card: {},
-  },
   order: {
     orderOpen: false,
     ingredients: [],
@@ -27,7 +21,24 @@ export const defaultInitialState = {
     orderLoading: false,
     orderFailed: false,
   },
-  selectedTab: { name: BURGER },
+  user: {
+    user: { email: '', name: '' },
+    registrationSend: false,
+    registrationFailed: false,
+    registrationErrorText: '',
+    loginSend: false,
+    loginFailed: false,
+    loginErrorText: '',
+    logoutSend: false,
+    logoutFailed: false,
+    logoutErrorText: '',
+    getUserSend: false,
+    getUserFailed: false,
+    getUserErrorText: '',
+    resetRequested: false,
+    resetFailed: false,
+    resetErrorText: '',
+  },
 };
 
 export function createStore(initialState = defaultInitialState) {
@@ -35,9 +46,8 @@ export function createStore(initialState = defaultInitialState) {
     reducer: {
       ingredients: ingredientsReducer,
       burger: burgerReducer,
-      details: detailsReducer,
       order: orderReducer,
-      selectedTab: tabReducer,
+      user: userReducer,
     },
     preloadedState: initialState,
   });
