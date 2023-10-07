@@ -14,6 +14,7 @@ import {
   Profile,
   ProfileOrders,
   UserInfo,
+  Feed,
 } from '../../pages';
 import { ProtectedRoute } from '../protected-route';
 import AppHeader from '../app-header/app-header';
@@ -21,7 +22,7 @@ import styles from './app.module.css';
 import CardDetails from '../card-details/card-details';
 import Modal from '../modal/modal';
 import { useDispatch, useSelector } from 'react-redux';
-import { getIngredients } from '../../services/actions/ingredients';
+import { getIngredients } from '../../services/actions';
 import { useEffect } from 'react';
 
 function App() {
@@ -64,6 +65,7 @@ function ModalSwitch() {
     <>
       <Routes location={background || location}>
         <Route path="/" element={<Constructor />}></Route>
+        <Route path="/feed" element={<Feed />}></Route>
         <Route
           path="/login"
           element={<ProtectedRoute element={<Login />} anonymous={true} />}

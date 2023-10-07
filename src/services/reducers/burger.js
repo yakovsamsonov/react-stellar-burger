@@ -5,7 +5,7 @@ import {
   REMOVE_REGULAR,
   CHANGE_ORDER,
   CLEAR_BURGER,
-} from '../actions/burger';
+} from '../actions';
 const initialState = {
   bun: null,
   items: [],

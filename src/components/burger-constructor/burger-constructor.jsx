@@ -1,8 +1,14 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useDrop } from 'react-dnd';
-import { OPEN_ORDER, sendOrder } from '../../services/actions/order';
-import { CLEAR_BURGER } from '../../services/actions/burger';
+import {
+  CLEAR_BURGER,
+  OPEN_ORDER,
+  sendOrder,
+  REMOVE_BUN,
+  ADD_BUN,
+  ADD_REGULAR,
+} from '../../services/actions';
 import {
   CurrencyIcon,
   Button,
@@ -19,11 +25,6 @@ import {
   PLACE_ORDER_BUTTON_LABEL,
   BUN_TYPE,
 } from '../../utils/constants';
-import {
-  REMOVE_BUN,
-  ADD_BUN,
-  ADD_REGULAR,
-} from '../../services/actions/burger';
 import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from 'react-router-dom';
 

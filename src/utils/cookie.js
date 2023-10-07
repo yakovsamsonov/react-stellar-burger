@@ -1,4 +1,9 @@
-export function getCookie(name) {
+import {
+  ACCESS_TOKEN_COOKIE_NAME,
+  REFRESH_TOKEN_COOKIE_NAME,
+} from './constants';
+
+function getCookie(name) {
   const matches = document.cookie.match(
     new RegExp(
       '(?:^|; )' +
@@ -7,6 +12,14 @@ export function getCookie(name) {
     )
   );
   return matches ? decodeURIComponent(matches[1]) : undefined;
+}
+
+export function getAccessToken() {
+  return getCookie(ACCESS_TOKEN_COOKIE_NAME);
+}
+
+export function getRefreshToken() {
+  return getCookie(REFRESH_TOKEN_COOKIE_NAME);
 }
 
 export function setCookie(name, value, props) {
@@ -38,7 +51,10 @@ export function deleteCookie(name) {
 
 export function setUserCookiesFromResponce(responce) {
   if (responce.success) {
-    setCookie('accessToken', responce.accessToken.split('Bearer ')[1]);
-    setCookie('refreshToken', responce.refreshToken);
+    setCookie(
+      ACCESS_TOKEN_COOKIE_NAME,
+      responce.accessToken.split('Bearer ')[1]
+    );
+    setCookie(REFRESH_TOKEN_COOKIE_NAME, responce.refreshToken);
   }
 }

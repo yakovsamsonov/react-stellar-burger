@@ -6,6 +6,7 @@ import { ResetPassword } from './reset-password';
 import { Profile } from './profile/profile';
 import { ProfileOrders } from './profile-orders';
 import { UserInfo } from './user-info';
+import { Feed } from './feed/feed';
 
 export {
   Constructor,
@@ -16,4 +17,5 @@ export {
   Profile,
   ProfileOrders,
   UserInfo,
+  Feed,
 };

@@ -1,5 +1,9 @@
 import { BACKEND_BASE_URL } from './constants';
-import { getCookie, setUserCookiesFromResponce } from './cookie';
+import {
+  getAccessToken,
+  getRefreshToken,
+  setUserCookiesFromResponce,
+} from './cookie';
 
 const baseHeaders = { 'Content-Type': 'application/json; charset=UTF-8' };
 
@@ -52,7 +56,7 @@ export function updateUser(newUser) {
     method: 'PATCH',
     headers: {
       ...baseHeaders,
-      Authorization: 'Bearer ' + getCookie('accessToken'),
+      Authorization: 'Bearer ' + getAccessToken(),
     },
     body: JSON.stringify(newUser),
   };
@@ -81,7 +85,7 @@ export function getUserRequest() {
     method: 'GET',
     headers: {
       ...baseHeaders,
-      Authorization: 'Bearer ' + getCookie('accessToken'),
+      Authorization: 'Bearer ' + getAccessToken(),
     },
   };
 
@@ -99,7 +103,7 @@ function refreshToken() {
 }
 
 function prepareLogoutOptions() {
-  const token = { token: getCookie('refreshToken') };
+  const token = { token: getRefreshToken() };
 
   return {
     method: 'POST',

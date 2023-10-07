@@ -1,8 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { ingredientsReducer } from './reducers/ingredients';
-import { burgerReducer } from './reducers/burger';
-import { orderReducer } from './reducers/order';
-import { userReducer } from './reducers/user';
+import { socketMiddleware } from './middleware';
+import {
+  wsReducer,
+  ingredientsReducer,
+  burgerReducer,
+  orderReducer,
+  userReducer,
+} from './reducers';
 
 export const defaultInitialState = {
   ingredients: {
@@ -39,6 +43,10 @@ export const defaultInitialState = {
     resetFailed: false,
     resetErrorText: '',
   },
+  ws: {
+    wsConnected: false,
+    orders: [],
+  },
 };
 
 export function createStore(initialState = defaultInitialState) {
@@ -48,7 +56,10 @@ export function createStore(initialState = defaultInitialState) {
       burger: burgerReducer,
       order: orderReducer,
       user: userReducer,
+      ws: wsReducer,
     },
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware().concat(socketMiddleware),
     preloadedState: initialState,
   });
 }
