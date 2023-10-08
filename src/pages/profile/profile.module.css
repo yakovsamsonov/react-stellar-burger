@@ -1,6 +1,6 @@
 .profile {
   margin: 0 auto;
-  padding-top: 120px;
+  composes: pt-20 from global;
   width: 100%;
   max-width: 1240px;
   display: flex;

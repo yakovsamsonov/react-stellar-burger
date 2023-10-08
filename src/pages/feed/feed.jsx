@@ -17,5 +17,9 @@ export function Feed() {
     };
   }, []);
 
-  return <h2 className={FeedStyle['section__label']}>Соберите бургер</h2>;
+  return (
+    <div className={FeedStyle['feed']}>
+      <h2 className={FeedStyle['feed__label']}>Лента заказов</h2>
+    </div>
+  );
 }

@@ -62,7 +62,7 @@ function ModalSwitch() {
   };
 
   return (
-    <>
+    <div className={styles.main}>
       <Routes location={background || location}>
         <Route path="/" element={<Constructor />}></Route>
         <Route path="/feed" element={<Feed />}></Route>
@@ -102,7 +102,7 @@ function ModalSwitch() {
         <Route
           path="/ingredients/:id"
           element={
-            <div style={{ paddingTop: '120px' }}>
+            <div className="pt-20">
               <CardDetails />
             </div>
           }
@@ -120,7 +120,7 @@ function ModalSwitch() {
           />
         </Routes>
       )}
-    </>
+    </div>
   );
 }
 

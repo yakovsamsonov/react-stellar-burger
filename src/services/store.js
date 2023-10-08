@@ -46,6 +46,8 @@ export const defaultInitialState = {
   ws: {
     wsConnected: false,
     orders: [],
+    total: 0,
+    totalToday: 0,
   },
 };
 
