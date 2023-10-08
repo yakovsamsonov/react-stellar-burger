@@ -1,7 +1,17 @@
 .feed {
-  /*composes: pt-10 from global;*/
+  height: 100%;
+  overflow-y: hidden;
 }
 
 .feed__label {
   composes: mb-4 text text_type_main-large from global;
+}
+
+.feed__box {
+  display: flex;
+  flex-direction: row;
+  gap: 60px;
+  align-items: flex-start;
+  height: 100%;
+  overflow-y: hidden;
 }

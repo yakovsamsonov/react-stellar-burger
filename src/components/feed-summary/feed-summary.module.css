@@ -1,0 +1,42 @@
+.feed-summary {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 68px;
+}
+
+.feed-summary__orders-box {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 36px;
+}
+
+.stat__label {
+  composes: text text_type_main-medium from global;
+}
+
+.stat__value {
+  composes: text text_type_digits-large from global;
+}
+
+.order-stat__box {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(10, 1fr);
+  column-gap: 16px;
+  row-gap: 8px;
+}
+
+.order-stat__num {
+  composes: text text_type_digits-default from global;
+}
+
+.order-stat__num_done {
+  color: #00cccc;
+}
+
+.order-stat__label {
+  composes: mb-6 text text_type_main-medium from global;
+}

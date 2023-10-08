@@ -1,0 +1,5 @@
+.order__summary-box {
+  background-color: #1c1c21;
+  border-radius: 40px;
+  composes: p-6 from global;
+}
