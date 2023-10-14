@@ -59,8 +59,8 @@ function ModalSwitch() {
   const background = location.state && location.state.backgroundLocation;
 
   const processModalClose = useCallback(() => {
-    navigate('/', { replace: true });
-  }, [navigate]);
+    navigate(background, { replace: true });
+  }, [navigate, background]);
 
   return (
     <div className={styles.main}>
@@ -132,6 +132,22 @@ function ModalSwitch() {
             element={
               <Modal onClose={processModalClose}>
                 <CardDetails />
+              </Modal>
+            }
+          />
+          <Route
+            path="/feed/:num"
+            element={
+              <Modal onClose={processModalClose}>
+                <OrderDetails />
+              </Modal>
+            }
+          />
+          <Route
+            path="/profile/orders/:num"
+            element={
+              <Modal onClose={processModalClose}>
+                <OrderDetails />
               </Modal>
             }
           />

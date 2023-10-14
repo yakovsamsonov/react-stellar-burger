@@ -37,7 +37,7 @@ export function placeOrder(requestData) {
 
   const options = {
     method: 'POST',
-    headers: { ...baseHeaders },
+    headers: { ...baseHeaders, Authorization: 'Bearer ' + getAccessToken() },
     body: JSON.stringify({ ingredients: requestData }),
   };
   return loadData(endpoint, options);

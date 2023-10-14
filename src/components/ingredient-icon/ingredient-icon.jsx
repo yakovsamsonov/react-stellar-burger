@@ -9,7 +9,7 @@ export default function IngredientIcon({ order, image, label }) {
       style={{
         position: 'relative',
         left: `-${order * 16}px`,
-        zIndex: `${100 - order}`,
+        zIndex: `${10 - order}`,
       }}
     >
       {label ? (

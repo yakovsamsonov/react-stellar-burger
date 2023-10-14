@@ -1,5 +1,4 @@
 import { WS_BASE_URL } from '../../utils/constants';
-import { getAccessToken } from '../../utils/cookie';
 import {
   WS_CONNECTION_START,
   WS_CONNECTION_ERROR,
@@ -15,11 +14,7 @@ export const socketMiddleware = (store) => {
       const { dispatch } = store;
 
       if (action.type === WS_CONNECTION_START) {
-        if (action.private) {
-          socket = new WebSocket(`${WS_BASE_URL}?token=${getAccessToken()}`);
-        } else {
-          socket = new WebSocket(`${WS_BASE_URL}/all`);
-        }
+        socket = new WebSocket(`${WS_BASE_URL}${action.payload}`);
       }
 
       if (action.type === WS_CONNECTION_CLOSED) {

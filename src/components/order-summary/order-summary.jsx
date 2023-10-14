@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import OrderSummaryStyle from './order-summary.module.css';
 import { useState, useMemo, useEffect } from 'react';
 import { BUN_TYPE, orderState, getDateLabel } from '../../utils';
@@ -12,6 +12,7 @@ export default function OrderSummary({ order, showStatus }) {
   const [price, setPrice] = useState(0);
   const [ingData, setIngData] = useState([]);
   const [extraItems, setExtraItems] = useState(0);
+  const location = useLocation();
 
   useEffect(() => {
     const data = [];
@@ -54,7 +55,11 @@ export default function OrderSummary({ order, showStatus }) {
   }, [orderPrice]);
 
   return (
-    <Link to={`${order.number}`} className={OrderSummaryStyle['order__link']}>
+    <Link
+      to={`${order.number}`}
+      className={OrderSummaryStyle['order__link']}
+      state={{ backgroundLocation: location.pathname }}
+    >
       <article className={OrderSummaryStyle['order__summary-box']}>
         <div className={OrderSummaryStyle['order__summary-row']}>
           <p className={OrderSummaryStyle['order__summary-number']}>

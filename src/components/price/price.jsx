@@ -10,7 +10,7 @@ export default function Price({ price, size = 'default' }) {
     } else {
       return PriceStyle.price__number_default;
     }
-  }, []);
+  }, [size]);
 
   return (
     <div className={PriceStyle.price__box}>

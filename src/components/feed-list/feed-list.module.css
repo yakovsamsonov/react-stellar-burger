@@ -4,7 +4,8 @@
   align-items: stretch;
   gap: 16px;
   max-height: 100%;
-  max-width: 584px;
+  width: 100%;
+  max-width: 844px;
   composes: pr-2 from global;
 }
 
