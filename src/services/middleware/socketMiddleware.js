@@ -1,50 +1,39 @@
-import { WS_BASE_URL } from '../../utils/constants';
-import {
-  WS_CONNECTION_START,
-  WS_CONNECTION_ERROR,
-  WS_CONNECTION_SUCCESS,
-  WS_CONNECTION_CLOSED,
-  WS_GET_MESSAGE,
-} from '../actions';
+export const socketMiddleware = (baseUrl, actions) => (store) => (next) => {
+  let socket = null;
+  return function (action) {
+    const { dispatch } = store;
 
-export const socketMiddleware = (store) => {
-  return function (next) {
-    let socket = null;
-    return function (action) {
-      const { dispatch } = store;
+    if (action.type === actions.wsOnConnectInit) {
+      socket = new WebSocket(`${baseUrl}${action.payload}`);
+    }
 
-      if (action.type === WS_CONNECTION_START) {
-        socket = new WebSocket(`${WS_BASE_URL}${action.payload}`);
-      }
+    if (action.type === actions.wsOnClose) {
+      socket.close(1000, 'leave page');
+    }
 
-      if (action.type === WS_CONNECTION_CLOSED) {
-        socket.close(1000, 'leave page');
-      }
+    if (socket) {
+      socket.onopen = () => {
+        dispatch({ type: actions.wsOnConnectionSuccess });
+      };
 
-      if (socket) {
-        socket.onopen = () => {
-          dispatch({ type: WS_CONNECTION_SUCCESS });
-        };
+      socket.onerror = (event) => {
+        dispatch({ type: action.wsOnError });
+      };
 
-        socket.onerror = (event) => {
-          dispatch({ type: WS_CONNECTION_ERROR });
-        };
+      socket.onmessage = (event) => {
+        const { data } = event;
+        const parsedData = JSON.parse(data);
 
-        socket.onmessage = (event) => {
-          const { data } = event;
-          const parsedData = JSON.parse(data);
+        dispatch({ type: actions.wsOnMessage, payload: parsedData });
+      };
 
-          dispatch({ type: WS_GET_MESSAGE, payload: parsedData });
-        };
+      socket.onclose = (event) => {
+        if (event.reason !== 'leave page') {
+          dispatch({ type: actions.wsOnClose });
+        }
+      };
+    }
 
-        socket.onclose = (event) => {
-          if (event.reason !== 'leave page') {
-            dispatch({ type: WS_CONNECTION_CLOSED });
-          }
-        };
-      }
-
-      return next(action);
-    };
+    return next(action);
   };
 };
