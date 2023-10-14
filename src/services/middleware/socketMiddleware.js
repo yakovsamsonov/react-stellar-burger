@@ -38,7 +38,6 @@ export const socketMiddleware = (store) => {
         socket.onmessage = (event) => {
           const { data } = event;
           const parsedData = JSON.parse(data);
-          console.log(parsedData);
 
           dispatch({ type: WS_GET_MESSAGE, payload: parsedData });
         };

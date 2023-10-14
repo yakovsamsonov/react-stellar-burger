@@ -1,6 +1,7 @@
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { WS_CONNECTION_START, WS_CONNECTION_CLOSED } from '../services/actions';
+import FeedList from '../components/feed-list/feed-list';
 
 export function ProfileOrders() {
   const dispatch = useDispatch();
@@ -13,5 +14,5 @@ export function ProfileOrders() {
     };
   }, []);
 
-  return <p>Здесь появится лента заказов</p>;
+  return <FeedList status={true} />;
 }

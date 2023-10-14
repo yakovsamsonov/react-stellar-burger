@@ -13,13 +13,19 @@ export default function FeedList() {
     }
   }, [orders]);
 
-  return (
-    <section className={`${FeedListStyle.section} custom-scroll`}>
-      {isListLoaded ? (
-        orders.map((order) => <OrderSummary key={order._id} order={order} />)
-      ) : (
-        <></>
-      )}
-    </section>
-  );
+  if (isListLoaded) {
+    return (
+      <section className={`${FeedListStyle.section} custom-scroll`}>
+        {orders.map((order) => (
+          <OrderSummary key={order._id} order={order} />
+        ))}
+      </section>
+    );
+  } else {
+    return (
+      <section className={FeedListStyle.section}>
+        <p>Заказов нет</p>
+      </section>
+    );
+  }
 }
