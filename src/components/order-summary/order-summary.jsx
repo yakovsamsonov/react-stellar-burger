@@ -5,6 +5,7 @@ import { useState, useMemo, useEffect } from 'react';
 import { BUN_TYPE, orderState, getDateLabel } from '../../utils';
 import IngredientIcon from '../ingredient-icon/ingredient-icon';
 import Price from '../price/price';
+import PropTypes from 'prop-types';
 
 export default function OrderSummary({ order, showStatus }) {
   const allIngredients = useSelector((store) => store.ingredients.ingredients);
@@ -100,3 +101,16 @@ export default function OrderSummary({ order, showStatus }) {
     </Link>
   );
 }
+
+OrderSummary.propTypes = {
+  order: PropTypes.shape({
+    createdAt: PropTypes.string.isRequired,
+    ingredients: PropTypes.arrayOf(PropTypes.string).isRequired,
+    name: PropTypes.string.isRequired,
+    number: PropTypes.number.isRequired,
+    status: PropTypes.string.isRequired,
+    updatedAt: PropTypes.string.isRequired,
+    _id: PropTypes.string.isRequired,
+  }).isRequired,
+  showStatus: PropTypes.bool,
+};

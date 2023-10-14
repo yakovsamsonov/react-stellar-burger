@@ -2,6 +2,7 @@ import FeedListStyle from './feed-list.module.css';
 import OrderSummary from '../order-summary/order-summary';
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 
 export default function FeedList({ status }) {
   const { orders } = useSelector((store) => store.ws);
@@ -31,3 +32,7 @@ export default function FeedList({ status }) {
     );
   }
 }
+
+FeedList.propTypes = {
+  status: PropTypes.bool,
+};

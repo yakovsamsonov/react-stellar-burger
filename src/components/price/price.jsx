@@ -1,6 +1,7 @@
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import PriceStyle from './price.module.css';
 import { useMemo } from 'react';
+import PropTypes from 'prop-types';
 
 export default function Price({ price, size = 'default' }) {
   const numberClasses = useMemo(() => {
@@ -18,3 +19,8 @@ export default function Price({ price, size = 'default' }) {
     </div>
   );
 }
+
+Price.propTypes = {
+  price: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  size: PropTypes.string,
+};

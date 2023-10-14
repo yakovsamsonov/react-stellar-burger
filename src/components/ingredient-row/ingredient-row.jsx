@@ -2,6 +2,7 @@ import IngredientIcon from '../ingredient-icon/ingredient-icon';
 import Price from '../price/price';
 import { BUN_TYPE } from '../../utils';
 import IngredientRowStyle from './ingredient-row.module.css';
+import PropTypes from 'prop-types';
 
 export default function IngredientRow({ ingredient }) {
   return (
@@ -16,3 +17,12 @@ export default function IngredientRow({ ingredient }) {
     </div>
   );
 }
+
+IngredientRow.propTypes = {
+  ingredient: PropTypes.shape({
+    type: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired,
+    image: PropTypes.string.isRequired,
+  }).isRequired,
+};

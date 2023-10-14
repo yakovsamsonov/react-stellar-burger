@@ -14,8 +14,6 @@ export default function OrderDetails() {
   const [totalPrice, setTotalPrice] = useState(0);
   const [ingData, setIngData] = useState([]);
 
-  console.log(detailsData);
-
   const { num } = useParams();
   const dispatch = useDispatch();
 
