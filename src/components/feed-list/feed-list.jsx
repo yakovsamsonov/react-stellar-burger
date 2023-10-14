@@ -3,7 +3,7 @@ import OrderSummary from '../order-summary/order-summary';
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 
-export default function FeedList() {
+export default function FeedList({ status }) {
   const { orders } = useSelector((store) => store.ws);
   const [isListLoaded, setIsListLoaded] = useState(false);
 
@@ -15,9 +15,11 @@ export default function FeedList() {
 
   if (isListLoaded) {
     return (
-      <section className={`${FeedListStyle.section} custom-scroll`}>
+      <section
+        className={`${FeedListStyle.section} ${FeedListStyle.section_scroll}`}
+      >
         {orders.map((order) => (
-          <OrderSummary key={order._id} order={order} />
+          <OrderSummary key={order._id} order={order} showStatus={status} />
         ))}
       </section>
     );

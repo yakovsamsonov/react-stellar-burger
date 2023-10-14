@@ -18,3 +18,8 @@ export const PASSWORD_RESET_TOKEN_SEND = 'PASSWORD_RESET_TOKEN_SEND';
 export const WS_BASE_URL = 'wss://norma.nomoreparties.space/orders';
 export const ACCESS_TOKEN_COOKIE_NAME = 'accessToken';
 export const REFRESH_TOKEN_COOKIE_NAME = 'refreshToken';
+export const orderState = {
+  done: ['Выполнен', 'Готовы'],
+  pending: ['Готовится', 'В работе'],
+  created: ['Создан', 'Обработка'],
+};

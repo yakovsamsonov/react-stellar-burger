@@ -14,6 +14,13 @@
   align-items: center;
 }
 
+.order__summary-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: stretch;
+}
+
 .order__summary-number {
   composes: text text_type_digits-default from global;
 }
@@ -24,6 +31,14 @@
 
 .order__summary-name {
   composes: text text_type_main-medium from global;
+}
+
+.order__summary-status {
+  composes: text text_type_main-dafault from global;
+}
+
+.order__summary-status_done {
+  color: #00cccc;
 }
 
 .order__summary-price {

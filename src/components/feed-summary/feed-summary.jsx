@@ -1,11 +1,7 @@
 import { useSelector } from 'react-redux';
+import { useMemo } from 'react';
 import FeedSummaryStyle from './feed-summary.module.css';
-
-const orderState = {
-  done: ['Выполнен', 'Готовы'],
-  pending: ['Готовится', 'В работе'],
-  created: ['Создан', 'Обработка'],
-};
+import { orderState } from '../../utils/constants';
 
 export default function FeedSummary() {
   const { orders, total, totalToday } = useSelector((store) => store.ws);
@@ -44,13 +40,13 @@ function Stat({ label, value }) {
 }
 
 function OrderNumBox({ status, numList }) {
-  const numClassNames = () => {
+  const numClassNames = useMemo(() => {
     let extra = '';
     if (status === 'done') {
       extra = FeedSummaryStyle['order-stat__num_done'];
     }
     return `${FeedSummaryStyle['order-stat__num']} ${extra}`;
-  };
+  }, [status]);
 
   return (
     <div className={FeedSummaryStyle['order-stat']}>
@@ -60,7 +56,7 @@ function OrderNumBox({ status, numList }) {
       <div className={FeedSummaryStyle['order-stat__box']}>
         {numList && numList.length > 0 ? (
           numList.map((num, ind) => (
-            <p className={numClassNames()} key={ind}>
+            <p className={numClassNames} key={ind}>
               {num}
             </p>
           ))

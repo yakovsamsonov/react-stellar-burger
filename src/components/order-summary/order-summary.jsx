@@ -3,8 +3,9 @@ import OrderSummaryStyle from './order-summary.module.css';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useState, useMemo, useEffect, useCallback } from 'react';
 import { BUN_TYPE } from '../../utils/constants';
+import { orderState } from '../../utils/constants';
 
-export default function OrderSummary({ order }) {
+export default function OrderSummary({ order, showStatus }) {
   const allIngredients = useSelector((store) => store.ingredients.ingredients);
   const [price, setPrice] = useState(0);
   const [ingData, setIngData] = useState([]);
@@ -25,6 +26,14 @@ export default function OrderSummary({ order }) {
     setIngData(data);
     setExtraItems(data.length - 5);
   }, [allIngredients, order.ingredients]);
+
+  const statusClassNames = useMemo(() => {
+    let extra = '';
+    if (order.status === 'done') {
+      extra = OrderSummaryStyle['order__summary-status_done'];
+    }
+    return `${OrderSummaryStyle['order__summary-status']} ${extra}`;
+  }, [order.status]);
 
   const getDateLabel = useCallback((order) => {
     const currentTime = new Date();
@@ -83,7 +92,16 @@ export default function OrderSummary({ order }) {
           {getDateLabel(order.createdAt)}
         </p>
       </div>
-      <h3 className={OrderSummaryStyle['order__summary-name']}>{order.name}</h3>
+      <div className={OrderSummaryStyle['order__summary-group']}>
+        <h3 className={OrderSummaryStyle['order__summary-name']}>
+          {order.name}
+        </h3>
+        {showStatus ? (
+          <p className={statusClassNames}>{orderState[order.status][0]}</p>
+        ) : (
+          <></>
+        )}
+      </div>
       <div className={OrderSummaryStyle['order__summary-row']}>
         <div
           style={{
