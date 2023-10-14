@@ -20,10 +20,11 @@ import { ProtectedRoute } from '../protected-route';
 import AppHeader from '../app-header/app-header';
 import styles from './app.module.css';
 import CardDetails from '../card-details/card-details';
+import OrderDetails from '../order-details/order-details';
 import Modal from '../modal/modal';
 import { useDispatch, useSelector } from 'react-redux';
 import { getIngredients } from '../../services/actions';
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
 
 function App() {
   const { ingredientsLoading, ingredientsFailed, ingredients } = useSelector(
@@ -57,9 +58,9 @@ function ModalSwitch() {
   const navigate = useNavigate();
   const background = location.state && location.state.backgroundLocation;
 
-  const processCardDetailsClose = () => {
+  const processModalClose = useCallback(() => {
     navigate('/', { replace: true });
-  };
+  }, [navigate]);
 
   return (
     <div className={styles.main}>
@@ -107,13 +108,29 @@ function ModalSwitch() {
             </div>
           }
         ></Route>
+        <Route
+          path="/feed/:num"
+          element={
+            <div className="pt-20">
+              <OrderDetails />
+            </div>
+          }
+        ></Route>
+        <Route
+          path="/profile/orders/:num"
+          element={
+            <div className="pt-20">
+              <OrderDetails />
+            </div>
+          }
+        ></Route>
       </Routes>
       {background && (
         <Routes>
           <Route
             path="/ingredients/:id"
             element={
-              <Modal onClose={processCardDetailsClose}>
+              <Modal onClose={processModalClose}>
                 <CardDetails />
               </Modal>
             }

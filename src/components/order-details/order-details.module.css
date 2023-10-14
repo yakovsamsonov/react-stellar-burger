@@ -1,0 +1,47 @@
+.order-details {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  max-width: 640px;
+  width: 100%;
+  margin: auto;
+}
+
+.order-details__container {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 16px;
+  width: 100%;
+  overflow-y: scroll;
+  max-height: 312px;
+  composes: custom-scroll mb-10 pr-6 from global;
+}
+
+.order-details__row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.order-details__number {
+  align-self: center;
+  composes: text text_type_digits-default mb-10 from global;
+}
+
+.order-details__name {
+  composes: text text_type_main-medium mb-3 from global;
+}
+
+.order-details__status {
+  composes: text text_type_main-dafault mb-15 from global;
+}
+
+.order-details__status_done {
+  color: #00cccc;
+}
+
+.order-details__date {
+  composes: text text_type_main-default text_color_inactive from global;
+}

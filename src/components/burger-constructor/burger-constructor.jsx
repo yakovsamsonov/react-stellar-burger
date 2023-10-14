@@ -9,10 +9,7 @@ import {
   ADD_BUN,
   ADD_REGULAR,
 } from '../../services/actions';
-import {
-  CurrencyIcon,
-  Button,
-} from '@ya.praktikum/react-developer-burger-ui-components';
+import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import {
   IngredientsGroup,
   BunIngredient,
@@ -24,9 +21,10 @@ import {
   AWAIT_BUTTON_LABEL,
   PLACE_ORDER_BUTTON_LABEL,
   BUN_TYPE,
-} from '../../utils/constants';
+} from '../../utils';
 import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from 'react-router-dom';
+import Price from '../price/price';
 
 function BurgerConstructor() {
   const [buttonLabel, setButtonLabel] = useState(PLACE_ORDER_BUTTON_LABEL);
@@ -108,10 +106,7 @@ function BurgerConstructor() {
       {items.length > 0 && <IngredientsGroup />}
       {bun && <BunIngredient ingredient={bun} type={BOTTOM_ING_TYPE} />}
       <div className={BurgerConstructorStyle['summary']}>
-        <p className={BurgerConstructorStyle['summary__total-value']}>
-          {total}
-        </p>
-        <CurrencyIcon type="primary" />
+        <Price price={total} size="medium"></Price>
         <Button
           htmlType="button"
           type="primary"

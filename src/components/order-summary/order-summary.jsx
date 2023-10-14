@@ -1,9 +1,10 @@
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import OrderSummaryStyle from './order-summary.module.css';
-import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useState, useMemo, useEffect, useCallback } from 'react';
-import { BUN_TYPE } from '../../utils/constants';
-import { orderState } from '../../utils/constants';
+import { useState, useMemo, useEffect } from 'react';
+import { BUN_TYPE, orderState, getDateLabel } from '../../utils';
+import IngredientIcon from '../ingredient-icon/ingredient-icon';
+import Price from '../price/price';
 
 export default function OrderSummary({ order, showStatus }) {
   const allIngredients = useSelector((store) => store.ingredients.ingredients);
@@ -35,37 +36,6 @@ export default function OrderSummary({ order, showStatus }) {
     return `${OrderSummaryStyle['order__summary-status']} ${extra}`;
   }, [order.status]);
 
-  const getDateLabel = useCallback((order) => {
-    const currentTime = new Date();
-    const orderTime = new Date(order);
-    const daysBetween = Math.floor(currentTime.getDate() - orderTime.getDate());
-
-    let periodLabel = '';
-    switch (daysBetween) {
-      case 0: {
-        periodLabel = 'Сегодня';
-        break;
-      }
-      case 1: {
-        periodLabel = 'Вчера';
-        break;
-      }
-      case 2: {
-        periodLabel = '2 дня назад';
-        break;
-      }
-      default: {
-        periodLabel = `${daysBetween} дней назад`;
-      }
-    }
-
-    return `${periodLabel}, ${orderTime.getHours()}:${
-      orderTime.getMinutes() < 10
-        ? `0${orderTime.getMinutes()}`
-        : orderTime.getMinutes()
-    } i-GMT+${-orderTime.getTimezoneOffset() / 60}`;
-  }, []);
-
   const orderPrice = useMemo(() => {
     let orderPrice = 0;
     ingData.forEach((ing) => {
@@ -83,83 +53,50 @@ export default function OrderSummary({ order, showStatus }) {
   }, [orderPrice]);
 
   return (
-    <article className={OrderSummaryStyle['order__summary-box']}>
-      <div className={OrderSummaryStyle['order__summary-row']}>
-        <p className={OrderSummaryStyle['order__summary-number']}>
-          #{order.number}
-        </p>
-        <p className={OrderSummaryStyle['order__summary-date']}>
-          {getDateLabel(order.createdAt)}
-        </p>
-      </div>
-      <div className={OrderSummaryStyle['order__summary-group']}>
-        <h3 className={OrderSummaryStyle['order__summary-name']}>
-          {order.name}
-        </h3>
-        {showStatus ? (
-          <p className={statusClassNames}>{orderState[order.status][0]}</p>
-        ) : (
-          <></>
-        )}
-      </div>
-      <div className={OrderSummaryStyle['order__summary-row']}>
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-          }}
-        >
-          {ingData.slice(0, 5).map((el, ind) => (
-            <IngredientIcon key={ind} order={ind} image={el.image} />
-          ))}
-          {ingData.length > 5 ? (
-            <IngredientIcon
-              key={5}
-              order={5}
-              image={ingData[5]['image']}
-              label={`+${extraItems}`}
-            />
+    <Link to={`${order.number}`} className={OrderSummaryStyle['order__link']}>
+      <article className={OrderSummaryStyle['order__summary-box']}>
+        <div className={OrderSummaryStyle['order__summary-row']}>
+          <p className={OrderSummaryStyle['order__summary-number']}>
+            #{order.number}
+          </p>
+          <p className={OrderSummaryStyle['order__summary-date']}>
+            {getDateLabel(order.createdAt)}
+          </p>
+        </div>
+        <div className={OrderSummaryStyle['order__summary-group']}>
+          <h3 className={OrderSummaryStyle['order__summary-name']}>
+            {order.name}
+          </h3>
+          {showStatus ? (
+            <p className={statusClassNames}>{orderState[order.status][0]}</p>
           ) : (
             <></>
           )}
         </div>
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-          }}
-        >
-          <p className={OrderSummaryStyle['order__summary-price']}>{price}</p>
-          <CurrencyIcon />
+        <div className={OrderSummaryStyle['order__summary-row']}>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+            }}
+          >
+            {ingData.slice(0, 5).map((el, ind) => (
+              <IngredientIcon key={ind} order={ind} image={el.image} />
+            ))}
+            {ingData.length > 5 ? (
+              <IngredientIcon
+                key={5}
+                order={5}
+                image={ingData[5]['image']}
+                label={`+${extraItems}`}
+              />
+            ) : (
+              <></>
+            )}
+          </div>
+          <Price price={price}></Price>
         </div>
-      </div>
-    </article>
-  );
-}
-
-function IngredientIcon({ order, image, label }) {
-  return (
-    <div
-      key={order}
-      className={OrderSummaryStyle['order__summary-picture-box']}
-      style={{
-        position: 'relative',
-        left: `-${order * 16}px`,
-        zIndex: `${100 - order}`,
-      }}
-    >
-      {label ? (
-        <p className={OrderSummaryStyle['order__summary-picture-label']}>
-          {label}
-        </p>
-      ) : (
-        <></>
-      )}
-      <img
-        className={OrderSummaryStyle['order__summary-picture']}
-        alt=""
-        src={image}
-      />
-    </div>
+      </article>
+    </Link>
   );
 }

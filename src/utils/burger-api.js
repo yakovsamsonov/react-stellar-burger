@@ -27,6 +27,11 @@ export function loadIngredients() {
   return loadData(endpoint);
 }
 
+export function loadOrderDetails(orderNum) {
+  const endpoint = `${BACKEND_BASE_URL}/orders/${orderNum}`;
+  return loadData(endpoint);
+}
+
 export function placeOrder(requestData) {
   const endpoint = `${BACKEND_BASE_URL}/orders`;
 

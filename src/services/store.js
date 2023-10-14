@@ -6,6 +6,7 @@ import {
   burgerReducer,
   orderReducer,
   userReducer,
+  detailsReducer,
 } from './reducers';
 
 export const defaultInitialState = {
@@ -24,6 +25,11 @@ export const defaultInitialState = {
     number: 0,
     orderLoading: false,
     orderFailed: false,
+  },
+  details: {
+    detailsData: {},
+    detailsLoading: false,
+    detailsFailed: false,
   },
   user: {
     user: { email: '', name: '' },
@@ -57,6 +63,7 @@ export function createStore(initialState = defaultInitialState) {
       ingredients: ingredientsReducer,
       burger: burgerReducer,
       order: orderReducer,
+      details: detailsReducer,
       user: userReducer,
       ws: wsReducer,
     },

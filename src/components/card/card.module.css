@@ -11,17 +11,6 @@
   color: unset;
 }
 
-.price__box {
-  display: flex;
-  flex-direction: row;
-  gap: 8px;
-  align-items: center;
-}
-
-.price {
-  composes: text text_type_digits-default from global;
-}
-
 .label {
   composes: text text_type_main-default from global;
   min-height: 48px;
