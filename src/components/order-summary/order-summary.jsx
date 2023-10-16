@@ -2,7 +2,7 @@ import { useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
 import OrderSummaryStyle from './order-summary.module.css';
 import { useState, useMemo, useEffect } from 'react';
-import { BUN_TYPE, orderState, getDateLabel } from '../../utils';
+import { orderState, getDateLabel } from '../../utils';
 import IngredientIcon from '../ingredient-icon/ingredient-icon';
 import Price from '../price/price';
 import PropTypes from 'prop-types';
@@ -19,11 +19,17 @@ export default function OrderSummary({ order, showStatus }) {
     order.ingredients.forEach((ing) => {
       const ingData = allIngredients.find((el) => el._id === ing);
       if (ingData) {
-        data.push({
-          image: ingData.image,
-          type: ingData.type,
-          price: ingData.price,
-        });
+        const elIndex = data.findIndex((item) => item.id === ing);
+        if (elIndex !== -1) {
+          data[elIndex].count = data[elIndex].count + 1;
+        } else {
+          data.push({
+            id: ingData._id,
+            image: ingData.image,
+            price: ingData.price,
+            count: 1,
+          });
+        }
       }
     });
     setIngData(data);
@@ -41,11 +47,7 @@ export default function OrderSummary({ order, showStatus }) {
   const orderPrice = useMemo(() => {
     let orderPrice = 0;
     ingData.forEach((ing) => {
-      if (ing.type === BUN_TYPE) {
-        orderPrice = orderPrice + ing.price * 2;
-      } else {
-        orderPrice = orderPrice + ing.price;
-      }
+      orderPrice = orderPrice + ing.price * ing.count;
     });
     return orderPrice;
   }, [ingData]);

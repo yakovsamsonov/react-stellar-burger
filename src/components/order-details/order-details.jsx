@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import OrderDetailsStyle from './order-details.module.css';
 import { useMemo, useState, useEffect } from 'react';
 import { getDetails } from '../../services/actions';
-import { orderState, getDateLabel, BUN_TYPE } from '../../utils';
+import { orderState, getDateLabel } from '../../utils';
 import Price from '../price/price';
 import IngredientRow from '../ingredient-row/ingredient-row';
 
@@ -27,12 +27,18 @@ export default function OrderDetails() {
       detailsData.ingredients.forEach((ing) => {
         const ingData = allIngredients.find((el) => el._id === ing);
         if (ingData) {
-          data.push({
-            image: ingData.image,
-            type: ingData.type,
-            price: ingData.price,
-            name: ingData.name,
-          });
+          const elIndex = data.findIndex((item) => item.id === ing);
+          if (elIndex !== -1) {
+            data[elIndex].count = data[elIndex].count + 1;
+          } else {
+            data.push({
+              id: ingData._id,
+              image: ingData.image,
+              price: ingData.price,
+              name: ingData.name,
+              count: 1,
+            });
+          }
         }
       });
       setIngData(data);
@@ -50,11 +56,7 @@ export default function OrderDetails() {
   const orderPrice = useMemo(() => {
     let orderPrice = 0;
     ingData.forEach((ing) => {
-      if (ing.type === BUN_TYPE) {
-        orderPrice = orderPrice + ing.price * 2;
-      } else {
-        orderPrice = orderPrice + ing.price;
-      }
+      orderPrice = orderPrice + ing.price * ing.count;
     });
     return orderPrice;
   }, [ingData]);

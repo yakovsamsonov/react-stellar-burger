@@ -1,6 +1,5 @@
 import IngredientIcon from '../ingredient-icon/ingredient-icon';
 import Price from '../price/price';
-import { BUN_TYPE } from '../../utils';
 import IngredientRowStyle from './ingredient-row.module.css';
 import PropTypes from 'prop-types';
 
@@ -11,9 +10,7 @@ export default function IngredientRow({ ingredient }) {
       <p className={IngredientRowStyle['ingredient_row__label']}>
         {ingredient.name}
       </p>
-      <Price
-        price={`${ingredient.type === BUN_TYPE ? 2 : 1} x ${ingredient.price}`}
-      ></Price>
+      <Price price={`${ingredient.count} x ${ingredient.price}`}></Price>
     </div>
   );
 }
