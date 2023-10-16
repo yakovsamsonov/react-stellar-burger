@@ -17,9 +17,10 @@ export default function IngredientRow({ ingredient }) {
 
 IngredientRow.propTypes = {
   ingredient: PropTypes.shape({
-    type: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,
     image: PropTypes.string.isRequired,
+    count: PropTypes.number.isRequired,
   }).isRequired,
 };

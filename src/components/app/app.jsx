@@ -119,9 +119,13 @@ function ModalSwitch() {
         <Route
           path="/profile/orders/:num"
           element={
-            <div className="pt-20">
-              <OrderDetails />
-            </div>
+            <ProtectedRoute
+              element={
+                <div className="pt-20">
+                  <OrderDetails />
+                </div>
+              }
+            />
           }
         ></Route>
       </Routes>
@@ -146,9 +150,13 @@ function ModalSwitch() {
           <Route
             path="/profile/orders/:num"
             element={
-              <Modal onClose={processModalClose}>
-                <OrderDetails />
-              </Modal>
+              <ProtectedRoute
+                element={
+                  <Modal onClose={processModalClose}>
+                    <OrderDetails />
+                  </Modal>
+                }
+              />
             }
           />
         </Routes>
