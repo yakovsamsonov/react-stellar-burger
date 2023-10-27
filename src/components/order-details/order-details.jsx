@@ -1,43 +1,99 @@
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import OrderDetailsStyle from './order-details.module.css';
-import order_confirmed from '../../icons/order_confirmed.svg';
-import Modal from '../modal/modal';
-import { CLOSE_ORDER } from '../../services/actions/order';
+import { useMemo, useState, useEffect } from 'react';
+import { getDetails } from '../../services/actions';
+import { orderState, getDateLabel } from '../../utils';
+import Price from '../price/price';
+import IngredientRow from '../ingredient-row/ingredient-row';
 
 export default function OrderDetails() {
-  const { number } = useSelector((store) => store.order);
+  const { detailsData } = useSelector((store) => store.details);
+  const allIngredients = useSelector((store) => store.ingredients.ingredients);
 
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [ingData, setIngData] = useState([]);
+
+  const { num } = useParams();
   const dispatch = useDispatch();
 
-  const processOrderDetailsClose = () => {
-    dispatch({ type: CLOSE_ORDER });
-  };
+  useEffect(() => {
+    dispatch(getDetails(num));
+  }, [dispatch, num]);
 
-  return (
-    <Modal onClose={processOrderDetailsClose}>
-      <div className={OrderDetailsStyle['order-confirmation']}>
-        <h2 className={OrderDetailsStyle['order-confirmation__number']}>
-          {number}
-        </h2>
-        <p className={OrderDetailsStyle['order-confirmation__number-label']}>
-          идентификатор заказа
-        </p>
-        <img
-          src={order_confirmed}
-          alt=""
-          className={OrderDetailsStyle['order-confirmation__status-image']}
-        />
-        <p className={OrderDetailsStyle['order-confirmation__instruction']}>
-          Ваш заказ начали готовить
-        </p>
-        <p
-          className={
-            OrderDetailsStyle['order-confirmation__instruction_inactive']
+  useEffect(() => {
+    if (detailsData.status) {
+      const data = [];
+      detailsData.ingredients.forEach((ing) => {
+        const ingData = allIngredients.find((el) => el._id === ing);
+        if (ingData) {
+          const elIndex = data.findIndex((item) => item.id === ing);
+          if (elIndex !== -1) {
+            data[elIndex].count = data[elIndex].count + 1;
+          } else {
+            data.push({
+              id: ingData._id,
+              image: ingData.image,
+              price: ingData.price,
+              name: ingData.name,
+              count: 1,
+            });
           }
-        >
-          Дождитесь готовности на орбитальной станции
+        }
+      });
+      setIngData(data);
+    }
+  }, [allIngredients, detailsData]);
+
+  const statusClassNames = useMemo(() => {
+    let extra = '';
+    if (detailsData.status === 'done') {
+      extra = OrderDetailsStyle['order-details__status_done'];
+    }
+    return `${OrderDetailsStyle['order-details__status']} ${extra}`;
+  }, [detailsData.status]);
+
+  const orderPrice = useMemo(() => {
+    let orderPrice = 0;
+    ingData.forEach((ing) => {
+      orderPrice = orderPrice + ing.price * ing.count;
+    });
+    return orderPrice;
+  }, [ingData]);
+
+  useEffect(() => {
+    setTotalPrice(orderPrice);
+  }, [orderPrice]);
+
+  if (!detailsData.status) {
+    return (
+      <div className={OrderDetailsStyle['order-details']}>
+        <p className={OrderDetailsStyle['order-details__name']}>
+          {`Загрузка данных по заказу #${num}`}
         </p>
       </div>
-    </Modal>
-  );
+    );
+  } else {
+    return (
+      <div className={OrderDetailsStyle['order-details']}>
+        <p className={OrderDetailsStyle['order-details__number']}>#{num}</p>
+        <p className={OrderDetailsStyle['order-details__name']}>
+          {detailsData.name}
+        </p>
+        <p className={statusClassNames}>{orderState[detailsData.status][0]}</p>
+        <p className={OrderDetailsStyle['order-details__name']}>Состав:</p>
+        <div className={OrderDetailsStyle['order-details__container']}>
+          {ingData.map((ing, ind) => (
+            <IngredientRow key={ind} ingredient={ing}></IngredientRow>
+          ))}
+        </div>
+        <div className={OrderDetailsStyle['order-details__row']}>
+          <p className={OrderDetailsStyle['order-details__date']}>
+            {getDateLabel(detailsData.createdAt)}
+          </p>
+          <Price price={totalPrice}></Price>
+        </div>
+      </div>
+    );
+  }
 }

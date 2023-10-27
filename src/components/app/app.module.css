@@ -8,6 +8,15 @@
   box-sizing: border-box;
 }
 
+.main {
+  margin: auto;
+  width: 100%;
+  max-width: 1240px;
+  height: 100%;
+  overflow-y: hidden;
+  composes: mt-10 from global;
+}
+
 .warning {
   display: flex;
   margin: 0;
@@ -21,5 +30,6 @@
 .order {
   display: flex;
   justify-content: center;
+  height: 100%;
   overflow-y: hidden;
 }

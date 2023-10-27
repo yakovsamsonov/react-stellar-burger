@@ -4,7 +4,7 @@ import {
   GET_ORDER_FAILED,
   OPEN_ORDER,
   CLOSE_ORDER,
-} from '../actions/order';
+} from '../actions';
 
 const initialState = {
   orderOpen: false,

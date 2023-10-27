@@ -1,14 +1,11 @@
 import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { useDrag } from 'react-dnd';
-import {
-  CurrencyIcon,
-  Counter,
-} from '@ya.praktikum/react-developer-burger-ui-components';
+import { Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import cardStyle from './card.module.css';
-
-import { ingredientPropType } from '../../utils/prop-types.js';
+import { ingredientPropType } from '../../utils';
 import { Link } from 'react-router-dom';
+import Price from '../price/price';
 
 export default function Card({ card }) {
   const { items, bun } = useSelector((store) => store.burger);
@@ -47,10 +44,7 @@ export default function Card({ card }) {
       <li ref={ref} className={cardStyle.card} style={{ opacity: opacity }}>
         {orderedNum > 0 && <Counter count={orderedNum} size="default" />}
         <img src={card.image} alt={card.name} />
-        <div className={cardStyle.price__box}>
-          <p className={cardStyle.price}>{card.price}</p>
-          <CurrencyIcon type="primary" />
-        </div>
+        <Price price={card.price}></Price>
         <p className={cardStyle.label}>{card.name}</p>
       </li>
     </Link>

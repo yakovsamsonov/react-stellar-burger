@@ -1,0 +1,15 @@
+.section {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 16px;
+  max-height: 100%;
+  width: 100%;
+  max-width: 844px;
+  composes: pr-2 from global;
+}
+
+.section_scroll {
+  overflow-y: scroll;
+  composes: custom-scroll from global;
+}

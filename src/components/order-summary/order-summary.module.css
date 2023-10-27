@@ -1,0 +1,47 @@
+.order__summary-box {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  background-color: #1c1c21;
+  border-radius: 40px;
+  composes: p-6 from global;
+}
+
+.order__link {
+  text-decoration: none;
+  color: unset;
+}
+
+.order__summary-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.order__summary-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: stretch;
+}
+
+.order__summary-number {
+  composes: text text_type_digits-default from global;
+}
+
+.order__summary-date {
+  composes: text text_type_main-default text_color_inactive from global;
+}
+
+.order__summary-name {
+  composes: text text_type_main-medium from global;
+}
+
+.order__summary-status {
+  composes: text text_type_main-dafault from global;
+}
+
+.order__summary-status_done {
+  color: #00cccc;
+}

@@ -1,0 +1,13 @@
+.price__box {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.price__number_default {
+  composes: text text_type_digits-default mr-2 from global;
+}
+
+.price__number_medium {
+  composes: text text_type_digits-medium mr-2 from global;
+}

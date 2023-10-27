@@ -1,5 +1,9 @@
 import { BACKEND_BASE_URL } from './constants';
-import { getCookie, setUserCookiesFromResponce } from './cookie';
+import {
+  getAccessToken,
+  getRefreshToken,
+  setUserCookiesFromResponce,
+} from './cookie';
 
 const baseHeaders = { 'Content-Type': 'application/json; charset=UTF-8' };
 
@@ -23,12 +27,17 @@ export function loadIngredients() {
   return loadData(endpoint);
 }
 
+export function loadOrderDetails(orderNum) {
+  const endpoint = `${BACKEND_BASE_URL}/orders/${orderNum}`;
+  return loadData(endpoint);
+}
+
 export function placeOrder(requestData) {
   const endpoint = `${BACKEND_BASE_URL}/orders`;
 
   const options = {
     method: 'POST',
-    headers: { ...baseHeaders },
+    headers: { ...baseHeaders, Authorization: 'Bearer ' + getAccessToken() },
     body: JSON.stringify({ ingredients: requestData }),
   };
   return loadData(endpoint, options);
@@ -52,7 +61,7 @@ export function updateUser(newUser) {
     method: 'PATCH',
     headers: {
       ...baseHeaders,
-      Authorization: 'Bearer ' + getCookie('accessToken'),
+      Authorization: 'Bearer ' + getAccessToken(),
     },
     body: JSON.stringify(newUser),
   };
@@ -81,7 +90,7 @@ export function getUserRequest() {
     method: 'GET',
     headers: {
       ...baseHeaders,
-      Authorization: 'Bearer ' + getCookie('accessToken'),
+      Authorization: 'Bearer ' + getAccessToken(),
     },
   };
 
@@ -99,7 +108,7 @@ function refreshToken() {
 }
 
 function prepareLogoutOptions() {
-  const token = { token: getCookie('refreshToken') };
+  const token = { token: getRefreshToken() };
 
   return {
     method: 'POST',

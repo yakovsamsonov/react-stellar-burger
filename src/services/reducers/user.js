@@ -16,7 +16,7 @@ import {
   USER_UPDATE_FAILED,
   PASSWORD_RESET_REQUEST,
   PASSWORD_RESET_TOKEN_FAILED,
-} from '../actions/user';
+} from '../actions';
 
 const initialState = {
   user: { email: '', name: '' },
