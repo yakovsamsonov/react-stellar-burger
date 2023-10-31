@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import Form from '../components/form/form';
+import { Form } from '../components/form/form';
 import {
   TEXT_FIELD_TYPE,
   EMAIL_FIELD_TYPE,

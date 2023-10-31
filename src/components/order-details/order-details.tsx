@@ -1,21 +1,36 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import OrderDetailsStyle from './order-details.module.css';
-import { useMemo, useState, useEffect } from 'react';
+import { useMemo, useState, useEffect, FC } from 'react';
 import { getDetails } from '../../services/actions';
-import { orderState, getDateLabel } from '../../utils';
+import {
+  OrderStateSingle,
+  getDateLabel,
+  TOrderIngredient,
+  TIngredient,
+  TOrder,
+} from '../../utils';
 import { Price } from '../price/price';
-import IngredientRow from '../ingredient-row/ingredient-row';
+import { IngredientRow } from '../ingredient-row/ingredient-row';
+import {
+  details as detailsSelector,
+  ingredients as ingredientsSelector,
+} from '../../services/selectors/selectors';
 
-export default function OrderDetails() {
-  const { detailsData } = useSelector((store) => store.details);
-  const allIngredients = useSelector((store) => store.ingredients.ingredients);
+export const OrderDetails: FC = () => {
+  const { detailsData } = useSelector<
+    any,
+    {
+      detailsData: TOrder;
+    }
+  >(detailsSelector);
+  const { ingredients: allIngredients } = useSelector(ingredientsSelector);
 
-  const [totalPrice, setTotalPrice] = useState(0);
-  const [ingData, setIngData] = useState([]);
+  const [totalPrice, setTotalPrice] = useState<number>(0);
+  const [ingData, setIngData] = useState<Array<TOrderIngredient>>([]);
 
   const { num } = useParams();
-  const dispatch = useDispatch();
+  const dispatch: any = useDispatch();
 
   useEffect(() => {
     dispatch(getDetails(num));
@@ -23,19 +38,18 @@ export default function OrderDetails() {
 
   useEffect(() => {
     if (detailsData.status) {
-      const data = [];
+      const data: Array<TOrderIngredient> = [];
       detailsData.ingredients.forEach((ing) => {
-        const ingData = allIngredients.find((el) => el._id === ing);
+        const ingData = allIngredients.find(
+          (el: TIngredient) => el._id === ing
+        );
         if (ingData) {
-          const elIndex = data.findIndex((item) => item.id === ing);
+          const elIndex = data.findIndex((item) => item._id === ing);
           if (elIndex !== -1) {
             data[elIndex].count = data[elIndex].count + 1;
           } else {
             data.push({
-              id: ingData._id,
-              image: ingData.image,
-              price: ingData.price,
-              name: ingData.name,
+              ...ingData,
               count: 1,
             });
           }
@@ -45,7 +59,7 @@ export default function OrderDetails() {
     }
   }, [allIngredients, detailsData]);
 
-  const statusClassNames = useMemo(() => {
+  const statusClassNames: string = useMemo((): string => {
     let extra = '';
     if (detailsData.status === 'done') {
       extra = OrderDetailsStyle['order-details__status_done'];
@@ -53,7 +67,7 @@ export default function OrderDetails() {
     return `${OrderDetailsStyle['order-details__status']} ${extra}`;
   }, [detailsData.status]);
 
-  const orderPrice = useMemo(() => {
+  const orderPrice: number = useMemo((): number => {
     let orderPrice = 0;
     ingData.forEach((ing) => {
       orderPrice = orderPrice + ing.price * ing.count;
@@ -80,7 +94,9 @@ export default function OrderDetails() {
         <p className={OrderDetailsStyle['order-details__name']}>
           {detailsData.name}
         </p>
-        <p className={statusClassNames}>{orderState[detailsData.status][0]}</p>
+        <p className={statusClassNames}>
+          {OrderStateSingle[detailsData.status]}
+        </p>
         <p className={OrderDetailsStyle['order-details__name']}>Состав:</p>
         <div className={OrderDetailsStyle['order-details__container']}>
           {ingData.map((ing, ind) => (
@@ -96,4 +112,4 @@ export default function OrderDetails() {
       </div>
     );
   }
-}
+};

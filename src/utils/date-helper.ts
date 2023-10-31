@@ -1,4 +1,4 @@
-export function getDateLabel(isoDate) {
+export function getDateLabel(isoDate: string) : string {
   const currentTime = new Date();
   const orderTime = new Date(isoDate);
   const daysBetween = Math.floor(currentTime.getDate() - orderTime.getDate());

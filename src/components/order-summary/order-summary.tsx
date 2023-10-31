@@ -1,32 +1,41 @@
 import { useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
 import OrderSummaryStyle from './order-summary.module.css';
-import { useState, useMemo, useEffect } from 'react';
-import { orderState, getDateLabel } from '../../utils';
+import { useState, useMemo, useEffect, FC } from 'react';
+import {
+  OrderStateSingle,
+  TOrderIngredient,
+  getDateLabel,
+  TOrder,
+  TIngredient,
+} from '../../utils';
 import { IngredientIcon } from '../ingredient-icon/ingredient-icon';
 import { Price } from '../price/price';
-import PropTypes from 'prop-types';
+import { ingredients as ingredientsSelector } from '../../services/selectors/selectors';
 
-export default function OrderSummary({ order, showStatus }) {
-  const allIngredients = useSelector((store) => store.ingredients.ingredients);
-  const [price, setPrice] = useState(0);
-  const [ingData, setIngData] = useState([]);
-  const [extraItems, setExtraItems] = useState(0);
-  const location = useLocation();
+type TOrderSummary = {
+  order: TOrder;
+  showStatus: boolean;
+};
+
+export const OrderSummary: FC<TOrderSummary> = ({ order, showStatus }) => {
+  const { ingredients: allIngredients } = useSelector(ingredientsSelector);
+  const [price, setPrice] = useState<number>(0);
+  const [ingData, setIngData] = useState<Array<TOrderIngredient>>([]);
+  const [extraItems, setExtraItems] = useState<number>(0);
+  const { pathname } = useLocation();
 
   useEffect(() => {
-    const data = [];
+    const data: Array<TOrderIngredient> = [];
     order.ingredients.forEach((ing) => {
-      const ingData = allIngredients.find((el) => el._id === ing);
+      const ingData = allIngredients.find((el: TIngredient) => el._id === ing);
       if (ingData) {
-        const elIndex = data.findIndex((item) => item.id === ing);
+        const elIndex = data.findIndex((item) => item._id === ing);
         if (elIndex !== -1) {
           data[elIndex].count = data[elIndex].count + 1;
         } else {
           data.push({
-            id: ingData._id,
-            image: ingData.image,
-            price: ingData.price,
+            ...ingData,
             count: 1,
           });
         }
@@ -36,7 +45,7 @@ export default function OrderSummary({ order, showStatus }) {
     setExtraItems(data.length - 5);
   }, [allIngredients, order.ingredients]);
 
-  const statusClassNames = useMemo(() => {
+  const statusClassNames: string = useMemo((): string => {
     let extra = '';
     if (order.status === 'done') {
       extra = OrderSummaryStyle['order__summary-status_done'];
@@ -44,7 +53,7 @@ export default function OrderSummary({ order, showStatus }) {
     return `${OrderSummaryStyle['order__summary-status']} ${extra}`;
   }, [order.status]);
 
-  const orderPrice = useMemo(() => {
+  const orderPrice: number = useMemo((): number => {
     let orderPrice = 0;
     ingData.forEach((ing) => {
       orderPrice = orderPrice + ing.price * ing.count;
@@ -60,7 +69,7 @@ export default function OrderSummary({ order, showStatus }) {
     <Link
       to={`${order.number}`}
       className={OrderSummaryStyle['order__link']}
-      state={{ backgroundLocation: location.pathname }}
+      state={{ backgroundLocation: pathname }}
     >
       <article className={OrderSummaryStyle['order__summary-box']}>
         <div className={OrderSummaryStyle['order__summary-row']}>
@@ -76,7 +85,7 @@ export default function OrderSummary({ order, showStatus }) {
             {order.name}
           </h3>
           {showStatus ? (
-            <p className={statusClassNames}>{orderState[order.status][0]}</p>
+            <p className={statusClassNames}>{OrderStateSingle[order.status]}</p>
           ) : (
             <></>
           )}
@@ -107,17 +116,4 @@ export default function OrderSummary({ order, showStatus }) {
       </article>
     </Link>
   );
-}
-
-OrderSummary.propTypes = {
-  order: PropTypes.shape({
-    createdAt: PropTypes.string.isRequired,
-    ingredients: PropTypes.arrayOf(PropTypes.string).isRequired,
-    name: PropTypes.string.isRequired,
-    number: PropTypes.number.isRequired,
-    status: PropTypes.string.isRequired,
-    updatedAt: PropTypes.string.isRequired,
-    _id: PropTypes.string.isRequired,
-  }).isRequired,
-  showStatus: PropTypes.bool,
 };

@@ -2,9 +2,10 @@ import profileStyle from './profile.module.css';
 import { useDispatch } from 'react-redux';
 import { NavLink, Outlet } from 'react-router-dom';
 import { logout } from '../../services/actions/user';
+import { FC } from 'react';
 
-export function Profile() {
-  const dispatch = useDispatch();
+export const Profile: FC = () => {
+  const dispatch: any = useDispatch();
 
   const logoutClick = () => {
     dispatch(logout());
@@ -42,6 +43,7 @@ export function Profile() {
           <NavLink
             className={profileStyle.navigation__link_inactive}
             onClick={logoutClick}
+            to="/profile"
           >
             Выход
           </NavLink>
@@ -53,4 +55,4 @@ export function Profile() {
       <Outlet />
     </div>
   );
-}
+};

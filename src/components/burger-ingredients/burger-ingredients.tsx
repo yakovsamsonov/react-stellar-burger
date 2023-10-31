@@ -2,8 +2,7 @@ import { FC, UIEvent, useState } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Section } from '../section/section';
 import BurgerIngredientsStyle from './burger-ingredients.module.css';
-import { SectionType } from '../../utils/constants';
-import { TBurgerType } from '../../utils';
+import { TBurgerType, SectionType } from '../../utils';
 
 type TBurgerTab = {
   activeTab: TBurgerType;

@@ -20,7 +20,7 @@ import { ProtectedRoute } from '../protected-route';
 import AppHeader from '../app-header/app-header';
 import styles from './app.module.css';
 import CardDetails from '../card-details/card-details';
-import OrderDetails from '../order-details/order-details';
+import { OrderDetails } from '../order-details/order-details';
 import Modal from '../modal/modal';
 import { useDispatch, useSelector } from 'react-redux';
 import { getIngredients } from '../../services/actions';

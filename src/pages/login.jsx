@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Form from '../components/form/form';
+import { Form } from '../components/form/form';
 import { EMAIL_FIELD_TYPE, PASSWORD_FIELD_TYPE } from '../utils/constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../services/actions/user';

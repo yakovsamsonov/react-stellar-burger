@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Form from '../components/form/form';
+import { Form } from '../components/form/form';
 import { registerNewUser } from '../services/actions/user';
 import {
   EMAIL_FIELD_TYPE,

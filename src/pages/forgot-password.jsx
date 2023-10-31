@@ -1,4 +1,4 @@
-import Form from '../components/form/form';
+import { Form } from '../components/form/form';
 import { useState } from 'react';
 import { EMAIL_FIELD_TYPE } from '../utils/constants';
 import { useDispatch } from 'react-redux';

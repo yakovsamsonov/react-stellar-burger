@@ -1,9 +1,14 @@
 import IngredientRowStyle from './ingredient-row.module.css';
 import { IngredientIcon } from '../ingredient-icon/ingredient-icon';
 import { Price } from '../price/price';
-import PropTypes from 'prop-types';
+import { TOrderIngredient } from '../../utils';
+import { FC } from 'react';
 
-export default function IngredientRow({ ingredient }) {
+type TIngredientRow = {
+  ingredient: TOrderIngredient;
+};
+
+export const IngredientRow: FC<TIngredientRow> = ({ ingredient }) => {
   return (
     <div className={IngredientRowStyle['ingredient_row']}>
       <IngredientIcon order={0} image={ingredient.image}></IngredientIcon>
@@ -13,14 +18,4 @@ export default function IngredientRow({ ingredient }) {
       <Price price={`${ingredient.count} x ${ingredient.price}`}></Price>
     </div>
   );
-}
-
-IngredientRow.propTypes = {
-  ingredient: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
-    image: PropTypes.string.isRequired,
-    count: PropTypes.number.isRequired,
-  }).isRequired,
 };

@@ -1,12 +1,15 @@
 import FeedListStyle from './feed-list.module.css';
-import OrderSummary from '../order-summary/order-summary';
+import { OrderSummary } from '../order-summary/order-summary';
 import { useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
+import { useEffect, useState, FC } from 'react';
+import { orderHistory } from '../../services/selectors/selectors';
+import { TOrder } from '../../utils';
 
-export default function FeedList({ status }) {
-  const { orders } = useSelector((store) => store.ws);
-  const [isListLoaded, setIsListLoaded] = useState(false);
+export const FeedList: FC<{
+  showStatus: boolean;
+}> = ({ showStatus }) => {
+  const { orders } = useSelector<any, { orders: Array<TOrder> }>(orderHistory);
+  const [isListLoaded, setIsListLoaded] = useState<boolean>(false);
 
   useEffect(() => {
     if (orders.length > 0) {
@@ -20,7 +23,7 @@ export default function FeedList({ status }) {
         className={`${FeedListStyle.section} ${FeedListStyle.section_scroll}`}
       >
         {orders.map((order) => (
-          <OrderSummary key={order._id} order={order} showStatus={status} />
+          <OrderSummary key={order._id} order={order} showStatus={showStatus} />
         ))}
       </section>
     );
@@ -31,8 +34,4 @@ export default function FeedList({ status }) {
       </section>
     );
   }
-}
-
-FeedList.propTypes = {
-  status: PropTypes.bool,
 };

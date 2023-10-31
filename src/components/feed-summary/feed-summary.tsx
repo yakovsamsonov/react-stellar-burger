@@ -1,12 +1,26 @@
 import { useSelector } from 'react-redux';
-import { useMemo } from 'react';
+import { useMemo, FC } from 'react';
 import FeedSummaryStyle from './feed-summary.module.css';
-import { orderState } from '../../utils/constants';
+import { OrderStatePlural, TOrder } from '../../utils';
+import { orderHistory } from '../../services/selectors/selectors';
 
-export default function FeedSummary() {
-  const { orders, total, totalToday } = useSelector((store) => store.ws);
+type TStat = {
+  label: string;
+  value: number;
+};
 
-  const getNumbersByStatus = (status) => {
+type TOrderNumBox = {
+  status: keyof typeof OrderStatePlural;
+  numList: Array<string>;
+};
+
+export const FeedSummary: FC = () => {
+  const { orders, total, totalToday } = useSelector<
+    any,
+    { orders: Array<TOrder>; total: number; totalToday: number }
+  >(orderHistory);
+
+  const getNumbersByStatus = (status: TOrder['status']): Array<string> => {
     return orders.filter((el) => el.status === status).map((el) => el.number);
   };
 
@@ -28,19 +42,19 @@ export default function FeedSummary() {
       </>
     </section>
   );
-}
+};
 
-function Stat({ label, value }) {
+const Stat: FC<TStat> = ({ label, value }) => {
   return (
     <div>
       <h3 className={FeedSummaryStyle['stat__label']}>{label}:</h3>
       <p className={FeedSummaryStyle['stat__value']}>{value}</p>
     </div>
   );
-}
+};
 
-function OrderNumBox({ status, numList }) {
-  const numClassNames = useMemo(() => {
+const OrderNumBox: FC<TOrderNumBox> = ({ status, numList }) => {
+  const numClassNames: string = useMemo((): string => {
     let extra = '';
     if (status === 'done') {
       extra = FeedSummaryStyle['order-stat__num_done'];
@@ -51,7 +65,7 @@ function OrderNumBox({ status, numList }) {
   return (
     <div className={FeedSummaryStyle['order-stat']}>
       <h3 className={FeedSummaryStyle['order-stat__label']}>
-        {orderState[status][1] + ':'}
+        {OrderStatePlural[status] + ':'}
       </h3>
       <div className={FeedSummaryStyle['order-stat__box']}>
         {numList && numList.length > 0 ? (
@@ -66,4 +80,4 @@ function OrderNumBox({ status, numList }) {
       </div>
     </div>
   );
-}
+};

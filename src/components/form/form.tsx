@@ -1,5 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
-import PropTypes from 'prop-types';
+import { useState, useEffect, useCallback, FC, ChangeEvent } from 'react';
 import formStyle from './form.module.css';
 import { Link } from 'react-router-dom';
 import {
@@ -10,7 +9,39 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { EMAIL_FIELD_TYPE, PASSWORD_FIELD_TYPE } from '../../utils/constants';
 
-export default function Form({
+type TField = {
+  type: string;
+  name: string;
+  value: string;
+  icon?: any;
+  placeholder?: string;
+};
+
+type TLink = {
+  text: string;
+  linkText: string;
+  linkTo: string;
+};
+
+type TButton = {
+  label: string;
+  type: 'button' | 'submit' | 'reset';
+};
+
+type TForm = {
+  title: string;
+  fields: ReadonlyArray<TField>;
+  links: ReadonlyArray<TLink>;
+  buttons: ReadonlyArray<TButton>;
+  formSubmit?: () => void;
+  formReset?: () => void;
+  formData: {};
+  setFormData: (formData: {}) => void;
+  errorMessage?: string;
+  customDiasbleButton?: () => boolean;
+};
+
+export const Form: FC<TForm> = ({
   title,
   fields,
   links,
@@ -20,12 +51,12 @@ export default function Form({
   formData,
   setFormData,
   errorMessage,
-  customDiableButton,
-}) {
+  customDiasbleButton,
+}) => {
   const [isButtonDisabled, setButtonDisabled] = useState(true);
   const [hasInputError, setInputError] = useState(false);
 
-  const onFieldChange = (e) => {
+  const onFieldChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
     setInputError(!e.target.validity.valid);
   };
@@ -36,14 +67,14 @@ export default function Form({
 
   useEffect(() => {
     let disableButton = true;
-    if (customDiableButton) {
-      disableButton = customDiableButton();
+    if (customDiasbleButton) {
+      disableButton = customDiasbleButton();
     } else {
       disableButton = baseDisableButton();
     }
 
     setButtonDisabled(disableButton);
-  }, [baseDisableButton, customDiableButton]);
+  }, [baseDisableButton, customDiasbleButton]);
 
   return (
     <div className={formStyle['form']}>
@@ -70,7 +101,7 @@ export default function Form({
               name={el.name}
               placeholder={el.placeholder}
               onChange={onFieldChange}
-              icon={el.icon}
+              isIcon={el.icon ? true : false}
             ></EmailInput>
           ) : (
             <Input
@@ -119,35 +150,4 @@ export default function Form({
       </nav>
     </div>
   );
-}
-
-const field = PropTypes.shape({
-  type: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  value: PropTypes.string.isRequired,
-  placeholder: PropTypes.string,
-});
-
-const link = PropTypes.shape({
-  text: PropTypes.string.isRequired,
-  linkText: PropTypes.string.isRequired,
-  linkTo: PropTypes.string.isRequired,
-});
-
-const button = PropTypes.shape({
-  label: PropTypes.string.isRequired,
-  type: PropTypes.string.isRequired,
-});
-
-Form.propTypes = {
-  title: PropTypes.string,
-  fields: PropTypes.arrayOf(field).isRequired,
-  links: PropTypes.arrayOf(link),
-  buttons: PropTypes.arrayOf(button),
-  formSubmit: PropTypes.func,
-  formReset: PropTypes.func,
-  formData: PropTypes.object.isRequired,
-  setFormData: PropTypes.func.isRequired,
-  errorMessage: PropTypes.string,
-  customDiableButton: PropTypes.func,
 };

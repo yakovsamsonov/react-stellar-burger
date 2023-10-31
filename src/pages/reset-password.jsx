@@ -1,4 +1,4 @@
-import Form from '../components/form/form';
+import { Form } from '../components/form/form';
 import { useState } from 'react';
 import { PASSWORD_FIELD_TYPE, TEXT_FIELD_TYPE } from '../utils/constants';
 import { Navigate, useNavigate } from 'react-router-dom';

@@ -6,7 +6,7 @@ import {
   DragIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientsGroupStyle from './ingredients-group.module.css';
-import { PositionType } from '../../utils/constants';
+import { PositionType } from '../../utils';
 import { REMOVE_REGULAR, CHANGE_ORDER } from '../../services/actions/burger';
 
 function IngredientsGroup() {
