@@ -1,7 +1,17 @@
 import IngredientIconStyle from './ingredient-icon.module.css';
-import PropTypes from 'prop-types';
+import { FC } from 'react';
 
-export default function IngredientIcon({ order, image, label }) {
+type TIngredientIcon = {
+  order: number;
+  image: string;
+  label?: string;
+};
+
+export const IngredientIcon: FC<TIngredientIcon> = ({
+  order,
+  image,
+  label,
+}) => {
   return (
     <div
       key={order}
@@ -24,10 +34,4 @@ export default function IngredientIcon({ order, image, label }) {
       />
     </div>
   );
-}
-
-IngredientIcon.propTypes = {
-  order: PropTypes.number.isRequired,
-  image: PropTypes.string.isRequired,
-  label: PropTypes.string,
 };

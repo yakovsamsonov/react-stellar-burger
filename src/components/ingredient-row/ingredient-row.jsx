@@ -1,6 +1,6 @@
-import IngredientIcon from '../ingredient-icon/ingredient-icon';
-import Price from '../price/price';
 import IngredientRowStyle from './ingredient-row.module.css';
+import { IngredientIcon } from '../ingredient-icon/ingredient-icon';
+import { Price } from '../price/price';
 import PropTypes from 'prop-types';
 
 export default function IngredientRow({ ingredient }) {

@@ -16,31 +16,37 @@ import {
 } from '../ingredients-group/ingredients-group';
 import BurgerConstructorStyle from './burger-constructor.module.css';
 import {
-  BOTTOM_ING_TYPE,
-  TOP_ING_TYPE,
+  PositionType,
+  SectionType,
   AWAIT_BUTTON_LABEL,
   PLACE_ORDER_BUTTON_LABEL,
-  BUN_TYPE,
 } from '../../utils';
 import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from 'react-router-dom';
-import Price from '../price/price';
+import { Price } from '../price/price';
+import {
+  burger,
+  user as userSelector,
+  ingredients as ingredientsSelector,
+} from '../../services/selectors/selectors';
 
 function BurgerConstructor() {
   const [buttonLabel, setButtonLabel] = useState(PLACE_ORDER_BUTTON_LABEL);
   const [isButtonDisabled, setButtonDisabled] = useState(true);
-  const { items, bun } = useSelector((store) => store.burger);
-  const { user } = useSelector((store) => store.user);
+  const { items, bun } = useSelector(burger);
+  const { user } = useSelector(userSelector);
+  const { ingredients } = useSelector(ingredientsSelector);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const addIngredientToBurger = (el) => {
+  const addIngredientToBurger = (ingredientId) => {
     const uuid = uuidv4();
-    if (el.type === BUN_TYPE) {
+    const ing = ingredients.find((el) => el._id === ingredientId);
+    if (ing.type === SectionType.bun) {
       dispatch({ type: REMOVE_BUN });
-      dispatch({ type: ADD_BUN, item: el, uuid: uuid });
+      dispatch({ type: ADD_BUN, item: ing, uuid: uuid });
     } else {
-      dispatch({ type: ADD_REGULAR, item: el, uuid: uuid });
+      dispatch({ type: ADD_REGULAR, item: ing, uuid: uuid });
     }
   };
 
@@ -50,7 +56,7 @@ function BurgerConstructor() {
       isHover: monitor.isOver(),
     }),
     drop(item) {
-      addIngredientToBurger(item.card);
+      addIngredientToBurger(item.id);
     },
   });
 
@@ -102,9 +108,9 @@ function BurgerConstructor() {
       className={BurgerConstructorStyle.section}
       style={{ border: borderStyle }}
     >
-      {bun && <BunIngredient ingredient={bun} type={TOP_ING_TYPE} />}
+      {bun && <BunIngredient ingredient={bun} type={PositionType.top} />}
       {items.length > 0 && <IngredientsGroup />}
-      {bun && <BunIngredient ingredient={bun} type={BOTTOM_ING_TYPE} />}
+      {bun && <BunIngredient ingredient={bun} type={PositionType.bottom} />}
       <div className={BurgerConstructorStyle['summary']}>
         <Price price={total} size="medium"></Price>
         <Button

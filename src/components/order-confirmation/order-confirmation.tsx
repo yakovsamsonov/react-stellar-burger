@@ -1,23 +1,26 @@
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import OrderConfirmationStyle from './order-confirmation.module.css';
 import order_confirmed from '../../icons/order_confirmed.svg';
 import Modal from '../modal/modal';
 import { CLOSE_ORDER } from '../../services/actions/order';
+import { useCallback, FC } from 'react';
 
-export default function OrderConfirmation() {
-  const { number } = useSelector((store) => store.order);
+type TOrderConfirmation = {
+  orderNumber: number;
+};
 
+export const OrderConfirmation: FC<TOrderConfirmation> = ({ orderNumber }) => {
   const dispatch = useDispatch();
 
-  const processOrderDetailsClose = () => {
+  const processOrderDetailsClose = useCallback((): void => {
     dispatch({ type: CLOSE_ORDER });
-  };
+  }, [dispatch]);
 
   return (
     <Modal onClose={processOrderDetailsClose}>
       <div className={OrderConfirmationStyle['order-confirmation']}>
         <h2 className={OrderConfirmationStyle['order-confirmation__number']}>
-          {number}
+          {orderNumber}
         </h2>
         <p
           className={OrderConfirmationStyle['order-confirmation__number-label']}
@@ -44,4 +47,4 @@ export default function OrderConfirmation() {
       </div>
     </Modal>
   );
-}
+};

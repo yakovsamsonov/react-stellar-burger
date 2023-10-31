@@ -1,4 +1,3 @@
-import { BURGER, LIST, PROFILE } from '../../utils/constants';
 import {
   Logo,
   BurgerIcon,
@@ -6,15 +5,16 @@ import {
   ProfileIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import HeaderStyle from './app-header.module.css';
-import HeaderItem from '../header-item/header-item';
+import { HeaderItem } from '../header-item/header-item';
 import { useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import { TIconProps } from '@ya.praktikum/react-developer-burger-ui-components/dist/ui/icons/utils';
+import { NavigationLabel } from '../../utils';
 
 function AppHeader() {
-  const location = useLocation();
-  const pathname = location.pathname;
+  const { pathname } = useLocation();
 
-  function getItemType(path) {
+  function getItemType(path: string): TIconProps['type'] {
     if (
       (path !== '/' && pathname.includes(path)) ||
       (path === '/' && pathname === path)
@@ -27,17 +27,17 @@ function AppHeader() {
   return (
     <header className={HeaderStyle.header}>
       <div className={HeaderStyle.group}>
-        <HeaderItem to="/" label="Конструктор" name={BURGER}>
+        <HeaderItem to="/" label={NavigationLabel.burger}>
           <BurgerIcon type={getItemType('/')} />
         </HeaderItem>
-        <HeaderItem to="/feed" label="Лента заказов" name={LIST}>
+        <HeaderItem to="/feed" label={NavigationLabel.list}>
           <ListIcon type={getItemType('/feed')} />
         </HeaderItem>
       </div>
       <Link to="/">
         <Logo />
       </Link>
-      <HeaderItem to="/profile" label="Личный кабинет" name={PROFILE}>
+      <HeaderItem to="/profile" label={NavigationLabel.profile}>
         <ProfileIcon type={getItemType('/profile')} />
       </HeaderItem>
     </header>

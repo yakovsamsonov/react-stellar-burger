@@ -6,11 +6,7 @@ import {
   DragIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientsGroupStyle from './ingredients-group.module.css';
-import {
-  BOTTOM_ING_TYPE,
-  REGULAR_ING_TYPE,
-  TOP_ING_TYPE,
-} from '../../utils/constants';
+import { PositionType } from '../../utils/constants';
 import { REMOVE_REGULAR, CHANGE_ORDER } from '../../services/actions/burger';
 
 function IngredientsGroup() {
@@ -85,7 +81,7 @@ function RegularIngredient({ ingredient, index }) {
     >
       <DragIcon type="primary" />
       <ConstructorElement
-        type={REGULAR_ING_TYPE}
+        type={PositionType.regular}
         isLocked={false}
         text={ingredient.data.name}
         price={ingredient.data.price}
@@ -99,9 +95,9 @@ function RegularIngredient({ ingredient, index }) {
 function BunIngredient({ ingredient, type }) {
   function getLabel(element) {
     let label = element.name;
-    if (type === TOP_ING_TYPE) {
+    if (type === PositionType.top) {
       label = label + ' (верх)';
-    } else if (type === BOTTOM_ING_TYPE) {
+    } else if (type === PositionType.bottom) {
       label = label + ' (низ)';
     }
     return label;

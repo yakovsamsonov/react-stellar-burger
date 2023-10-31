@@ -4,7 +4,7 @@ import OrderDetailsStyle from './order-details.module.css';
 import { useMemo, useState, useEffect } from 'react';
 import { getDetails } from '../../services/actions';
 import { orderState, getDateLabel } from '../../utils';
-import Price from '../price/price';
+import { Price } from '../price/price';
 import IngredientRow from '../ingredient-row/ingredient-row';
 
 export default function OrderDetails() {

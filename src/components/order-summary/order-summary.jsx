@@ -3,8 +3,8 @@ import { Link, useLocation } from 'react-router-dom';
 import OrderSummaryStyle from './order-summary.module.css';
 import { useState, useMemo, useEffect } from 'react';
 import { orderState, getDateLabel } from '../../utils';
-import IngredientIcon from '../ingredient-icon/ingredient-icon';
-import Price from '../price/price';
+import { IngredientIcon } from '../ingredient-icon/ingredient-icon';
+import { Price } from '../price/price';
 import PropTypes from 'prop-types';
 
 export default function OrderSummary({ order, showStatus }) {

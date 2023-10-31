@@ -25,11 +25,11 @@ import Modal from '../modal/modal';
 import { useDispatch, useSelector } from 'react-redux';
 import { getIngredients } from '../../services/actions';
 import { useEffect, useCallback } from 'react';
+import { ingredients as ingredientsSelector } from '../../services/selectors/selectors';
 
 function App() {
-  const { ingredientsLoading, ingredientsFailed, ingredients } = useSelector(
-    (store) => store.ingredients
-  );
+  const { ingredientsLoading, ingredientsFailed, ingredients } =
+    useSelector(ingredientsSelector);
 
   const dispatch = useDispatch();
 

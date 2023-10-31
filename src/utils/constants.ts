@@ -1,12 +1,19 @@
-export const BUN_TYPE = 'bun';
-export const SAUCE_TYPE = 'sauce';
-export const MAIN_TYPE = 'main';
-export const TOP_ING_TYPE = 'top';
-export const BOTTOM_ING_TYPE = 'bottom';
-export const REGULAR_ING_TYPE = 'regular';
-export const BURGER = 'burger';
-export const LIST = 'list';
-export const PROFILE = 'profile';
+export enum SectionType {
+  bun ='bun',
+  sauce = 'sauce',
+  main = 'main'
+}
+export enum PositionType {
+  top ='top',
+  bottom = 'bottom',
+  regular = 'regular'
+}
+
+export enum NavigationLabel {
+  burger = "Конструктор",
+  list = "Лента заказов",
+  profile = "Личный кабинет"
+}
 export const BACKEND_BASE_URL = 'https://norma.nomoreparties.space/api';
 export const MODAL_ROOT = document.getElementById('react-modals');
 export const AWAIT_BUTTON_LABEL = '...';
