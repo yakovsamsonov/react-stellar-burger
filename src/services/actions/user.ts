@@ -14,6 +14,7 @@ import {
   REMOVE_FROM_STORAGE,
 } from '../../utils/local-storage';
 import { PASSWORD_RESET_TOKEN_SEND } from '../../utils/constants';
+import { Cookies } from '../../utils';
 
 export const REGISTER_USER_REQUEST: 'REGISTER_USER_REQUEST' =
   'REGISTER_USER_REQUEST';
@@ -107,8 +108,8 @@ export function logout() {
         dispatch({
           type: LOGOUT_SUCCESS,
         });
-        deleteCookie('accessToken');
-        deleteCookie('refreshToken');
+        deleteCookie(Cookies.access);
+        deleteCookie(Cookies.refresh);
       })
       .catch((e) => {
         dispatch({

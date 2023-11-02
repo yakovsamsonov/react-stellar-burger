@@ -1,7 +1,7 @@
-export function getDateLabel(isoDate: string) : string {
+export function getDateLabel(isoDate: string): string {
   const currentTime = new Date();
   const orderTime = new Date(isoDate);
-  const daysBetween = Math.floor(currentTime.getDate() - orderTime.getDate());
+  const daysBetween = Math.floor(orderTime.getDate() - currentTime.getDate());
 
   let periodLabel = '';
   switch (daysBetween) {

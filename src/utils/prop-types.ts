@@ -13,7 +13,7 @@ export type TIngredient = {
   __v: number;
 };
 
-export type TBurgerType = 'bun' | 'sauce' | 'main';
+export type TBurgerType = keyof typeof SectionType;
 
 export type TOrderIngredient = TIngredient & {
   count: number;
@@ -69,4 +69,9 @@ export enum NavigationLabel {
 export enum SubmitOrderButtonLabel {
   await = '...',
   ready = 'Оформить заказ',
+}
+
+export enum Cookies {
+  access = 'accessToken',
+  refresh = 'refreshToken',
 }

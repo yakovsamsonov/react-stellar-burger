@@ -1,6 +1,8 @@
 .feed {
+  display: flex;
   height: 100%;
-  overflow-y: hidden;
+  box-sizing: border-box;
+  flex-direction: column;
 }
 
 .feed__label {
@@ -8,10 +10,10 @@
 }
 
 .feed__box {
+  box-sizing: border-box;
   display: flex;
   flex-direction: row;
   gap: 60px;
   align-items: flex-start;
-  height: 100%;
   overflow-y: hidden;
 }
