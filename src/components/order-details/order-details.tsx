@@ -33,7 +33,9 @@ export const OrderDetails: FC = () => {
   const dispatch: any = useDispatch();
 
   useEffect(() => {
-    dispatch(getDetails(num));
+    if (num) {
+      dispatch(getDetails(num));
+    }
   }, [dispatch, num]);
 
   useEffect(() => {
@@ -75,6 +77,8 @@ export const OrderDetails: FC = () => {
     return orderPrice;
   }, [ingData]);
 
+  const statusKey: keyof typeof OrderStateSingle = detailsData.status;
+
   useEffect(() => {
     setTotalPrice(orderPrice);
   }, [orderPrice]);
@@ -94,9 +98,7 @@ export const OrderDetails: FC = () => {
         <p className={OrderDetailsStyle['order-details__name']}>
           {detailsData.name}
         </p>
-        <p className={statusClassNames}>
-          {OrderStateSingle[detailsData.status]}
-        </p>
+        <p className={statusClassNames}>{OrderStateSingle[statusKey]}</p>
         <p className={OrderDetailsStyle['order-details__name']}>Состав:</p>
         <div className={OrderDetailsStyle['order-details__container']}>
           {ingData.map((ing, ind) => (

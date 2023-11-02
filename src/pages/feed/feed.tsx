@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import {
   WS_CONNECTION_CLOSED,
   WS_CONNECTION_START,
-} from '../../services/actions';
+} from '../../services/constants';
 import { FeedList } from '../../components/feed-list/feed-list';
 import { FeedSummary } from '../../components/feed-summary/feed-summary';
 

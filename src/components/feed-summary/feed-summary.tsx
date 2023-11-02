@@ -1,7 +1,11 @@
 import { useSelector } from 'react-redux';
 import { useMemo, FC } from 'react';
 import FeedSummaryStyle from './feed-summary.module.css';
-import { OrderStatePlural, TOrder } from '../../utils';
+import {
+  OrderStatePlural,
+  OrderStateSingle,
+  TOrdersHistory,
+} from '../../utils';
 import { orderHistory } from '../../services/selectors/selectors';
 
 type TStat = {
@@ -10,17 +14,18 @@ type TStat = {
 };
 
 type TOrderNumBox = {
-  status: keyof typeof OrderStatePlural;
+  status: OrderStatePlural;
   numList: Array<string>;
 };
 
 export const FeedSummary: FC = () => {
-  const { orders, total, totalToday } = useSelector<
-    any,
-    { orders: Array<TOrder>; total: number; totalToday: number }
-  >(orderHistory);
+  const { orders, total, totalToday } = useSelector<any, TOrdersHistory>(
+    orderHistory
+  );
 
-  const getNumbersByStatus = (status: TOrder['status']): Array<string> => {
+  const getNumbersByStatus = (
+    status: keyof typeof OrderStateSingle
+  ): Array<string> => {
     return orders.filter((el) => el.status === status).map((el) => el.number);
   };
 
@@ -28,11 +33,11 @@ export const FeedSummary: FC = () => {
     <section className={FeedSummaryStyle['feed-summary']}>
       <div className={FeedSummaryStyle['feed-summary__orders-box']}>
         <OrderNumBox
-          status={'done'}
+          status={OrderStatePlural.done}
           numList={getNumbersByStatus('done')}
         ></OrderNumBox>
         <OrderNumBox
-          status={'pending'}
+          status={OrderStatePlural.pending}
           numList={getNumbersByStatus('pending')}
         ></OrderNumBox>
       </div>
@@ -56,7 +61,7 @@ const Stat: FC<TStat> = ({ label, value }) => {
 const OrderNumBox: FC<TOrderNumBox> = ({ status, numList }) => {
   const numClassNames: string = useMemo((): string => {
     let extra = '';
-    if (status === 'done') {
+    if (status === OrderStatePlural.done) {
       extra = FeedSummaryStyle['order-stat__num_done'];
     }
     return `${FeedSummaryStyle['order-stat__num']} ${extra}`;
@@ -64,9 +69,7 @@ const OrderNumBox: FC<TOrderNumBox> = ({ status, numList }) => {
 
   return (
     <div className={FeedSummaryStyle['order-stat']}>
-      <h3 className={FeedSummaryStyle['order-stat__label']}>
-        {OrderStatePlural[status] + ':'}
-      </h3>
+      <h3 className={FeedSummaryStyle['order-stat__label']}>{status + ':'}</h3>
       <div className={FeedSummaryStyle['order-stat__box']}>
         {numList && numList.length > 0 ? (
           numList.map((num, ind) => (

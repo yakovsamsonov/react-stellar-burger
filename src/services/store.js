@@ -15,7 +15,7 @@ import {
   WS_CONNECTION_SUCCESS,
   WS_CONNECTION_CLOSED,
   WS_GET_MESSAGE,
-} from './actions';
+} from './constants';
 
 const WS_ACTIONS = {
   wsOnConnectInit: WS_CONNECTION_START,

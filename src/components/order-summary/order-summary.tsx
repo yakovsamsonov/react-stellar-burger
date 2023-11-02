@@ -3,7 +3,6 @@ import { Link, useLocation } from 'react-router-dom';
 import OrderSummaryStyle from './order-summary.module.css';
 import { useState, useMemo, useEffect, FC } from 'react';
 import {
-  OrderStateSingle,
   TOrderIngredient,
   getDateLabel,
   TOrder,
@@ -85,7 +84,7 @@ export const OrderSummary: FC<TOrderSummary> = ({ order, showStatus }) => {
             {order.name}
           </h3>
           {showStatus ? (
-            <p className={statusClassNames}>{OrderStateSingle[order.status]}</p>
+            <p className={statusClassNames}>{order.status}</p>
           ) : (
             <></>
           )}

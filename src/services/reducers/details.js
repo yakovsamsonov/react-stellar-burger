@@ -2,7 +2,7 @@ import {
   GET_ORDER_DETAILS_REQUEST,
   GET_ORDER_DETAILS_SUCCESS,
   GET_ORDER_DETAILS_FAILED,
-} from '../actions';
+} from '../constants';
 
 const initialState = {
   detailsData: {},

@@ -2,7 +2,7 @@ import {
   GET_INGREDIENTS_REQUEST,
   GET_INGREDIENTS_SUCCESS,
   GET_INGREDIENTS_FAILED,
-} from '../actions';
+} from '../constants';
 
 const initialState = {
   ingredients: [],
@@ -21,7 +21,7 @@ export const ingredientsReducer = (state = initialState, action) => {
     }
     case GET_INGREDIENTS_SUCCESS: {
       return {
-        ingredients: action.items,
+        ingredients: action.ingredients,
         ingredientsLoading: false,
         ingredientsFailed: false,
       };

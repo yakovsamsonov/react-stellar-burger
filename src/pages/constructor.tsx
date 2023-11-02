@@ -1,5 +1,5 @@
 import styles from '../components/app/app.module.css';
-import BurgerConstructor from '../components/burger-constructor/burger-constructor';
+import { BurgerConstructor } from '../components/burger-constructor/burger-constructor';
 import { BurgerIngredients } from '../components/burger-ingredients/burger-ingredients';
 import { OrderConfirmation } from '../components/order-confirmation/order-confirmation';
 import { DndProvider } from 'react-dnd';

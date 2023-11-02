@@ -11,13 +11,18 @@ export type TIngredient = {
   image_mobile: string;
   image_large: string;
   __v: number;
-}
+};
 
 export type TBurgerType = 'bun' | 'sauce' | 'main';
 
 export type TOrderIngredient = TIngredient & {
-  count: number
-}
+  count: number;
+};
+
+export type TBurgerIngredient = {
+  uuid: string;
+  data: TIngredient;
+};
 
 export type TOrder = {
   status: keyof typeof OrderStateSingle;
@@ -26,31 +31,42 @@ export type TOrder = {
   createdAt: string;
   number: string;
   _id: string;
-}
+};
 
-export enum OrderStateSingle  {
+export type TOrdersHistory = {
+  orders: Array<TOrder>;
+  total: number;
+  totalToday: number;
+};
+
+export enum OrderStateSingle {
   done = 'Выполнен',
   pending = 'Готовится',
   created = 'Создан',
-};
-export enum OrderStatePlural  {
+}
+export enum OrderStatePlural {
   done = 'Готовы',
   pending = 'В работе',
   created = 'Обработка',
 }
 export enum SectionType {
-  bun ='bun',
+  bun = 'bun',
   sauce = 'sauce',
-  main = 'main'
+  main = 'main',
 }
 export enum PositionType {
-  top ='top',
+  top = 'top',
   bottom = 'bottom',
-  regular = 'regular'
+  regular = 'regular',
 }
 
 export enum NavigationLabel {
-  burger = "Конструктор",
-  list = "Лента заказов",
-  profile = "Личный кабинет"
+  burger = 'Конструктор',
+  list = 'Лента заказов',
+  profile = 'Личный кабинет',
+}
+
+export enum SubmitOrderButtonLabel {
+  await = '...',
+  ready = 'Оформить заказ',
 }

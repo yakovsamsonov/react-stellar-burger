@@ -4,7 +4,7 @@ import {
   GET_ORDER_FAILED,
   OPEN_ORDER,
   CLOSE_ORDER,
-} from '../actions';
+} from '../constants';
 
 const initialState = {
   orderOpen: false,
@@ -27,7 +27,7 @@ export const orderReducer = (state = initialState, action) => {
     case GET_ORDER_SUCCESS: {
       return {
         ...state,
-        number: action.number,
+        number: action.orderNumber,
         orderLoading: false,
         orderFailed: false,
       };

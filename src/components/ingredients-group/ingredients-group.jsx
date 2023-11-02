@@ -7,7 +7,7 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientsGroupStyle from './ingredients-group.module.css';
 import { PositionType } from '../../utils';
-import { REMOVE_REGULAR, CHANGE_ORDER } from '../../services/actions/burger';
+import { changeOrder, removeIngredient } from '../../services/actions';
 
 function IngredientsGroup() {
   const { items } = useSelector((store) => store.burger);
@@ -64,11 +64,11 @@ function RegularIngredient({ ingredient, index }) {
   });
 
   const moveIngredient = (id, newIndex = 1) => {
-    dispatch({ type: CHANGE_ORDER, uuid: id, newIndex: newIndex });
+    dispatch(changeOrder(id, newIndex));
   };
 
   const clickDeleteButton = () => {
-    dispatch({ type: REMOVE_REGULAR, uuid: ingredient.uuid });
+    dispatch(removeIngredient(ingredient));
   };
 
   drag(drop(ref));

@@ -15,26 +15,49 @@ import {
 } from '../../utils/local-storage';
 import { PASSWORD_RESET_TOKEN_SEND } from '../../utils/constants';
 
-export const REGISTER_USER_REQUEST = 'REGISTER_USER_REQUEST';
-export const REGISTER_USER_SUCCESS = 'REGISTER_USER_SUCCESS';
-export const REGISTER_USER_FAILED = 'REGISTER_USER_FAILED';
-export const LOGIN_REQUEST = 'LOGIN_REQUEST';
-export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
-export const LOGIN_FAILED = 'LOGIN_FAILED';
-export const LOGOUT_REQUEST = 'LOGOUT_REQUEST';
-export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
-export const LOGOUT_FAILED = 'LOGOUT_FAILED';
-export const USER_REQUEST = 'USER_REQUEST';
-export const USER_SUCCESS = 'USER_SUCCESS';
-export const USER_FAILED = 'USER_FAILED';
-export const USER_UPDATE_REQUEST = 'USER_UPDATE_REQUEST';
-export const USER_UPDATE_SUCCESS = 'USER_UPDATE_SUCCESS';
-export const USER_UPDATE_FAILED = 'USER_UPDATE_FAILED';
-export const PASSWORD_RESET_REQUEST = 'PASSWORD_RESET_REQUEST';
-export const PASSWORD_RESET_TOKEN_FAILED = 'PASSWORD_RESET_TOKEN_FAILED';
+export const REGISTER_USER_REQUEST: 'REGISTER_USER_REQUEST' =
+  'REGISTER_USER_REQUEST';
+export const REGISTER_USER_SUCCESS: 'REGISTER_USER_SUCCESS' =
+  'REGISTER_USER_SUCCESS';
+export const REGISTER_USER_FAILED: 'REGISTER_USER_FAILED' =
+  'REGISTER_USER_FAILED';
+export const LOGIN_REQUEST: 'LOGIN_REQUEST' = 'LOGIN_REQUEST';
+export const LOGIN_SUCCESS: 'LOGIN_SUCCESS' = 'LOGIN_SUCCESS';
+export const LOGIN_FAILED: 'LOGIN_FAILED' = 'LOGIN_FAILED';
+export const LOGOUT_REQUEST: 'LOGOUT_REQUEST' = 'LOGOUT_REQUEST';
+export const LOGOUT_SUCCESS: 'LOGOUT_SUCCESS' = 'LOGOUT_SUCCESS';
+export const LOGOUT_FAILED: 'LOGOUT_FAILED' = 'LOGOUT_FAILED';
+export const USER_REQUEST: 'USER_REQUEST' = 'USER_REQUEST';
+export const USER_SUCCESS: 'USER_SUCCESS' = 'USER_SUCCESS';
+export const USER_FAILED: 'USER_FAILED' = 'USER_FAILED';
+export const USER_UPDATE_REQUEST: 'USER_UPDATE_REQUEST' = 'USER_UPDATE_REQUEST';
+export const USER_UPDATE_SUCCESS: 'USER_UPDATE_SUCCESS' = 'USER_UPDATE_SUCCESS';
+export const USER_UPDATE_FAILED: 'USER_UPDATE_FAILED' = 'USER_UPDATE_FAILED';
+export const PASSWORD_RESET_REQUEST: 'PASSWORD_RESET_REQUEST' =
+  'PASSWORD_RESET_REQUEST';
+export const PASSWORD_RESET_TOKEN_FAILED: 'PASSWORD_RESET_TOKEN_FAILED' =
+  'PASSWORD_RESET_TOKEN_FAILED';
 
-export function registerNewUser(user) {
-  return function (dispatch) {
+type TPassword = {
+  password: string;
+};
+
+type TEmail = {
+  email: string;
+};
+
+type TUser = TEmail & TPassword;
+
+type TPasswordUpdate = TPassword & {
+  token: string;
+};
+
+type TNewUser = TUser & {
+  name: string;
+};
+
+export function registerNewUser(user: TNewUser) {
+  return function (dispatch: any) {
     dispatch({
       type: REGISTER_USER_REQUEST,
     });
@@ -53,8 +76,8 @@ export function registerNewUser(user) {
   };
 }
 
-export function login(user) {
-  return function (dispatch) {
+export function login(user: TUser) {
+  return function (dispatch: any) {
     dispatch({
       type: LOGIN_REQUEST,
     });
@@ -75,7 +98,7 @@ export function login(user) {
 }
 
 export function logout() {
-  return function (dispatch) {
+  return function (dispatch: any) {
     dispatch({
       type: LOGOUT_REQUEST,
     });
@@ -97,7 +120,7 @@ export function logout() {
 }
 
 export function setUser() {
-  return function (dispatch) {
+  return function (dispatch: any) {
     dispatch({
       type: USER_REQUEST,
     });
@@ -117,8 +140,8 @@ export function setUser() {
   };
 }
 
-export function updateUserData(newUserData) {
-  return function (dispatch) {
+export function updateUserData(newUserData: TNewUser) {
+  return function (dispatch: any) {
     dispatch({
       type: USER_UPDATE_REQUEST,
     });
@@ -138,8 +161,8 @@ export function updateUserData(newUserData) {
   };
 }
 
-export function requestPasswordChange(email) {
-  return function (dispatch) {
+export function requestPasswordChange(email: TEmail) {
+  return function (dispatch: any) {
     dispatch({ type: PASSWORD_RESET_REQUEST });
     return requestChangeToken(email)
       .then((d) => {
@@ -154,8 +177,8 @@ export function requestPasswordChange(email) {
   };
 }
 
-export function confirmPasswordChange(request) {
-  return function (dispatch) {
+export function confirmPasswordChange(request: TPasswordUpdate) {
+  return function (dispatch: any) {
     dispatch({ type: PASSWORD_RESET_REQUEST });
     return changePassword(request)
       .then((d) => {

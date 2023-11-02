@@ -1,13 +1,11 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useDrop } from 'react-dnd';
 import {
-  CLEAR_BURGER,
-  OPEN_ORDER,
+  clearBurger,
+  openOrder,
   sendOrder,
-  REMOVE_BUN,
-  ADD_BUN,
-  ADD_REGULAR,
+  addIngredient,
 } from '../../services/actions';
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import {
@@ -17,9 +15,9 @@ import {
 import BurgerConstructorStyle from './burger-constructor.module.css';
 import {
   PositionType,
-  SectionType,
-  AWAIT_BUTTON_LABEL,
-  PLACE_ORDER_BUTTON_LABEL,
+  SubmitOrderButtonLabel,
+  TBurgerIngredient,
+  TIngredient,
 } from '../../utils';
 import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from 'react-router-dom';
@@ -30,27 +28,40 @@ import {
   ingredients as ingredientsSelector,
 } from '../../services/selectors/selectors';
 
-function BurgerConstructor() {
-  const [buttonLabel, setButtonLabel] = useState(PLACE_ORDER_BUTTON_LABEL);
-  const [isButtonDisabled, setButtonDisabled] = useState(true);
-  const { items, bun } = useSelector(burger);
+export function BurgerConstructor() {
+  const [buttonLabel, setButtonLabel] = useState<SubmitOrderButtonLabel>(
+    SubmitOrderButtonLabel.ready
+  );
+  const [isButtonDisabled, setButtonDisabled] = useState<boolean>(true);
+  const { items, bun } = useSelector<
+    any,
+    {
+      items: Array<TBurgerIngredient>;
+      bun: TIngredient;
+    }
+  >(burger);
   const { user } = useSelector(userSelector);
-  const { ingredients } = useSelector(ingredientsSelector);
+  const { ingredients } = useSelector<any, { ingredients: Array<TIngredient> }>(
+    ingredientsSelector
+  );
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch: any = useDispatch();
 
-  const addIngredientToBurger = (ingredientId) => {
-    const uuid = uuidv4();
-    const ing = ingredients.find((el) => el._id === ingredientId);
-    if (ing.type === SectionType.bun) {
-      dispatch({ type: REMOVE_BUN });
-      dispatch({ type: ADD_BUN, item: ing, uuid: uuid });
-    } else {
-      dispatch({ type: ADD_REGULAR, item: ing, uuid: uuid });
+  const addIngredientToBurger = (ingredientId: string): void => {
+    const uuid: string = uuidv4();
+    const ing: TIngredient | undefined = ingredients.find(
+      (el) => el._id === ingredientId
+    );
+    if (ing) {
+      dispatch(addIngredient(uuid, ing));
     }
   };
 
-  const [{ isHover }, dropTarget] = useDrop({
+  const [{ isHover }, dropTarget] = useDrop<
+    { id: string },
+    unknown,
+    { isHover: boolean }
+  >({
     accept: 'ingredient',
     collect: (monitor) => ({
       isHover: monitor.isOver(),
@@ -60,7 +71,7 @@ function BurgerConstructor() {
     },
   });
 
-  const total = useMemo(() => {
+  const total = useMemo((): number => {
     const regular_price = items.reduce((acc, el) => {
       return acc + el.data.price;
     }, 0);
@@ -68,14 +79,14 @@ function BurgerConstructor() {
     return regular_price + bun_price;
   }, [items, bun]);
 
-  const collectBurgerIds = () => {
+  const collectBurgerIds = useCallback((): Array<string> => {
     const burgerIds = items.map((el) => el.data._id);
     if (bun) {
       burgerIds.push(bun._id);
       burgerIds.splice(0, 0, bun._id);
     }
     return burgerIds;
-  };
+  }, [items, bun]);
 
   useEffect(() => {
     if (bun) {
@@ -85,20 +96,20 @@ function BurgerConstructor() {
     }
   }, [bun]);
 
-  function processButtonClick() {
+  const processButtonClick = useCallback((): void => {
     if (!user.name) {
       navigate('/login');
       return;
     }
     if (bun) {
-      setButtonLabel(AWAIT_BUTTON_LABEL);
+      setButtonLabel(SubmitOrderButtonLabel.await);
       dispatch(sendOrder(collectBurgerIds())).then(() => {
-        dispatch({ type: OPEN_ORDER });
-        dispatch({ type: CLEAR_BURGER });
-        setButtonLabel(PLACE_ORDER_BUTTON_LABEL);
+        dispatch(openOrder());
+        dispatch(clearBurger());
+        setButtonLabel(SubmitOrderButtonLabel.ready);
       });
     }
-  }
+  }, [bun, collectBurgerIds, dispatch, setButtonLabel, navigate, user.name]);
 
   const borderStyle = isHover ? '1px solid red' : 'none';
 
@@ -127,5 +138,3 @@ function BurgerConstructor() {
     </section>
   );
 }
-
-export default BurgerConstructor;
