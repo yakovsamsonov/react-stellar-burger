@@ -5,6 +5,7 @@ import {
   GET_ORDER_DETAILS_FAILED,
 } from '../constants';
 import { TOrder } from '../../utils';
+import { AppDispatch, AppThunk } from '../store';
 
 export interface IGetOrderDetailsRequestAction {
   readonly type: typeof GET_ORDER_DETAILS_REQUEST;
@@ -39,13 +40,14 @@ export const getOrderDetailsFailed = (): IGetOrderDetailsFailedAction => ({
   type: GET_ORDER_DETAILS_FAILED,
 });
 
-export const getDetails = (orderNum: string) => (dispatch: any) => {
-  dispatch(getOrderDetailsRequest);
-  loadOrderDetails(orderNum)
-    .then((d) => {
-      dispatch(getOrderDetailsSuccess(d.orders));
-    })
-    .catch(() => {
-      dispatch(getOrderDetailsFailed);
-    });
-};
+export const getDetails: AppThunk =
+  (orderNum: string) => (dispatch: AppDispatch) => {
+    dispatch(getOrderDetailsRequest());
+    loadOrderDetails(orderNum)
+      .then((d) => {
+        dispatch(getOrderDetailsSuccess(d.orders));
+      })
+      .catch(() => {
+        dispatch(getOrderDetailsFailed());
+      });
+  };

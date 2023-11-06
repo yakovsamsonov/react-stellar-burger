@@ -8,7 +8,6 @@ import {
   getDateLabel,
   TOrderIngredient,
   TIngredient,
-  TOrder,
 } from '../../utils';
 import { Price } from '../price/price';
 import { IngredientRow } from '../ingredient-row/ingredient-row';
@@ -18,12 +17,7 @@ import {
 } from '../../services/selectors/selectors';
 
 export const OrderDetails: FC = () => {
-  const { detailsData } = useSelector<
-    any,
-    {
-      detailsData: TOrder;
-    }
-  >(detailsSelector);
+  const { detailsData } = useSelector(detailsSelector);
   const { ingredients: allIngredients } = useSelector(ingredientsSelector);
 
   const [totalPrice, setTotalPrice] = useState<number>(0);
@@ -39,7 +33,7 @@ export const OrderDetails: FC = () => {
   }, [dispatch, num]);
 
   useEffect(() => {
-    if (detailsData.status) {
+    if (detailsData) {
       const data: Array<TOrderIngredient> = [];
       detailsData.ingredients.forEach((ing) => {
         const ingData = allIngredients.find(
@@ -63,11 +57,11 @@ export const OrderDetails: FC = () => {
 
   const statusClassNames: string = useMemo((): string => {
     let extra = '';
-    if (detailsData.status === 'done') {
+    if (detailsData?.status === 'done') {
       extra = OrderDetailsStyle['order-details__status_done'];
     }
     return `${OrderDetailsStyle['order-details__status']} ${extra}`;
-  }, [detailsData.status]);
+  }, [detailsData?.status]);
 
   const orderPrice: number = useMemo((): number => {
     let orderPrice = 0;
@@ -77,13 +71,11 @@ export const OrderDetails: FC = () => {
     return orderPrice;
   }, [ingData]);
 
-  const statusKey: keyof typeof OrderStateSingle = detailsData.status;
-
   useEffect(() => {
     setTotalPrice(orderPrice);
   }, [orderPrice]);
 
-  if (!detailsData.status) {
+  if (!detailsData) {
     return (
       <div className={OrderDetailsStyle['order-details']}>
         <p className={OrderDetailsStyle['order-details__name']}>
@@ -92,6 +84,7 @@ export const OrderDetails: FC = () => {
       </div>
     );
   } else {
+    const statusKey: keyof typeof OrderStateSingle = detailsData.status;
     return (
       <div className={OrderDetailsStyle['order-details']}>
         <p className={OrderDetailsStyle['order-details__number']}>#{num}</p>

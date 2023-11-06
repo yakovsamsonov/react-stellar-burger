@@ -1,11 +1,7 @@
 import { useSelector } from 'react-redux';
 import { useMemo, FC } from 'react';
 import FeedSummaryStyle from './feed-summary.module.css';
-import {
-  OrderStatePlural,
-  OrderStateSingle,
-  TOrdersHistory,
-} from '../../utils';
+import { OrderStatePlural, OrderStateSingle } from '../../utils';
 import { orderHistory } from '../../services/selectors/selectors';
 
 type TStat = {
@@ -19,9 +15,7 @@ type TOrderNumBox = {
 };
 
 export const FeedSummary: FC = () => {
-  const { orders, total, totalToday } = useSelector<any, TOrdersHistory>(
-    orderHistory
-  );
+  const { orders, total, totalToday } = useSelector(orderHistory);
 
   const getNumbersByStatus = (
     status: keyof typeof OrderStateSingle

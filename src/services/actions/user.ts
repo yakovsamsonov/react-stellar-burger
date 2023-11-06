@@ -37,6 +37,7 @@ import {
   PASSWORD_RESET_REQUEST,
   PASSWORD_RESET_TOKEN_FAILED,
 } from '../constants';
+import { AppDispatch, AppThunk } from '../store';
 
 export interface IRegisterUserRequestAction {
   readonly type: typeof REGISTER_USER_REQUEST;
@@ -217,27 +218,29 @@ export const passwordResetFailed = (
   errorMessage,
 });
 
-export const registerNewUser = (user: TNewUser) => (dispatch: any) => {
-  dispatch(registerNewUserRequest());
-  return registerUser(user)
-    .then(() => dispatch(registerNewUserSuccess()))
-    .catch((e) => {
-      dispatch(registerNewUserFailed(e.message));
-    });
-};
+export const registerNewUser: AppThunk =
+  (user: TNewUser) => (dispatch: AppDispatch) => {
+    dispatch(registerNewUserRequest());
+    return registerUser(user)
+      .then(() => dispatch(registerNewUserSuccess()))
+      .catch((e) => {
+        dispatch(registerNewUserFailed(e.message));
+      });
+  };
 
-export const performLogin = (user: TUserWithPassword) => (dispatch: any) => {
-  dispatch(loginRequest());
-  return login(user)
-    .then((d) => {
-      dispatch(loginSuccess(d.user));
-    })
-    .catch((e) => {
-      dispatch(loginFailed(e.message));
-    });
-};
+export const performLogin: AppThunk =
+  (user: TUserWithPassword) => (dispatch: AppDispatch) => {
+    dispatch(loginRequest());
+    return login(user)
+      .then((d) => {
+        dispatch(loginSuccess(d.user));
+      })
+      .catch((e) => {
+        dispatch(loginFailed(e.message));
+      });
+  };
 
-export const performLogout = () => (dispatch: any) => {
+export const performLogout: AppThunk = () => (dispatch: AppDispatch) => {
   dispatch(loginRequest());
   return logout()
     .then(() => {
@@ -250,7 +253,7 @@ export const performLogout = () => (dispatch: any) => {
     });
 };
 
-export const setUser = () => (dispatch: any) => {
+export const setUser: AppThunk = () => (dispatch: AppDispatch) => {
   dispatch(userRequest());
   return getUserRequestWithRefresh()
     .then((d) => {
@@ -261,34 +264,36 @@ export const setUser = () => (dispatch: any) => {
     });
 };
 
-export const updateUserData = (newUserData: TNewUser) => (dispatch: any) => {
-  dispatch(userUpdateRequest());
-  return updateUser(newUserData)
-    .then((d) => {
-      dispatch(userUpdateSuccess(d.user));
-    })
-    .catch((e) => {
-      dispatch(userUpdateFailed(e.message));
-    });
-};
+export const updateUserData: AppThunk =
+  (newUserData: TNewUser) => (dispatch: AppDispatch) => {
+    dispatch(userUpdateRequest());
+    return updateUser(newUserData)
+      .then((d) => {
+        dispatch(userUpdateSuccess(d.user));
+      })
+      .catch((e) => {
+        dispatch(userUpdateFailed(e.message));
+      });
+  };
 
-export const requestPasswordChange = (email: TEmail) => (dispatch: any) => {
-  dispatch(passwordResetRequest());
-  return requestChangeToken(email)
-    .then((d) => {
-      modify(
-        StorageAction.add,
-        StorageActionKey.PASSWORD_RESET_TOKEN_SEND,
-        'true'
-      );
-    })
-    .catch((e) => {
-      dispatch(passwordResetFailed(e.message));
-    });
-};
+export const requestPasswordChange: AppThunk =
+  (email: TEmail) => (dispatch: AppDispatch) => {
+    dispatch(passwordResetRequest());
+    return requestChangeToken(email)
+      .then((d) => {
+        modify(
+          StorageAction.add,
+          StorageActionKey.PASSWORD_RESET_TOKEN_SEND,
+          'true'
+        );
+      })
+      .catch((e) => {
+        dispatch(passwordResetFailed(e.message));
+      });
+  };
 
-export const confirmPasswordChange =
-  (request: TPasswordUpdate) => (dispatch: any) => {
+export const confirmPasswordChange: AppThunk =
+  (request: TPasswordUpdate) => (dispatch: AppDispatch) => {
     dispatch(passwordResetRequest());
     return changePassword(request)
       .then(() => {

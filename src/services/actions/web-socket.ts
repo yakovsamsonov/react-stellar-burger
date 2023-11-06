@@ -51,3 +51,15 @@ export const wsCloseConnection = (
   code,
   reason,
 });
+
+export const wsConnectionSuccess = (): IWsConnSuccessAction => ({
+  type: WS_CONNECTION_SUCCESS,
+});
+
+export const wsConnectionError = (): IWsConnErrorAction => ({
+  type: WS_CONNECTION_ERROR,
+});
+
+export const wsProcessMessage = (
+  ordersHist: TOrdersHistory
+): IWsConnGetMessageAction => ({ type: WS_GET_MESSAGE, ordersHist });

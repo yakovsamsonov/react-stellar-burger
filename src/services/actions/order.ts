@@ -7,6 +7,7 @@ import {
   OPEN_ORDER,
   CLOSE_ORDER,
 } from '../constants';
+import { AppDispatch, AppThunk } from '../store';
 
 export interface IGetOrderRequestAction {
   readonly type: typeof GET_ORDER_REQUEST;
@@ -63,13 +64,14 @@ export const closeOrder = (): ICloseOrderAction => ({
   type: CLOSE_ORDER,
 });
 
-export const sendOrder = (ingredients: Array<string>) => (dispatch: any) => {
-  dispatch(getOrderRequest(ingredients));
-  return placeOrder(ingredients)
-    .then((data) => {
-      dispatch(getOrderSuccess(data.order.number));
-    })
-    .catch((e) => {
-      dispatch(getOrderFailed);
-    });
-};
+export const sendOrder: AppThunk =
+  (ingredients: Array<string>) => (dispatch: AppDispatch) => {
+    dispatch(getOrderRequest(ingredients));
+    return placeOrder(ingredients)
+      .then((data) => {
+        dispatch(getOrderSuccess(data.order.number));
+      })
+      .catch((e) => {
+        dispatch(getOrderFailed());
+      });
+  };

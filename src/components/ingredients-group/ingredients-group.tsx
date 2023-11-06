@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, FC, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useDrag, useDrop } from 'react-dnd';
 import {
@@ -6,11 +6,22 @@ import {
   DragIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientsGroupStyle from './ingredients-group.module.css';
-import { PositionType } from '../../utils';
+import { PositionType, TBurgerIngredient, TIngredient } from '../../utils';
 import { changeOrder, removeIngredient } from '../../services/actions';
+import { burger as burgerSelector } from '../../services/selectors/selectors';
 
-function IngredientsGroup() {
-  const { items } = useSelector((store) => store.burger);
+type TRegularIngredient = {
+  ingredient: TBurgerIngredient;
+  index: number;
+};
+
+type TBunIngredient = {
+  ingredient: TIngredient;
+  type: 'top' | 'bottom';
+};
+
+export const IngredientsGroup: FC = () => {
+  const { items } = useSelector(burgerSelector);
 
   return (
     <ul
@@ -22,12 +33,12 @@ function IngredientsGroup() {
       ))}
     </ul>
   );
-}
+};
 
-function RegularIngredient({ ingredient, index }) {
+const RegularIngredient: FC<TRegularIngredient> = ({ ingredient, index }) => {
   const dispatch = useDispatch();
 
-  const ref = useRef(null);
+  const ref = useRef<HTMLLIElement>(null);
 
   const [{ opacity }, drag] = useDrag({
     type: 'regular',
@@ -37,7 +48,7 @@ function RegularIngredient({ ingredient, index }) {
     }),
   });
 
-  const [, drop] = useDrop({
+  const [, drop] = useDrop<{ id: string; index: number }, unknown, unknown>({
     accept: 'regular',
     hover(item, monitor) {
       if (!ref.current) {
@@ -52,22 +63,24 @@ function RegularIngredient({ ingredient, index }) {
       const hoverMiddleY =
         (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
       const clientOffset = monitor.getClientOffset();
-      const hoverClientY = clientOffset.y - hoverBoundingRect.top;
-      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
-        return;
+      if (clientOffset) {
+        const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+        if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+          return;
+        }
+        if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+          return;
+        }
+        moveIngredient(item.id, hoverIndex);
       }
-      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
-        return;
-      }
-      moveIngredient(item.id, hoverIndex);
     },
   });
 
-  const moveIngredient = (id, newIndex = 1) => {
+  const moveIngredient = (id: string, newIndex: number = 1): void => {
     dispatch(changeOrder(id, newIndex));
   };
 
-  const clickDeleteButton = () => {
+  const clickDeleteButton = (): void => {
     dispatch(removeIngredient(ingredient));
   };
 
@@ -81,7 +94,6 @@ function RegularIngredient({ ingredient, index }) {
     >
       <DragIcon type="primary" />
       <ConstructorElement
-        type={PositionType.regular}
         isLocked={false}
         text={ingredient.data.name}
         price={ingredient.data.price}
@@ -90,18 +102,21 @@ function RegularIngredient({ ingredient, index }) {
       />
     </li>
   );
-}
+};
 
-function BunIngredient({ ingredient, type }) {
-  function getLabel(element) {
-    let label = element.name;
-    if (type === PositionType.top) {
-      label = label + ' (верх)';
-    } else if (type === PositionType.bottom) {
-      label = label + ' (низ)';
-    }
-    return label;
-  }
+export const BunIngredient: FC<TBunIngredient> = ({ ingredient, type }) => {
+  const getLabel = useCallback(
+    (element: TIngredient) => {
+      let label = element.name;
+      if (type === PositionType.top) {
+        label = label + ' (верх)';
+      } else if (type === PositionType.bottom) {
+        label = label + ' (низ)';
+      }
+      return label;
+    },
+    [type]
+  );
 
   return (
     <ul
@@ -119,6 +134,4 @@ function BunIngredient({ ingredient, type }) {
       </li>
     </ul>
   );
-}
-
-export { IngredientsGroup, BunIngredient };
+};

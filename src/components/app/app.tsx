@@ -31,7 +31,7 @@ function App() {
   const { ingredientsLoading, ingredientsFailed, ingredients } =
     useSelector(ingredientsSelector);
 
-  const dispatch = useDispatch();
+  const dispatch: any = useDispatch();
 
   useEffect(() => {
     dispatch(getIngredients());
@@ -56,9 +56,9 @@ function App() {
 function ModalSwitch() {
   const location = useLocation();
   const navigate = useNavigate();
-  const background = location.state && location.state.backgroundLocation;
+  const background = location?.state?.backgroundLocation;
 
-  const processModalClose = useCallback(() => {
+  const processModalClose = useCallback((): void => {
     navigate(background, { replace: true });
   }, [navigate, background]);
 
@@ -69,23 +69,19 @@ function ModalSwitch() {
         <Route path="/feed" element={<Feed />}></Route>
         <Route
           path="/login"
-          element={<ProtectedRoute element={<Login />} anonymous={true} />}
+          element={<ProtectedRoute element={<Login />} anonymous />}
         ></Route>
         <Route
           path="/register"
-          element={<ProtectedRoute element={<Register />} anonymous={true} />}
+          element={<ProtectedRoute element={<Register />} anonymous />}
         ></Route>
         <Route
           path="/forgot-password"
-          element={
-            <ProtectedRoute element={<ForgotPassword />} anonymous={true} />
-          }
+          element={<ProtectedRoute element={<ForgotPassword />} anonymous />}
         ></Route>
         <Route
           path="/reset-password"
-          element={
-            <ProtectedRoute element={<ResetPassword />} anonymous={true} />
-          }
+          element={<ProtectedRoute element={<ResetPassword />} anonymous />}
         ></Route>
         <Route
           path="/profile"

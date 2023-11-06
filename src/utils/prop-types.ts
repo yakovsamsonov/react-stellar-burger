@@ -130,3 +130,9 @@ export type TNewUser = TUserWithPassword & {
 };
 
 export type TUser = Omit<TNewUser, 'password'>;
+
+export enum ServerRequestType {
+  get = 'GET',
+  post = 'POST',
+  patch = 'PATCH',
+}

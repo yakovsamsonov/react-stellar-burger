@@ -13,12 +13,7 @@ import {
   BunIngredient,
 } from '../ingredients-group/ingredients-group';
 import BurgerConstructorStyle from './burger-constructor.module.css';
-import {
-  PositionType,
-  SubmitOrderButtonLabel,
-  TBurgerIngredient,
-  TIngredient,
-} from '../../utils';
+import { PositionType, SubmitOrderButtonLabel, TIngredient } from '../../utils';
 import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from 'react-router-dom';
 import { Price } from '../price/price';
@@ -33,17 +28,9 @@ export function BurgerConstructor() {
     SubmitOrderButtonLabel.ready
   );
   const [isButtonDisabled, setButtonDisabled] = useState<boolean>(true);
-  const { items, bun } = useSelector<
-    any,
-    {
-      items: Array<TBurgerIngredient>;
-      bun: TIngredient;
-    }
-  >(burger);
+  const { items, bun } = useSelector(burger);
   const { user } = useSelector(userSelector);
-  const { ingredients } = useSelector<any, { ingredients: Array<TIngredient> }>(
-    ingredientsSelector
-  );
+  const { ingredients } = useSelector(ingredientsSelector);
   const navigate = useNavigate();
   const dispatch: any = useDispatch();
 

@@ -5,6 +5,7 @@ import {
   GET_INGREDIENTS_SUCCESS,
   GET_INGREDIENTS_FAILED,
 } from '../constants';
+import { AppDispatch, AppThunk } from '../store';
 
 export interface IGetIngredientsRequestAction {
   readonly type: typeof GET_INGREDIENTS_REQUEST;
@@ -39,13 +40,13 @@ export const getIngredientsFailed = (): IGetIngredientsFailedAction => ({
   type: GET_INGREDIENTS_FAILED,
 });
 
-export const getIngredients = (): any => (dispatch: any) => {
-  dispatch(getIngredientsRequest);
+export const getIngredients: AppThunk = () => (dispatch: AppDispatch) => {
+  dispatch(getIngredientsRequest());
   loadIngredients()
     .then((d) => {
       dispatch(getIngredientsSuccess(d.data));
     })
     .catch((e) => {
-      dispatch(getIngredientsFailed);
+      dispatch(getIngredientsFailed());
     });
 };
