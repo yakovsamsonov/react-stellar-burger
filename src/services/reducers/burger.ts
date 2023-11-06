@@ -6,12 +6,24 @@ import {
   CHANGE_ORDER,
   CLEAR_BURGER,
 } from '../constants';
-const initialState = {
+
+import { TBurgerIngredient, TIngredient } from '../../utils';
+import { TBurgerActions } from '../actions';
+
+type TBurgerState = {
+  bun: TIngredient | null;
+  items: Array<TBurgerIngredient>;
+};
+
+const initialState: TBurgerState = {
   bun: null,
   items: [],
 };
 
-export const burgerReducer = (state = initialState, action) => {
+export const burgerReducer = (
+  state: TBurgerState = initialState,
+  action: TBurgerActions
+): TBurgerState => {
   switch (action.type) {
     case ADD_REGULAR: {
       const new_items = [...state.items];
@@ -50,8 +62,9 @@ export const burgerReducer = (state = initialState, action) => {
       const new_items = [...state.items].filter(
         (el) => el.uuid !== action.uuid
       );
-      new_items.splice(action.newIndex, 0, ingredient);
-
+      if (ingredient) {
+        new_items.splice(action.newIndex, 0, ingredient);
+      }
       return {
         ...state,
         items: new_items,

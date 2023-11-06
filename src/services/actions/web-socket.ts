@@ -37,3 +37,17 @@ export type TWsConnActions =
   | IWsConnGetMessageAction
   | IWsConnSuccessAction
   | IWsConnStartAction;
+
+export const wsStartConnection = (payload: string): IWsConnStartAction => ({
+  type: WS_CONNECTION_START,
+  payload,
+});
+
+export const wsCloseConnection = (
+  code: number = 1000,
+  reason: string = 'leave page'
+): IWsConnCloseAction => ({
+  type: WS_CONNECTION_CLOSED,
+  code,
+  reason,
+});

@@ -1,45 +1,42 @@
-import { useState } from 'react';
+import { useState, FC, FormEvent } from 'react';
 import { Form } from '../components/form/form';
 import { registerNewUser } from '../services/actions/user';
-import {
-  EMAIL_FIELD_TYPE,
-  PASSWORD_FIELD_TYPE,
-  TEXT_FIELD_TYPE,
-} from '../utils/constants';
 import { useDispatch, useSelector } from 'react-redux';
+import { user as userSelector } from '../services/selectors/selectors';
+import { FieldType, TButton, TField, TLink, TNewUser } from '../utils';
 
-const emptyForm = {
+const emptyForm: TNewUser = {
   email: '',
   password: '',
   name: '',
 };
 
-export function Register() {
-  const [newUser, setNewUser] = useState(emptyForm);
+export const Register: FC = () => {
+  const [newUser, setNewUser] = useState<TNewUser>(emptyForm);
 
-  const { registrationErrorText } = useSelector((store) => store.user);
+  const { registrationErrorText } = useSelector(userSelector);
 
-  const dispatch = useDispatch();
+  const dispatch: any = useDispatch();
 
-  const fields = [
+  const fields: ReadonlyArray<TField> = [
     {
-      type: TEXT_FIELD_TYPE,
+      type: FieldType.text,
       name: 'name',
       value: newUser.name,
       placeholder: 'Имя',
     },
     {
-      type: EMAIL_FIELD_TYPE,
+      type: FieldType.email,
       name: 'email',
       value: newUser.email,
     },
     {
-      type: PASSWORD_FIELD_TYPE,
+      type: FieldType.password,
       name: 'password',
       value: newUser.password,
     },
   ];
-  const links = [
+  const links: ReadonlyArray<TLink> = [
     {
       text: 'Уже зарегистрированы?',
       linkText: 'Войти',
@@ -47,9 +44,11 @@ export function Register() {
     },
   ];
 
-  const buttons = [{ label: 'Зарегистрироваться', type: 'submit' }];
+  const buttons: ReadonlyArray<TButton> = [
+    { label: 'Зарегистрироваться', type: 'submit' },
+  ];
 
-  const onSumbit = (e) => {
+  const onSumbit = (e: FormEvent): void => {
     e.preventDefault();
     dispatch(registerNewUser(newUser)).then(() => {
       setNewUser(emptyForm);
@@ -68,4 +67,4 @@ export function Register() {
       errorMessage={registrationErrorText}
     ></Form>
   );
-}
+};

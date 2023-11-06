@@ -10,7 +10,7 @@ import {
 
 export interface IGetOrderRequestAction {
   readonly type: typeof GET_ORDER_REQUEST;
-  readonly ingredients: ReadonlyArray<string>;
+  readonly ingredients: Array<string>;
 }
 
 export interface IGetOrderSuccessAction {

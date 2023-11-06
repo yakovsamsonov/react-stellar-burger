@@ -24,7 +24,7 @@ export const socketMiddleware = (baseUrl, actions) => (store) => (next) => {
         const { data } = event;
         const parsedData = JSON.parse(data);
 
-        dispatch({ type: actions.wsOnMessage, payload: parsedData });
+        dispatch({ type: actions.wsOnMessage, ordersHist: parsedData });
       };
 
       socket.onclose = (event) => {

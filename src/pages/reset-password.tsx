@@ -1,40 +1,51 @@
 import { Form } from '../components/form/form';
-import { useState } from 'react';
-import { PASSWORD_FIELD_TYPE, TEXT_FIELD_TYPE } from '../utils/constants';
+import { useState, FC, FormEvent } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
-import { modify, GET_FROM_STORAGE } from '../utils/local-storage';
-import { PASSWORD_RESET_TOKEN_SEND } from '../utils/constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { confirmPasswordChange } from '../services/actions/user';
+import {
+  StorageAction,
+  StorageActionKey,
+  TField,
+  TLink,
+  TButton,
+  modify,
+  TPasswordUpdate,
+} from '../utils';
+import { user as userSelector } from '../services/selectors/selectors';
+import { FieldType } from '../utils';
 
-const emptyForm = {
+const emptyForm: TPasswordUpdate = {
   password: '',
   token: '',
 };
 
-export function ResetPassword() {
-  const [formData, setformData] = useState(emptyForm);
-  const dispatch = useDispatch();
+export const ResetPassword: FC = () => {
+  const [formData, setformData] = useState<TPasswordUpdate>(emptyForm);
+  const dispatch: any = useDispatch();
   const navigate = useNavigate();
-  const { resetErrorText } = useSelector((store) => store.user);
+  const { resetErrorText } = useSelector(userSelector);
 
-  const resetTokenSend = modify(GET_FROM_STORAGE, PASSWORD_RESET_TOKEN_SEND);
+  const resetTokenSend = modify(
+    StorageAction.get,
+    StorageActionKey.PASSWORD_RESET_TOKEN_SEND
+  );
 
-  const fields = [
+  const fields: ReadonlyArray<TField> = [
     {
-      type: PASSWORD_FIELD_TYPE,
+      type: FieldType.password,
       name: 'password',
       value: formData.password,
       placeholder: 'Введите новый пароль',
     },
     {
-      type: TEXT_FIELD_TYPE,
+      type: FieldType.text,
       name: 'token',
       value: formData.token,
       placeholder: 'Введите код из письма',
     },
   ];
-  const links = [
+  const links: ReadonlyArray<TLink> = [
     {
       text: 'Вспомнили пароль?',
       linkText: 'Войти',
@@ -42,12 +53,13 @@ export function ResetPassword() {
     },
   ];
 
-  const buttons = [{ label: 'Сохранить', type: 'submit' }];
+  const buttons: ReadonlyArray<TButton> = [
+    { label: 'Сохранить', type: 'submit' },
+  ];
 
-  const onSumbit = (e) => {
+  const onSumbit = (e: FormEvent): void => {
     e.preventDefault();
-    console.log('Попытка смены пароля');
-    dispatch(confirmPasswordChange(formData)).then((res) =>
+    dispatch(confirmPasswordChange(formData)).then(() =>
       navigate('/', { replace: true })
     );
   };
@@ -66,4 +78,4 @@ export function ResetPassword() {
   ) : (
     <Navigate to="/forgot-password" replace></Navigate>
   );
-}
+};

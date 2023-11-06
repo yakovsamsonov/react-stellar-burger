@@ -6,7 +6,17 @@ import {
   CLOSE_ORDER,
 } from '../constants';
 
-const initialState = {
+import { TOrderActions } from '../actions';
+
+type TOrderState = {
+  orderOpen: boolean;
+  ingredients: Array<string>;
+  number: number;
+  orderLoading: boolean;
+  orderFailed: boolean;
+};
+
+const initialState: TOrderState = {
   orderOpen: false,
   ingredients: [],
   number: 0,
@@ -14,7 +24,10 @@ const initialState = {
   orderFailed: false,
 };
 
-export const orderReducer = (state = initialState, action) => {
+export const orderReducer = (
+  state: TOrderState = initialState,
+  action: TOrderActions
+): TOrderState => {
   switch (action.type) {
     case GET_ORDER_REQUEST: {
       return {
@@ -47,9 +60,7 @@ export const orderReducer = (state = initialState, action) => {
       };
     }
     case CLOSE_ORDER: {
-      return {
-        initialState,
-      };
+      return initialState;
     }
 
     default: {

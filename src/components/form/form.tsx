@@ -1,4 +1,12 @@
-import { useState, useEffect, useCallback, FC, ChangeEvent } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  FC,
+  ChangeEvent,
+  FormEvent,
+  ReactNode,
+} from 'react';
 import formStyle from './form.module.css';
 import { Link } from 'react-router-dom';
 import {
@@ -7,41 +15,22 @@ import {
   Input,
   PasswordInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { EMAIL_FIELD_TYPE, PASSWORD_FIELD_TYPE } from '../../utils/constants';
+import { FieldType, TField, TLink, TButton, TNewUser } from '../../utils';
 
-type TField = {
-  type: string;
-  name: string;
-  value: string;
-  icon?: any;
-  placeholder?: string;
-};
-
-type TLink = {
-  text: string;
-  linkText: string;
-  linkTo: string;
-};
-
-type TButton = {
-  label: string;
-  type: 'button' | 'submit' | 'reset';
-};
-
-type TForm = {
-  title: string;
+interface IFormProps<T> {
+  title?: string;
   fields: ReadonlyArray<TField>;
-  links: ReadonlyArray<TLink>;
+  links?: ReadonlyArray<TLink>;
   buttons: ReadonlyArray<TButton>;
-  formSubmit?: () => void;
-  formReset?: () => void;
-  formData: {};
-  setFormData: (formData: {}) => void;
+  formSubmit?: (e: FormEvent) => void;
+  formReset?: (e: FormEvent) => void;
+  formData: T;
+  setFormData: (formData: T) => void;
   errorMessage?: string;
-  customDiasbleButton?: () => boolean;
-};
+  customDisableButton?: () => boolean;
+}
 
-export const Form: FC<TForm> = ({
+export const Form = <T extends object>({
   title,
   fields,
   links,
@@ -51,8 +40,8 @@ export const Form: FC<TForm> = ({
   formData,
   setFormData,
   errorMessage,
-  customDiasbleButton,
-}) => {
+  customDisableButton,
+}: IFormProps<T> & { children?: ReactNode }) => {
   const [isButtonDisabled, setButtonDisabled] = useState(true);
   const [hasInputError, setInputError] = useState(false);
 
@@ -67,14 +56,14 @@ export const Form: FC<TForm> = ({
 
   useEffect(() => {
     let disableButton = true;
-    if (customDiasbleButton) {
-      disableButton = customDiasbleButton();
+    if (customDisableButton) {
+      disableButton = customDisableButton();
     } else {
       disableButton = baseDisableButton();
     }
 
     setButtonDisabled(disableButton);
-  }, [baseDisableButton, customDiasbleButton]);
+  }, [baseDisableButton, customDisableButton]);
 
   return (
     <div className={formStyle['form']}>
@@ -85,7 +74,7 @@ export const Form: FC<TForm> = ({
       >
         {title ? <h2 className={formStyle['form__title']}>{title}</h2> : <></>}
         {fields.map((el, index) => {
-          return el.type === PASSWORD_FIELD_TYPE ? (
+          return el.type === FieldType.password ? (
             <PasswordInput
               key={index}
               value={el.value}
@@ -94,7 +83,7 @@ export const Form: FC<TForm> = ({
               onChange={onFieldChange}
               icon={el.icon}
             ></PasswordInput>
-          ) : el.type === EMAIL_FIELD_TYPE ? (
+          ) : el.type === FieldType.email ? (
             <EmailInput
               key={index}
               value={el.value}

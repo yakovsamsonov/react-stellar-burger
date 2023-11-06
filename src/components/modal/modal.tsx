@@ -59,5 +59,3 @@ export const Modal: FC<TModal> = ({ children, onClose }) => {
     MODAL_ROOT as HTMLElement
   );
 };
-
-export default Modal;

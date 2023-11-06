@@ -1,33 +1,34 @@
-import { useState } from 'react';
+import { FormEvent, useState, FC } from 'react';
 import { Form } from '../components/form/form';
-import { EMAIL_FIELD_TYPE, PASSWORD_FIELD_TYPE } from '../utils/constants';
+import { FieldType, TField, TButton, TLink, TUserWithPassword } from '../utils';
 import { useDispatch, useSelector } from 'react-redux';
-import { login } from '../services/actions/user';
+import { performLogin } from '../services/actions/user';
+import { user as userSelector } from '../services/selectors/selectors';
 
-const emptyForm = {
+const emptyForm: TUserWithPassword = {
   email: '',
   password: '',
 };
 
-export function Login() {
-  const [loginData, setLoginData] = useState(emptyForm);
-  const { loginErrorText } = useSelector((store) => store.user);
+export const Login: FC = () => {
+  const [loginData, setLoginData] = useState<TUserWithPassword>(emptyForm);
+  const { loginErrorText } = useSelector(userSelector);
 
-  const dispatch = useDispatch();
+  const dispatch: any = useDispatch();
 
-  const fields = [
+  const fields: ReadonlyArray<TField> = [
     {
-      type: EMAIL_FIELD_TYPE,
+      type: FieldType.email,
       name: 'email',
       value: loginData.email,
     },
     {
-      type: PASSWORD_FIELD_TYPE,
+      type: FieldType.password,
       name: 'password',
       value: loginData.password,
     },
   ];
-  const links = [
+  const links: ReadonlyArray<TLink> = [
     {
       text: 'Вы — новый пользователь?',
       linkText: 'Зарегистрироваться',
@@ -40,11 +41,11 @@ export function Login() {
     },
   ];
 
-  const buttons = [{ label: 'Войти', type: 'submit' }];
+  const buttons: ReadonlyArray<TButton> = [{ label: 'Войти', type: 'submit' }];
 
-  const onSumbit = (e) => {
+  const onSumbit = (e: FormEvent): void => {
     e.preventDefault();
-    dispatch(login(loginData)).then(() => {
+    dispatch(performLogin(loginData)).then(() => {
       setLoginData(emptyForm);
     });
   };
@@ -61,4 +62,4 @@ export function Login() {
       errorMessage={loginErrorText}
     ></Form>
   );
-}
+};

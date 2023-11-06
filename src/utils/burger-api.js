@@ -117,7 +117,7 @@ function prepareLogoutOptions() {
   };
 }
 
-export function loginRequest(loginData) {
+export function login(loginData) {
   const endpoint = `${BACKEND_BASE_URL}/auth/login`;
 
   const options = {
@@ -132,7 +132,7 @@ export function loginRequest(loginData) {
   });
 }
 
-export function logoutRequest() {
+export function logout() {
   const endpoint = `${BACKEND_BASE_URL}/auth/logout`;
 
   const options = prepareLogoutOptions();

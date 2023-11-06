@@ -12,7 +12,7 @@ export interface IGetOrderDetailsRequestAction {
 
 export interface IGetOrderDetailsSuccessAction {
   readonly type: typeof GET_ORDER_DETAILS_SUCCESS;
-  readonly order: TOrder;
+  readonly order: Array<TOrder>;
 }
 
 export interface IGetOrderDetailsFailedAction {
@@ -29,7 +29,7 @@ export const getOrderDetailsRequest = (): IGetOrderDetailsRequestAction => ({
 });
 
 export const getOrderDetailsSuccess = (
-  order: TOrder
+  order: Array<TOrder>
 ): IGetOrderDetailsSuccessAction => ({
   type: GET_ORDER_DETAILS_SUCCESS,
   order,
@@ -45,7 +45,7 @@ export const getDetails = (orderNum: string) => (dispatch: any) => {
     .then((d) => {
       dispatch(getOrderDetailsSuccess(d.orders));
     })
-    .catch((e) => {
+    .catch(() => {
       dispatch(getOrderDetailsFailed);
     });
 };

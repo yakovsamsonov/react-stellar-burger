@@ -1,195 +1,303 @@
 import {
+  Cookies,
+  deleteCookie,
+  modify,
+  StorageAction,
+  StorageActionKey,
   registerUser,
-  loginRequest,
-  logoutRequest,
+  login,
+  logout,
   getUserRequestWithRefresh,
   updateUser,
   requestChangeToken,
   changePassword,
-} from '../../utils/burger-api';
-import { deleteCookie } from '../../utils/cookie';
+  TUser,
+  TNewUser,
+  TUserWithPassword,
+  TEmail,
+  TPasswordUpdate,
+} from '../../utils';
+
 import {
-  modify,
-  ADD_TO_STORAGE,
-  REMOVE_FROM_STORAGE,
-} from '../../utils/local-storage';
-import { PASSWORD_RESET_TOKEN_SEND } from '../../utils/constants';
-import { Cookies } from '../../utils';
+  REGISTER_USER_REQUEST,
+  REGISTER_USER_SUCCESS,
+  REGISTER_USER_FAILED,
+  LOGIN_REQUEST,
+  LOGIN_SUCCESS,
+  LOGIN_FAILED,
+  LOGOUT_REQUEST,
+  LOGOUT_SUCCESS,
+  LOGOUT_FAILED,
+  USER_REQUEST,
+  USER_SUCCESS,
+  USER_FAILED,
+  USER_UPDATE_REQUEST,
+  USER_UPDATE_SUCCESS,
+  USER_UPDATE_FAILED,
+  PASSWORD_RESET_REQUEST,
+  PASSWORD_RESET_TOKEN_FAILED,
+} from '../constants';
 
-export const REGISTER_USER_REQUEST: 'REGISTER_USER_REQUEST' =
-  'REGISTER_USER_REQUEST';
-export const REGISTER_USER_SUCCESS: 'REGISTER_USER_SUCCESS' =
-  'REGISTER_USER_SUCCESS';
-export const REGISTER_USER_FAILED: 'REGISTER_USER_FAILED' =
-  'REGISTER_USER_FAILED';
-export const LOGIN_REQUEST: 'LOGIN_REQUEST' = 'LOGIN_REQUEST';
-export const LOGIN_SUCCESS: 'LOGIN_SUCCESS' = 'LOGIN_SUCCESS';
-export const LOGIN_FAILED: 'LOGIN_FAILED' = 'LOGIN_FAILED';
-export const LOGOUT_REQUEST: 'LOGOUT_REQUEST' = 'LOGOUT_REQUEST';
-export const LOGOUT_SUCCESS: 'LOGOUT_SUCCESS' = 'LOGOUT_SUCCESS';
-export const LOGOUT_FAILED: 'LOGOUT_FAILED' = 'LOGOUT_FAILED';
-export const USER_REQUEST: 'USER_REQUEST' = 'USER_REQUEST';
-export const USER_SUCCESS: 'USER_SUCCESS' = 'USER_SUCCESS';
-export const USER_FAILED: 'USER_FAILED' = 'USER_FAILED';
-export const USER_UPDATE_REQUEST: 'USER_UPDATE_REQUEST' = 'USER_UPDATE_REQUEST';
-export const USER_UPDATE_SUCCESS: 'USER_UPDATE_SUCCESS' = 'USER_UPDATE_SUCCESS';
-export const USER_UPDATE_FAILED: 'USER_UPDATE_FAILED' = 'USER_UPDATE_FAILED';
-export const PASSWORD_RESET_REQUEST: 'PASSWORD_RESET_REQUEST' =
-  'PASSWORD_RESET_REQUEST';
-export const PASSWORD_RESET_TOKEN_FAILED: 'PASSWORD_RESET_TOKEN_FAILED' =
-  'PASSWORD_RESET_TOKEN_FAILED';
+export interface IRegisterUserRequestAction {
+  readonly type: typeof REGISTER_USER_REQUEST;
+}
 
-type TPassword = {
-  password: string;
+export interface IRegisterUserSuccessAction {
+  readonly type: typeof REGISTER_USER_SUCCESS;
+}
+
+export interface IRegisterUserFailedAction {
+  readonly type: typeof REGISTER_USER_FAILED;
+  readonly errorMessage: string;
+}
+
+export interface ILoginRequestAction {
+  readonly type: typeof LOGIN_REQUEST;
+}
+
+export interface ILoginSuccessAction {
+  readonly type: typeof LOGIN_SUCCESS;
+  readonly user: TUser;
+}
+
+export interface ILoginFailedAction {
+  readonly type: typeof LOGIN_FAILED;
+  readonly errorMessage: string;
+}
+
+export interface ILogoutRequestAction {
+  readonly type: typeof LOGOUT_REQUEST;
+}
+
+export interface ILogoutSuccessAction {
+  readonly type: typeof LOGOUT_SUCCESS;
+}
+
+export interface ILogoutFailedAction {
+  readonly type: typeof LOGOUT_FAILED;
+  readonly errorMessage: string;
+}
+
+export interface IUserRequestAction {
+  readonly type: typeof USER_REQUEST;
+}
+
+export interface IUserSuccessAction {
+  readonly type: typeof USER_SUCCESS;
+  readonly user: TUser;
+}
+
+export interface IUserFailedAction {
+  readonly type: typeof USER_FAILED;
+  readonly errorMessage: string;
+}
+
+export interface IUserUpdateRequestAction {
+  readonly type: typeof USER_UPDATE_REQUEST;
+}
+
+export interface IUserUpdateSuccessAction {
+  readonly type: typeof USER_UPDATE_SUCCESS;
+  readonly user: TUser;
+}
+
+export interface IUserUpdateFailedAction {
+  readonly type: typeof USER_UPDATE_FAILED;
+  readonly errorMessage: string;
+}
+
+export interface IPasswordResetRequestAction {
+  readonly type: typeof PASSWORD_RESET_REQUEST;
+}
+
+export interface IPasswordResetFailedAction {
+  readonly type: typeof PASSWORD_RESET_TOKEN_FAILED;
+  readonly errorMessage: string;
+}
+
+export type TUserActions =
+  | IRegisterUserRequestAction
+  | IRegisterUserSuccessAction
+  | IRegisterUserFailedAction
+  | ILoginRequestAction
+  | ILoginSuccessAction
+  | ILoginFailedAction
+  | ILogoutRequestAction
+  | ILogoutSuccessAction
+  | ILogoutFailedAction
+  | IUserRequestAction
+  | IUserSuccessAction
+  | IUserFailedAction
+  | IUserUpdateRequestAction
+  | IUserUpdateSuccessAction
+  | IUserUpdateFailedAction
+  | IPasswordResetRequestAction
+  | IPasswordResetFailedAction;
+
+export const registerNewUserRequest = (): IRegisterUserRequestAction => ({
+  type: REGISTER_USER_REQUEST,
+});
+
+export const registerNewUserSuccess = (): IRegisterUserSuccessAction => ({
+  type: REGISTER_USER_SUCCESS,
+});
+
+export const registerNewUserFailed = (
+  errorMessage: string
+): IRegisterUserFailedAction => ({
+  type: REGISTER_USER_FAILED,
+  errorMessage,
+});
+
+export const loginRequest = (): ILoginRequestAction => ({
+  type: LOGIN_REQUEST,
+});
+
+export const loginSuccess = (user: TUser): ILoginSuccessAction => ({
+  type: LOGIN_SUCCESS,
+  user,
+});
+
+export const loginFailed = (errorMessage: string): ILoginFailedAction => ({
+  type: LOGIN_FAILED,
+  errorMessage,
+});
+
+export const logoutRequest = (): ILogoutRequestAction => ({
+  type: LOGOUT_REQUEST,
+});
+
+export const logoutSuccess = (): ILogoutSuccessAction => ({
+  type: LOGOUT_SUCCESS,
+});
+
+export const logoutFailed = (errorMessage: string): ILogoutFailedAction => ({
+  type: LOGOUT_FAILED,
+  errorMessage,
+});
+
+export const userRequest = (): IUserRequestAction => ({
+  type: USER_REQUEST,
+});
+
+export const userSuccess = (user: TUser): IUserSuccessAction => ({
+  type: USER_SUCCESS,
+  user,
+});
+
+export const userFailed = (errorMessage: string): IUserFailedAction => ({
+  type: USER_FAILED,
+  errorMessage,
+});
+
+export const userUpdateRequest = (): IUserUpdateRequestAction => ({
+  type: USER_UPDATE_REQUEST,
+});
+
+export const userUpdateSuccess = (user: TUser): IUserUpdateSuccessAction => ({
+  type: USER_UPDATE_SUCCESS,
+  user,
+});
+
+export const userUpdateFailed = (
+  errorMessage: string
+): IUserUpdateFailedAction => ({
+  type: USER_UPDATE_FAILED,
+  errorMessage,
+});
+
+export const passwordResetRequest = (): IPasswordResetRequestAction => ({
+  type: PASSWORD_RESET_REQUEST,
+});
+
+export const passwordResetFailed = (
+  errorMessage: string
+): IPasswordResetFailedAction => ({
+  type: PASSWORD_RESET_TOKEN_FAILED,
+  errorMessage,
+});
+
+export const registerNewUser = (user: TNewUser) => (dispatch: any) => {
+  dispatch(registerNewUserRequest());
+  return registerUser(user)
+    .then(() => dispatch(registerNewUserSuccess()))
+    .catch((e) => {
+      dispatch(registerNewUserFailed(e.message));
+    });
 };
 
-type TEmail = {
-  email: string;
+export const performLogin = (user: TUserWithPassword) => (dispatch: any) => {
+  dispatch(loginRequest());
+  return login(user)
+    .then((d) => {
+      dispatch(loginSuccess(d.user));
+    })
+    .catch((e) => {
+      dispatch(loginFailed(e.message));
+    });
 };
 
-type TUser = TEmail & TPassword;
-
-type TPasswordUpdate = TPassword & {
-  token: string;
+export const performLogout = () => (dispatch: any) => {
+  dispatch(loginRequest());
+  return logout()
+    .then(() => {
+      dispatch(logoutSuccess());
+      deleteCookie(Cookies.access);
+      deleteCookie(Cookies.refresh);
+    })
+    .catch((e) => {
+      dispatch(loginFailed(e.message));
+    });
 };
 
-type TNewUser = TUser & {
-  name: string;
+export const setUser = () => (dispatch: any) => {
+  dispatch(userRequest());
+  return getUserRequestWithRefresh()
+    .then((d) => {
+      dispatch(userSuccess(d.user));
+    })
+    .catch((e) => {
+      dispatch(userFailed(e.message));
+    });
 };
 
-export function registerNewUser(user: TNewUser) {
-  return function (dispatch: any) {
-    dispatch({
-      type: REGISTER_USER_REQUEST,
+export const updateUserData = (newUserData: TNewUser) => (dispatch: any) => {
+  dispatch(userUpdateRequest());
+  return updateUser(newUserData)
+    .then((d) => {
+      dispatch(userUpdateSuccess(d.user));
+    })
+    .catch((e) => {
+      dispatch(userUpdateFailed(e.message));
     });
-    return registerUser(user)
-      .then((d) =>
-        dispatch({
-          type: REGISTER_USER_SUCCESS,
-        })
-      )
-      .catch((e) => {
-        dispatch({
-          type: REGISTER_USER_FAILED,
-          errorMessage: e.message,
-        });
-      });
-  };
-}
+};
 
-export function login(user: TUser) {
-  return function (dispatch: any) {
-    dispatch({
-      type: LOGIN_REQUEST,
+export const requestPasswordChange = (email: TEmail) => (dispatch: any) => {
+  dispatch(passwordResetRequest());
+  return requestChangeToken(email)
+    .then((d) => {
+      modify(
+        StorageAction.add,
+        StorageActionKey.PASSWORD_RESET_TOKEN_SEND,
+        'true'
+      );
+    })
+    .catch((e) => {
+      dispatch(passwordResetFailed(e.message));
     });
-    return loginRequest(user)
-      .then((d) => {
-        dispatch({
-          type: LOGIN_SUCCESS,
-          user: d.user,
-        });
-      })
-      .catch((e) => {
-        dispatch({
-          type: LOGIN_FAILED,
-          errorMessage: e.message,
-        });
-      });
-  };
-}
+};
 
-export function logout() {
-  return function (dispatch: any) {
-    dispatch({
-      type: LOGOUT_REQUEST,
-    });
-    return logoutRequest()
-      .then((d) => {
-        dispatch({
-          type: LOGOUT_SUCCESS,
-        });
-        deleteCookie(Cookies.access);
-        deleteCookie(Cookies.refresh);
-      })
-      .catch((e) => {
-        dispatch({
-          type: LOGOUT_FAILED,
-          errorMessage: e.message,
-        });
-      });
-  };
-}
-
-export function setUser() {
-  return function (dispatch: any) {
-    dispatch({
-      type: USER_REQUEST,
-    });
-    return getUserRequestWithRefresh()
-      .then((d) => {
-        dispatch({
-          type: USER_SUCCESS,
-          user: d.user,
-        });
-      })
-      .catch((e) => {
-        dispatch({
-          type: USER_FAILED,
-          errorMessage: e.message,
-        });
-      });
-  };
-}
-
-export function updateUserData(newUserData: TNewUser) {
-  return function (dispatch: any) {
-    dispatch({
-      type: USER_UPDATE_REQUEST,
-    });
-    return updateUser(newUserData)
-      .then((d) => {
-        dispatch({
-          type: USER_UPDATE_SUCCESS,
-          user: d.user,
-        });
-      })
-      .catch((e) => {
-        dispatch({
-          type: USER_UPDATE_FAILED,
-          errorMessage: e.message,
-        });
-      });
-  };
-}
-
-export function requestPasswordChange(email: TEmail) {
-  return function (dispatch: any) {
-    dispatch({ type: PASSWORD_RESET_REQUEST });
-    return requestChangeToken(email)
-      .then((d) => {
-        modify(ADD_TO_STORAGE, PASSWORD_RESET_TOKEN_SEND, true);
-      })
-      .catch((e) => {
-        dispatch({
-          type: PASSWORD_RESET_TOKEN_FAILED,
-          errorMessage: e.message,
-        });
-      });
-  };
-}
-
-export function confirmPasswordChange(request: TPasswordUpdate) {
-  return function (dispatch: any) {
-    dispatch({ type: PASSWORD_RESET_REQUEST });
+export const confirmPasswordChange =
+  (request: TPasswordUpdate) => (dispatch: any) => {
+    dispatch(passwordResetRequest());
     return changePassword(request)
-      .then((d) => {
-        modify(REMOVE_FROM_STORAGE, PASSWORD_RESET_TOKEN_SEND);
+      .then(() => {
+        modify(
+          StorageAction.remove,
+          StorageActionKey.PASSWORD_RESET_TOKEN_SEND
+        );
       })
       .catch((e) => {
-        dispatch({
-          type: PASSWORD_RESET_TOKEN_FAILED,
-          errorMessage: e.message,
-        });
+        dispatch(passwordResetFailed(e.message));
       });
   };
-}

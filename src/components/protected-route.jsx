@@ -1,7 +1,7 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setUser } from '../services/actions/user';
+import { setUser } from '../services/actions';
 
 export const ProtectedRoute = ({ element, anonymous = false }) => {
   const { user } = useSelector((store) => store.user);

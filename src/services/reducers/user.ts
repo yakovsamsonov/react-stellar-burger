@@ -16,9 +16,34 @@ import {
   USER_UPDATE_FAILED,
   PASSWORD_RESET_REQUEST,
   PASSWORD_RESET_TOKEN_FAILED,
-} from '../actions';
+} from '../constants';
 
-const initialState = {
+import { TUserActions } from '../actions';
+import { TUser } from '../../utils';
+
+type TUserState = {
+  user: TUser;
+  registrationSend: boolean;
+  registrationFailed: boolean;
+  registrationErrorText: string;
+  loginSend: boolean;
+  loginFailed: boolean;
+  loginErrorText: string;
+  logoutSend: boolean;
+  logoutFailed: boolean;
+  logoutErrorText: string;
+  getUserSend: boolean;
+  getUserFailed: boolean;
+  getUserErrorText: string;
+  updateUserSend: boolean;
+  updateUserFailed: boolean;
+  updateUserErrorText: string;
+  resetRequested: boolean;
+  resetFailed: boolean;
+  resetErrorText: string;
+};
+
+const initialState: TUserState = {
   user: { email: '', name: '' },
   registrationSend: false,
   registrationFailed: false,
@@ -32,12 +57,18 @@ const initialState = {
   getUserSend: false,
   getUserFailed: false,
   getUserErrorText: '',
+  updateUserSend: false,
+  updateUserFailed: false,
+  updateUserErrorText: '',
   resetRequested: false,
   resetFailed: false,
   resetErrorText: '',
 };
 
-export const userReducer = (state = initialState, action) => {
+export const userReducer = (
+  state: TUserState = initialState,
+  action: TUserActions
+): TUserState => {
   switch (action.type) {
     case REGISTER_USER_REQUEST: {
       return {
@@ -141,12 +172,34 @@ export const userReducer = (state = initialState, action) => {
         user: initialState.user,
       };
     }
+    case USER_UPDATE_REQUEST: {
+      return {
+        ...state,
+        updateUserSend: true,
+        updateUserFailed: false,
+        updateUserErrorText: '',
+      };
+    }
+
     case USER_UPDATE_SUCCESS: {
       return {
         ...state,
+        updateUserSend: true,
+        updateUserFailed: false,
+        updateUserErrorText: '',
         user: action.user,
       };
     }
+    case USER_UPDATE_FAILED: {
+      return {
+        ...state,
+        updateUserSend: true,
+        updateUserFailed: false,
+        updateUserErrorText: action.errorMessage,
+        user: initialState.user,
+      };
+    }
+
     case PASSWORD_RESET_REQUEST: {
       return {
         ...state,

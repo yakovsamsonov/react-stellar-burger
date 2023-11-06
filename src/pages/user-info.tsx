@@ -1,60 +1,57 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Form } from '../components/form/form';
-import {
-  TEXT_FIELD_TYPE,
-  EMAIL_FIELD_TYPE,
-  PASSWORD_FIELD_TYPE,
-} from '../utils/constants';
-import { useState } from 'react';
-import { updateUserData } from '../services/actions/user';
+import { useState, FormEvent, FC } from 'react';
+import { updateUserData } from '../services/actions';
+import { TField, FieldType, TButton, TNewUser } from '../utils';
+import { user as userSelector } from '../services/selectors/selectors';
 
-export function UserInfo() {
-  const { user } = useSelector((store) => store.user);
-  const baseUser = { ...user, password: '' };
-  const [newUser, setNewUser] = useState(baseUser);
+export const UserInfo: FC = () => {
+  const { user } = useSelector(userSelector);
+  const baseUser: TNewUser = { ...user, password: '' };
+  const [newUser, setNewUser] = useState<TNewUser>(baseUser);
 
-  const dispatch = useDispatch();
+  const dispatch: any = useDispatch();
 
-  const fields = [
+  const fields: ReadonlyArray<TField> = [
     {
-      type: TEXT_FIELD_TYPE,
+      type: FieldType.text,
       name: 'name',
       value: newUser.name,
       placeholder: 'Имя',
       icon: 'EditIcon',
     },
     {
-      type: EMAIL_FIELD_TYPE,
+      type: FieldType.email,
       name: 'email',
       value: newUser.email,
       icon: 'EditIcon',
     },
     {
-      type: PASSWORD_FIELD_TYPE,
+      type: FieldType.password,
       name: 'password',
       value: newUser.password,
       icon: 'EditIcon',
     },
   ];
 
-  const buttons = [
+  const buttons: ReadonlyArray<TButton> = [
     { label: 'Сохранить', type: 'submit' },
     { label: 'Отмена', type: 'reset' },
   ];
 
-  const onSubmit = (e) => {
+  const onSubmit = (e: FormEvent): void => {
     e.preventDefault();
     dispatch(updateUserData(newUser)).then(() => {
       setNewUser({ ...newUser, password: '' });
     });
   };
 
-  const onReset = (e) => {
+  const onReset = (e: FormEvent): void => {
     e.preventDefault();
     setNewUser(baseUser);
   };
 
-  const disableButton = () => {
+  const disableButton = (): boolean => {
     return JSON.stringify(newUser) === JSON.stringify(baseUser);
   };
 
@@ -66,7 +63,7 @@ export function UserInfo() {
       formReset={onReset}
       formData={newUser}
       setFormData={setNewUser}
-      customDiableButton={disableButton}
+      customDisableButton={disableButton}
     ></Form>
   );
-}
+};

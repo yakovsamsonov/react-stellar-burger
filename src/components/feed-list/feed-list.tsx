@@ -6,8 +6,8 @@ import { orderHistory } from '../../services/selectors/selectors';
 import { TOrder } from '../../utils';
 
 export const FeedList: FC<{
-  showStatus: boolean;
-}> = ({ showStatus }) => {
+  showStatus?: boolean;
+}> = ({ showStatus = false }) => {
   const { orders } = useSelector<any, { orders: Array<TOrder> }>(orderHistory);
   const [isListLoaded, setIsListLoaded] = useState<boolean>(false);
 

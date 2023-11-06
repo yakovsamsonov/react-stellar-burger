@@ -75,3 +75,58 @@ export enum Cookies {
   access = 'accessToken',
   refresh = 'refreshToken',
 }
+
+export enum StorageAction {
+  add = 'add',
+  get = 'get',
+  remove = 'remove',
+}
+
+export enum StorageActionKey {
+  PASSWORD_RESET_TOKEN_SEND = 'PASSWORD_RESET_TOKEN_SEND',
+}
+
+export enum FieldType {
+  email = 'email',
+  password = 'password',
+  text = 'text',
+}
+
+export type TField = {
+  type: keyof typeof FieldType;
+  name: string;
+  value: string;
+  icon?: any;
+  placeholder?: string;
+};
+
+export type TLink = {
+  text: string;
+  linkText: string;
+  linkTo: string;
+};
+
+export type TButton = {
+  label: string;
+  type: 'button' | 'submit' | 'reset';
+};
+
+export type TPassword = {
+  password: string;
+};
+
+export type TEmail = {
+  email: string;
+};
+
+export type TUserWithPassword = TEmail & TPassword;
+
+export type TPasswordUpdate = TPassword & {
+  token: string;
+};
+
+export type TNewUser = TUserWithPassword & {
+  name: string;
+};
+
+export type TUser = Omit<TNewUser, 'password'>;

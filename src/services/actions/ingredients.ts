@@ -1,5 +1,4 @@
-import { loadIngredients } from '../../utils/burger-api';
-import { TIngredient } from '../../utils';
+import { TIngredient, loadIngredients } from '../../utils';
 
 import {
   GET_INGREDIENTS_REQUEST,
@@ -13,7 +12,7 @@ export interface IGetIngredientsRequestAction {
 
 export interface IGetIngredientsSuccessAction {
   readonly type: typeof GET_INGREDIENTS_SUCCESS;
-  readonly ingredients: ReadonlyArray<TIngredient>;
+  readonly ingredients: Array<TIngredient>;
 }
 
 export interface IGetIngredientsFailedAction {
