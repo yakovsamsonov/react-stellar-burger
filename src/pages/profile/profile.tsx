@@ -1,11 +1,11 @@
 import profileStyle from './profile.module.css';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from '../../services/hooks';
 import { NavLink, Outlet } from 'react-router-dom';
 import { performLogout } from '../../services/actions/user';
 import { FC } from 'react';
 
 export const Profile: FC = () => {
-  const dispatch: any = useDispatch();
+  const dispatch = useAppDispatch();
 
   const logoutClick = () => {
     dispatch(performLogout());

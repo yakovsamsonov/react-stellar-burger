@@ -1,7 +1,7 @@
 import { Form } from '../components/form/form';
 import { FormEvent, useState, FC } from 'react';
 import { FieldType, TButton, TEmail, TField, TLink } from '../utils';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from '../services/hooks';
 import { useNavigate } from 'react-router-dom';
 import { requestPasswordChange } from '../services/actions';
 
@@ -12,7 +12,7 @@ const emptyForm: TEmail = {
 export const ForgotPassword: FC = () => {
   const [formData, setformData] = useState(emptyForm);
 
-  const dispatch: any = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const fields: ReadonlyArray<TField> = [

@@ -3,12 +3,11 @@ import { OrderSummary } from '../order-summary/order-summary';
 import { useSelector } from 'react-redux';
 import { useEffect, useState, FC } from 'react';
 import { orderHistory } from '../../services/selectors/selectors';
-import { TOrder } from '../../utils';
 
 export const FeedList: FC<{
   showStatus?: boolean;
 }> = ({ showStatus = false }) => {
-  const { orders } = useSelector<any, { orders: Array<TOrder> }>(orderHistory);
+  const { orders } = useSelector(orderHistory);
   const [isListLoaded, setIsListLoaded] = useState<boolean>(false);
 
   useEffect(() => {
@@ -27,11 +26,10 @@ export const FeedList: FC<{
         ))}
       </section>
     );
-  } else {
-    return (
-      <section className={FeedListStyle.section}>
-        <p>Заказов нет</p>
-      </section>
-    );
   }
+  return (
+    <section className={FeedListStyle.section}>
+      <p>Заказов нет</p>
+    </section>
+  );
 };

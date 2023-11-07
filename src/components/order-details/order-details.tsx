@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import OrderDetailsStyle from './order-details.module.css';
 import { useMemo, useState, useEffect, FC } from 'react';
@@ -15,6 +15,7 @@ import {
   details as detailsSelector,
   ingredients as ingredientsSelector,
 } from '../../services/selectors/selectors';
+import { useAppDispatch } from '../../services/hooks';
 
 export const OrderDetails: FC = () => {
   const { detailsData } = useSelector(detailsSelector);
@@ -24,7 +25,7 @@ export const OrderDetails: FC = () => {
   const [ingData, setIngData] = useState<Array<TOrderIngredient>>([]);
 
   const { num } = useParams();
-  const dispatch: any = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (num) {

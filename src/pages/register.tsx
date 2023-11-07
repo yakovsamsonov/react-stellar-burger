@@ -1,9 +1,10 @@
 import { useState, FC, FormEvent } from 'react';
 import { Form } from '../components/form/form';
 import { registerNewUser } from '../services/actions/user';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { user as userSelector } from '../services/selectors/selectors';
 import { FieldType, TButton, TField, TLink, TNewUser } from '../utils';
+import { useAppDispatch } from '../services/hooks';
 
 const emptyForm: TNewUser = {
   email: '',
@@ -16,7 +17,7 @@ export const Register: FC = () => {
 
   const { registrationErrorText } = useSelector(userSelector);
 
-  const dispatch: any = useDispatch();
+  const dispatch = useAppDispatch();
 
   const fields: ReadonlyArray<TField> = [
     {

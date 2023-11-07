@@ -22,16 +22,17 @@ import styles from './app.module.css';
 import CardDetails from '../card-details/card-details';
 import { OrderDetails } from '../order-details/order-details';
 import { Modal } from '../modal/modal';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { getIngredients } from '../../services/actions';
 import { useEffect, useCallback } from 'react';
 import { ingredients as ingredientsSelector } from '../../services/selectors/selectors';
+import { useAppDispatch } from '../../services/hooks';
 
 function App() {
   const { ingredientsLoading, ingredientsFailed, ingredients } =
     useSelector(ingredientsSelector);
 
-  const dispatch: any = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(getIngredients());

@@ -1,12 +1,12 @@
 import { useEffect, FC } from 'react';
 import FeedStyle from './feed.module.css';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from '../../services/hooks';
 import { FeedList } from '../../components/feed-list/feed-list';
 import { FeedSummary } from '../../components/feed-summary/feed-summary';
 import { wsStartConnection, wsCloseConnection } from '../../services/actions';
 
 export const Feed: FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(wsStartConnection('/all'));

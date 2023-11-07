@@ -1,9 +1,10 @@
 import { FormEvent, useState, FC } from 'react';
 import { Form } from '../components/form/form';
 import { FieldType, TField, TButton, TLink, TUserWithPassword } from '../utils';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { performLogin } from '../services/actions/user';
 import { user as userSelector } from '../services/selectors/selectors';
+import { useAppDispatch } from '../services/hooks';
 
 const emptyForm: TUserWithPassword = {
   email: '',
@@ -14,7 +15,7 @@ export const Login: FC = () => {
   const [loginData, setLoginData] = useState<TUserWithPassword>(emptyForm);
   const { loginErrorText } = useSelector(userSelector);
 
-  const dispatch: any = useDispatch();
+  const dispatch = useAppDispatch();
 
   const fields: ReadonlyArray<TField> = [
     {

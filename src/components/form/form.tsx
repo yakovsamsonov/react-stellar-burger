@@ -2,7 +2,6 @@ import React, {
   useState,
   useEffect,
   useCallback,
-  FC,
   ChangeEvent,
   FormEvent,
   ReactNode,
@@ -15,7 +14,7 @@ import {
   Input,
   PasswordInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { FieldType, TField, TLink, TButton, TNewUser } from '../../utils';
+import { FieldType, TField, TLink, TButton } from '../../utils';
 
 interface IFormProps<T> {
   title?: string;

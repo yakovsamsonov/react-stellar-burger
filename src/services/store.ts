@@ -1,9 +1,8 @@
 import {
   configureStore,
-  Dispatch,
   ActionCreator,
   ThunkAction,
-  Action,
+  combineReducers,
 } from '@reduxjs/toolkit';
 import { socketMiddleware } from './middleware';
 import {
@@ -39,16 +38,18 @@ const WS_ACTIONS = {
   wsOnMessage: WS_GET_MESSAGE,
 };
 
+const rootReducer = combineReducers({
+  ingredients: ingredientsReducer,
+  burger: burgerReducer,
+  order: orderReducer,
+  details: detailsReducer,
+  user: userReducer,
+  ws: wsReducer,
+});
+
 const createStore = () => {
   return configureStore({
-    reducer: {
-      ingredients: ingredientsReducer,
-      burger: burgerReducer,
-      order: orderReducer,
-      details: detailsReducer,
-      user: userReducer,
-      ws: wsReducer,
-    },
+    reducer: rootReducer,
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware().concat(socketMiddleware(WS_BASE_URL, WS_ACTIONS)),
   });
@@ -56,7 +57,7 @@ const createStore = () => {
 
 export const store = createStore();
 
-export type RootState = ReturnType<typeof store.getState>;
+export type RootState = ReturnType<typeof rootReducer>;
 
 export type TApplicationActions =
   | TIngredientsActions
@@ -66,8 +67,8 @@ export type TApplicationActions =
   | TUserActions
   | TWsConnActions;
 
-export type AppDispatch = Dispatch<TApplicationActions>;
+export type AppDispatch = typeof store.dispatch;
 
 export type AppThunk<TReturn = void> = ActionCreator<
-  ThunkAction<TReturn, RootState, Action, TApplicationActions>
+  ThunkAction<TReturn, RootState, undefined, TApplicationActions>
 >;

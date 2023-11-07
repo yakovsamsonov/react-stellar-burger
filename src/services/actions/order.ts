@@ -64,7 +64,7 @@ export const closeOrder = (): ICloseOrderAction => ({
   type: CLOSE_ORDER,
 });
 
-export const sendOrder: AppThunk =
+export const sendOrder: AppThunk<Promise<any>> =
   (ingredients: Array<string>) => (dispatch: AppDispatch) => {
     dispatch(getOrderRequest(ingredients));
     return placeOrder(ingredients)

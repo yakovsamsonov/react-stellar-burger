@@ -1,7 +1,33 @@
+import { Middleware } from 'redux';
+import { RootState, TApplicationActions } from '../store';
+import {
+  WS_CONNECTION_START,
+  WS_CONNECTION_CLOSED,
+  WS_CONNECTION_ERROR,
+  WS_CONNECTION_SUCCESS,
+  WS_GET_MESSAGE,
+} from '../constants';
+
+type TMiddlewareActions<K, T> = {
+  wsOnConnectInit: K;
+  [name: string]: T | K;
+};
+
 export const socketMiddleware =
-  (baseUrl: string, actions: any) => (store: any) => (next: any) => {
+  (
+    baseUrl: string,
+    actions: TMiddlewareActions<
+      typeof WS_CONNECTION_START,
+      | typeof WS_CONNECTION_CLOSED
+      | typeof WS_CONNECTION_ERROR
+      | typeof WS_CONNECTION_SUCCESS
+      | typeof WS_GET_MESSAGE
+    >
+  ): Middleware<{}, RootState> =>
+  (store) =>
+  (next) => {
     let socket: WebSocket;
-    return function (action: any) {
+    return function (action: TApplicationActions) {
       const { dispatch } = store;
 
       if (action.type === actions.wsOnConnectInit) {
@@ -18,7 +44,7 @@ export const socketMiddleware =
         };
 
         socket.onerror = () => {
-          dispatch({ type: action.wsOnError });
+          dispatch({ type: actions.wsOnError });
         };
 
         socket.onmessage = (event) => {

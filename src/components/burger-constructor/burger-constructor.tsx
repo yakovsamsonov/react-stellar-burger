@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useDrop } from 'react-dnd';
 import {
   clearBurger,
@@ -13,7 +13,7 @@ import {
   BunIngredient,
 } from '../ingredients-group/ingredients-group';
 import BurgerConstructorStyle from './burger-constructor.module.css';
-import { PositionType, SubmitOrderButtonLabel, TIngredient } from '../../utils';
+import { PositionType, SubmitOrderButtonLabel } from '../../utils';
 import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from 'react-router-dom';
 import { Price } from '../price/price';
@@ -22,6 +22,7 @@ import {
   user as userSelector,
   ingredients as ingredientsSelector,
 } from '../../services/selectors/selectors';
+import { useAppDispatch } from '../../services/hooks';
 
 export function BurgerConstructor() {
   const [buttonLabel, setButtonLabel] = useState<SubmitOrderButtonLabel>(
@@ -32,13 +33,11 @@ export function BurgerConstructor() {
   const { user } = useSelector(userSelector);
   const { ingredients } = useSelector(ingredientsSelector);
   const navigate = useNavigate();
-  const dispatch: any = useDispatch();
+  const dispatch = useAppDispatch();
 
   const addIngredientToBurger = (ingredientId: string): void => {
-    const uuid: string = uuidv4();
-    const ing: TIngredient | undefined = ingredients.find(
-      (el) => el._id === ingredientId
-    );
+    const uuid = uuidv4();
+    const ing = ingredients.find((el) => el._id === ingredientId);
     if (ing) {
       dispatch(addIngredient(uuid, ing));
     }

@@ -1,8 +1,9 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useEffect, useState, FC } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { setUser } from '../services/actions';
 import { user as userSelector } from '../services/selectors/selectors';
+import { useAppDispatch } from '../services/hooks';
 
 type TProtectedRoute = {
   element: JSX.Element;
@@ -17,7 +18,7 @@ export const ProtectedRoute: FC<TProtectedRoute> = ({
   const [userRequested, setUserRequested] = useState<boolean>(false);
 
   const navigate = useNavigate();
-  const dispatch: any = useDispatch();
+  const dispatch = useAppDispatch();
   const { pathname, state } = useLocation();
 
   const from = state?.from || '/';

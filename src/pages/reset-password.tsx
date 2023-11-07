@@ -1,7 +1,7 @@
 import { Form } from '../components/form/form';
 import { useState, FC, FormEvent } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { confirmPasswordChange } from '../services/actions/user';
 import {
   StorageAction,
@@ -14,6 +14,7 @@ import {
 } from '../utils';
 import { user as userSelector } from '../services/selectors/selectors';
 import { FieldType } from '../utils';
+import { useAppDispatch } from '../services/hooks';
 
 const emptyForm: TPasswordUpdate = {
   password: '',
@@ -22,7 +23,7 @@ const emptyForm: TPasswordUpdate = {
 
 export const ResetPassword: FC = () => {
   const [formData, setformData] = useState<TPasswordUpdate>(emptyForm);
-  const dispatch: any = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { resetErrorText } = useSelector(userSelector);
 

@@ -218,7 +218,7 @@ export const passwordResetFailed = (
   errorMessage,
 });
 
-export const registerNewUser: AppThunk =
+export const registerNewUser: AppThunk<Promise<any>> =
   (user: TNewUser) => (dispatch: AppDispatch) => {
     dispatch(registerNewUserRequest());
     return registerUser(user)
@@ -228,7 +228,7 @@ export const registerNewUser: AppThunk =
       });
   };
 
-export const performLogin: AppThunk =
+export const performLogin: AppThunk<Promise<any>> =
   (user: TUserWithPassword) => (dispatch: AppDispatch) => {
     dispatch(loginRequest());
     return login(user)
@@ -240,31 +240,33 @@ export const performLogin: AppThunk =
       });
   };
 
-export const performLogout: AppThunk = () => (dispatch: AppDispatch) => {
-  dispatch(loginRequest());
-  return logout()
-    .then(() => {
-      dispatch(logoutSuccess());
-      deleteCookie(Cookies.access);
-      deleteCookie(Cookies.refresh);
-    })
-    .catch((e) => {
-      dispatch(loginFailed(e.message));
-    });
-};
+export const performLogout: AppThunk<Promise<any>> =
+  () => (dispatch: AppDispatch) => {
+    dispatch(loginRequest());
+    return logout()
+      .then(() => {
+        dispatch(logoutSuccess());
+        deleteCookie(Cookies.access);
+        deleteCookie(Cookies.refresh);
+      })
+      .catch((e) => {
+        dispatch(loginFailed(e.message));
+      });
+  };
 
-export const setUser: AppThunk = () => (dispatch: AppDispatch) => {
-  dispatch(userRequest());
-  return getUserRequestWithRefresh()
-    .then((d) => {
-      dispatch(userSuccess(d.user));
-    })
-    .catch((e) => {
-      dispatch(userFailed(e.message));
-    });
-};
+export const setUser: AppThunk<Promise<any>> =
+  () => (dispatch: AppDispatch) => {
+    dispatch(userRequest());
+    return getUserRequestWithRefresh()
+      .then((d) => {
+        dispatch(userSuccess(d.user));
+      })
+      .catch((e) => {
+        dispatch(userFailed(e.message));
+      });
+  };
 
-export const updateUserData: AppThunk =
+export const updateUserData: AppThunk<Promise<any>> =
   (newUserData: TNewUser) => (dispatch: AppDispatch) => {
     dispatch(userUpdateRequest());
     return updateUser(newUserData)
@@ -276,7 +278,7 @@ export const updateUserData: AppThunk =
       });
   };
 
-export const requestPasswordChange: AppThunk =
+export const requestPasswordChange: AppThunk<Promise<any>> =
   (email: TEmail) => (dispatch: AppDispatch) => {
     dispatch(passwordResetRequest());
     return requestChangeToken(email)
@@ -292,7 +294,7 @@ export const requestPasswordChange: AppThunk =
       });
   };
 
-export const confirmPasswordChange: AppThunk =
+export const confirmPasswordChange: AppThunk<Promise<any>> =
   (request: TPasswordUpdate) => (dispatch: AppDispatch) => {
     dispatch(passwordResetRequest());
     return changePassword(request)

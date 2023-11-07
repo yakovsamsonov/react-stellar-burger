@@ -1,5 +1,5 @@
 import { useRef, FC, useCallback } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useDrag, useDrop } from 'react-dnd';
 import {
   ConstructorElement,
@@ -9,6 +9,7 @@ import IngredientsGroupStyle from './ingredients-group.module.css';
 import { PositionType, TBurgerIngredient, TIngredient } from '../../utils';
 import { changeOrder, removeIngredient } from '../../services/actions';
 import { burger as burgerSelector } from '../../services/selectors/selectors';
+import { useAppDispatch } from '../../services/hooks';
 
 type TRegularIngredient = {
   ingredient: TBurgerIngredient;
@@ -36,7 +37,7 @@ export const IngredientsGroup: FC = () => {
 };
 
 const RegularIngredient: FC<TRegularIngredient> = ({ ingredient, index }) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const ref = useRef<HTMLLIElement>(null);
 

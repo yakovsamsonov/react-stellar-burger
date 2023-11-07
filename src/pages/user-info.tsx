@@ -1,16 +1,17 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Form } from '../components/form/form';
 import { useState, FormEvent, FC } from 'react';
 import { updateUserData } from '../services/actions';
 import { TField, FieldType, TButton, TNewUser } from '../utils';
 import { user as userSelector } from '../services/selectors/selectors';
+import { useAppDispatch } from '../services/hooks';
 
 export const UserInfo: FC = () => {
   const { user } = useSelector(userSelector);
   const baseUser: TNewUser = { ...user, password: '' };
   const [newUser, setNewUser] = useState<TNewUser>(baseUser);
 
-  const dispatch: any = useDispatch();
+  const dispatch = useAppDispatch();
 
   const fields: ReadonlyArray<TField> = [
     {
