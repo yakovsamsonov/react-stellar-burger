@@ -1,4 +1,5 @@
 .profile {
+  box-sizing: border-box;
   margin: 0 auto;
   composes: pt-20 from global;
   width: 100%;
@@ -6,6 +7,8 @@
   display: flex;
   justify-content: flex-start;
   gap: 60px;
+  height: 100%;
+  overflow-y: hidden;
 }
 
 .navigation {

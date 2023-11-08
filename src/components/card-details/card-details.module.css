@@ -1,4 +1,9 @@
 .card-details {
+  box-sizing: border-box;
+  margin: auto;
+  min-height: 400px;
+  max-width: 640px;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
